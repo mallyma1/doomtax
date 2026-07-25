@@ -2,7 +2,9 @@
 # Mirrors the board's "Auto-add to project" workflow using Actions.
 #
 # Setup (one-time):
-#   1. Create a Personal Access Token (classic) with the "project" scope.
+#   1. Create a least-privilege Personal Access Token that can add items to
+#      your user Project (fine-grained if available; otherwise classic with the
+#      minimal required project scope).
 #   2. Save it as repository secret named PAT.
 #      (Use PAT exactly; do not use GH_PROJECT_TOKEN.)
 
@@ -15,6 +17,7 @@ on:
 jobs:
   add-to-project:
     runs-on: ubuntu-latest
+    permissions: {}
 
     steps:
       - name: Add issue to Projects v2 board
