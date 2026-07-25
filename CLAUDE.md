@@ -22,8 +22,7 @@ ETHGlobal Lisbon 2026.
    to a human identity.
 4. **Never say bet, wager, odds, or gamble.** Say stake, commitment, pledge,
    forfeit. There is no chance element and no house edge.
-5. **Never use the em dash.** Use commas, colons, periods, or "to" for ranges.
-6. **Testnet only.** No mainnet keys in this repo, ever.
+5. **Testnet only.** No mainnet keys in this repo, ever.
 
 ## Product shape
 
@@ -89,6 +88,6 @@ docs; 0G is migrating from @0glabs to @0gfoundation.
 - Conventional commits, scoped: feat(hedera):, fix(world):, docs(readme):
 - Small and frequent. One logical change per commit. Never squash this weekend.
 - Body explains why, not what.
-- Commit before every agent handoff.
+- Commit before every handoff.
 - Every commit that used an AI tool carries an "AI-Assisted:" trailer naming the
   tool and what it did. ETHGlobal requires this. See AI-USAGE.md.

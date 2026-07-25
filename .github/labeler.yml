@@ -1,0 +1,39 @@
+hedera:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/hedera/**'
+          - 'scripts/check-hedera.ts'
+
+agent:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/agent/**'
+
+world:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/auth/**'
+          - 'src/identity/**'
+          - 'src/abi/**'
+
+0g:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/ai/**'
+
+ui:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/app/**'
+          - 'src/components/**'
+          - 'src/providers/**'
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**'

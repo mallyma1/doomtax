@@ -59,3 +59,15 @@ export function getHederaClient(): Client {
   cachedClient = client;
   return client;
 }
+
+/**
+ * Closes and clears the cached client. Long-lived server processes (Next.js
+ * routes, the settlement agent) should never call this. One-off scripts that
+ * use getHederaClient() must call it before exiting, or the gRPC channel
+ * pool keeps the process alive for ~45s after main() resolves.
+ */
+export function closeHederaClient(): void {
+  if (!cachedClient) return;
+  cachedClient.close();
+  cachedClient = null;
+}

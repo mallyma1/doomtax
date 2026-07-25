@@ -7,7 +7,7 @@
 
 Built at **ETHGlobal Lisbon 2026**.
 
-🚀 Live Mini App: pending deployment · 🎬 3-min demo: pending · 🏗 **[Architecture](https://github.com/mallyma1/doomtax/wiki/Architecture)**
+🚀 Live Mini App: pending deployment · 🎬 3-min demo: pending · 🏗 **[Architecture](docs/wiki-export/Architecture.md)**
 
 **Proof:** source code and docs are available in this repository, including `docs/SELFIE-CHECK-TESTING.md`, the architecture wiki, and the current `src/` implementation.
 
