@@ -1,33 +1,35 @@
 /**
- * Charity is an explicit placeholder for this hackathon build. No
- * partnership exists yet; mainnet target is The Giving Block, unconfirmed
- * on HBAR support. Never claim a real charity partnership in copy.
+ * Forfeit recipients.
+ *
+ * PLACEHOLDER. CHARITY is a Hedera testnet account with nothing real behind it.
+ * There is no charity partnership. Do not write copy implying otherwise.
+ *
+ * Mainnet target is The Giving Block's partner API. Blocked on whether their
+ * supported asset list includes HBAR, and on a commercial agreement.
  */
-export function getCharityAccountId(): string {
-  const id = process.env.CHARITY_ACCOUNT_ID;
-  if (!id) throw new Error('CHARITY_ACCOUNT_ID is not set');
-  return id;
-}
-
-/** Operator-held pending account. Forfeits land here first, and sweep to
- * charity only after the appeal window closes, so a dispute or amnesty
- * is still refundable rather than rhetorical. */
-export function getPendingAccountId(): string {
-  const id = process.env.PENDING_ACCOUNT_ID;
-  if (!id) throw new Error('PENDING_ACCOUNT_ID is not set');
-  return id;
-}
+export const CHARITY = {
+  name: "Placeholder charity (testnet)",
+  accountId: process.env.CHARITY_ACCOUNT_ID ?? "0.0.0",
+  logo: "/charity-placeholder.svg",
+  isPlaceholder: true,
+} as const;
 
 /**
- * Dash-separated form (accountId-seconds-nanos) matches the mirror node's
- * own `transaction_id` field, confirmed against a live testnet query. The
- * exact HashScan route has not been confirmed from this environment since
- * HashScan is a client-rendered SPA; eyeball the link on the first real
- * transaction run outside this container.
+ * Forfeits land here first, not at the charity directly.
+ *
+ * Optimistic settlement and an appeal window are contradictory unless the money
+ * pauses somewhere we control. Once a forfeit reaches a charity it cannot be
+ * reversed, so appeals and amnesty would be promises we could not keep.
  */
-export function hashScanTransactionUrl(transactionId: string): string {
-  const dashed = transactionId.includes('@')
-    ? transactionId.replace('@', '-').replace('.', '-')
-    : transactionId;
-  return `https://hashscan.io/testnet/transaction/${dashed}`;
-}
+export const PENDING = {
+  accountId: process.env.PENDING_ACCOUNT_ID ?? "0.0.0",
+} as const;
+
+/** Short in demo mode. Production would be closer to an hour. */
+export const APPEAL_WINDOW_MS = Number(process.env.APPEAL_WINDOW_MS ?? 60_000);
+
+/**
+ * Forfeits always leave the circle of participants. There is no policy switch:
+ * team pots and splits were considered and cut. See docs/DESIGN-FORFEITS.md.
+ */
+export const FORFEIT_DESTINATION = "charity" as const;
