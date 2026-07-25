@@ -1,25 +1,39 @@
 hedera:
-  - src/hedera/**/*
-  - scripts/check-hedera.ts
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/hedera/**'
+          - 'scripts/check-hedera.ts'
 
 agent:
-  - src/agent/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/agent/**'
 
 world:
-  - src/auth/**/*
-  - src/identity/**/*
-  - src/abi/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/auth/**'
+          - 'src/identity/**'
+          - 'src/abi/**'
 
 0g:
-  - src/ai/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/ai/**'
 
 ui:
-  - src/app/**/*
-  - src/components/**/*
-  - src/providers/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/app/**'
+          - 'src/components/**'
+          - 'src/providers/**'
 
 docs:
-  - '**/*.md'
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
 
 ci:
-  - .github/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**'
