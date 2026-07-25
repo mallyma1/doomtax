@@ -53,6 +53,11 @@ type SettleResponse = {
 };
 
 const HTTP_STATUS_BAD_GATEWAY = 502;
+const LIVE_FEEDBACK_LABELS = {
+  pending: 'Submitting settlement',
+  failed: 'Settlement failed',
+  success: 'Settlement submitted',
+};
 
 const formatSeconds = (seconds: number) => {
   const minutes = Math.floor(seconds / 60)
@@ -60,6 +65,23 @@ const formatSeconds = (seconds: number) => {
     .padStart(2, '0');
   const remaining = (seconds % 60).toString().padStart(2, '0');
   return `${minutes}:${remaining}`;
+};
+
+const isSettleResponse = (value: unknown): value is SettleResponse => {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as Partial<SettleResponse>;
+  return (
+    (candidate.verdict === 'kept' || candidate.verdict === 'slipped') &&
+    !!candidate.settlement &&
+    typeof candidate.settlement === 'object' &&
+    typeof (candidate.settlement as { ok?: unknown }).ok === 'boolean' &&
+    !!candidate.hcs &&
+    typeof candidate.hcs === 'object' &&
+    typeof (candidate.hcs as { ok?: unknown }).ok === 'boolean'
+  );
 };
 
 export const SessionFlow = () => {
@@ -87,8 +109,6 @@ export const SessionFlow = () => {
     const interval = window.setInterval(() => {
       setSecondsLeft((previous) => {
         if (previous <= 1) {
-          window.clearInterval(interval);
-          setPhase('claim');
           return 0;
         }
 
@@ -100,6 +120,12 @@ export const SessionFlow = () => {
       window.clearInterval(interval);
     };
   }, [phase]);
+
+  useEffect(() => {
+    if (phase === 'running' && secondsLeft === 0) {
+      setPhase('claim');
+    }
+  }, [phase, secondsLeft]);
 
   const startSession = () => {
     if (!intention.trim()) {
@@ -137,13 +163,17 @@ export const SessionFlow = () => {
         }),
       });
 
-      const json = (await response.json()) as SettleResponse;
+      const payload = await response.json();
+      if (!isSettleResponse(payload)) {
+        throw new Error('Unexpected settlement response shape.');
+      }
+      const json = payload;
       setResult(json);
       setResponseStatus(response.status);
 
       if (!response.ok || !json.settlement.ok) {
         const settlementError =
-          !json.settlement.ok && json.settlement.error
+          !json.settlement.ok
             ? json.settlement.error
             : `Settlement failed with status ${response.status}.`;
         setErrorMessage(settlementError);
@@ -222,11 +252,7 @@ export const SessionFlow = () => {
         <p className="text-sm text-gray-700">Session ID: {sessionId}</p>
         <p className="text-sm text-gray-700">Stake: {stakeHbar} HBAR</p>
         <LiveFeedback
-          label={{
-            pending: 'Submitting settlement',
-            failed: 'Settlement failed',
-            success: 'Settlement submitted',
-          }}
+          label={LIVE_FEEDBACK_LABELS}
           state={undefined}
         >
           <Button onClick={submitClaim} size="lg" variant="primary">
@@ -242,11 +268,7 @@ export const SessionFlow = () => {
       <section className="w-full max-w-xl rounded-xl border border-gray-200 p-4 space-y-3">
         <h2 className="text-lg font-semibold">Submitting</h2>
         <LiveFeedback
-          label={{
-            pending: 'Submitting settlement',
-            failed: 'Settlement failed',
-            success: 'Settlement submitted',
-          }}
+          label={LIVE_FEEDBACK_LABELS}
           state="pending"
         >
           <Button disabled size="lg" variant="primary">
@@ -274,6 +296,7 @@ export const SessionFlow = () => {
               href="https://hashscan.io/testnet"
               target="_blank"
               rel="noreferrer"
+              aria-label="Open HashScan testnet in a new tab"
             >
               HashScan testnet
             </a>{' '}
@@ -298,7 +321,13 @@ export const SessionFlow = () => {
       {moved ? (
         <p className="text-sm text-gray-700">
           HashScan:{' '}
-          <a className="text-blue-600 underline" href={settlement.hashScanUrl} target="_blank" rel="noreferrer">
+          <a
+            className="text-blue-600 underline"
+            href={settlement.hashScanUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open settlement transaction in HashScan in a new tab"
+          >
             {settlement.hashScanUrl}
           </a>
         </p>
