@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { settleSession, type SettlementVerdict } from '@/agent/settlement';
+import { askCoach } from '@/ai/coach';
 import { submitSessionRecord } from '@/hedera/consensus';
 import { hbarToTinybar } from '@/lib/session';
 
@@ -9,22 +10,32 @@ import { hbarToTinybar } from '@/lib/session';
 export const runtime = 'nodejs';
 
 /**
- * The spine's verdict is hardcoded until the 0G Compute coach lands.
- *
- * It is deliberately "slipped": a "kept" verdict settles back to the same
- * account the stake came from, which settleSession short-circuits as a
- * no-op, so there would be no transaction and no HashScan link to show.
- * A slip is the path that actually moves money and proves the flow.
+ * Demo-mode fallback used when NEXT_PUBLIC_DEMO_MODE=true or the 0G coach
+ * is unavailable. Deliberately 'slipped' so the flow moves money and
+ * produces a HashScan link — a 'kept' verdict is a no-op transfer.
  */
-const HARDCODED_VERDICT: SettlementVerdict = 'slipped';
+const DEMO_VERDICT: SettlementVerdict = 'slipped';
 
 type RequestBody = {
   sessionId: string;
   commitmentHash: string;
   stakeHbar: number;
+  // Coach inputs — forwarded to 0G only; never stored, logged, or written to HCS.
+  intention: string;
+  artifact: string;
+  foregroundTime: number;
+  interruptionCount: number;
 };
 
-const ALLOWED_REQUEST_KEYS = ['sessionId', 'commitmentHash', 'stakeHbar'] as const;
+const ALLOWED_REQUEST_KEYS = [
+  'sessionId',
+  'commitmentHash',
+  'stakeHbar',
+  'intention',
+  'artifact',
+  'foregroundTime',
+  'interruptionCount',
+] as const;
 const ALLOWED_REQUEST_KEY_SET = new Set<string>(ALLOWED_REQUEST_KEYS);
 
 export async function POST(request: Request) {
@@ -42,16 +53,22 @@ export async function POST(request: Request) {
   const body = rawBody as Record<string, unknown>;
   const extraKeys = Object.keys(body).filter((key) => !ALLOWED_REQUEST_KEY_SET.has(key));
   if (extraKeys.length > 0) {
-    const error = extraKeys.includes('intention')
-      ? 'Never send intention text to /api/session/settle. Send only sessionId, commitmentHash, and stakeHbar.'
-      : `Unexpected request fields: ${extraKeys.join(', ')}`;
     return NextResponse.json(
-      { error },
+      { error: `Unexpected request fields: ${extraKeys.join(', ')}` },
       { status: 400 },
     );
   }
 
-  const { sessionId, commitmentHash, stakeHbar } = body as Partial<RequestBody>;
+  const {
+    sessionId,
+    commitmentHash,
+    stakeHbar,
+    intention,
+    artifact,
+    foregroundTime,
+    interruptionCount,
+  } = body as Partial<RequestBody>;
+
   if (
     typeof sessionId !== 'string' ||
     sessionId.trim() === '' ||
@@ -77,20 +94,42 @@ export async function POST(request: Request) {
     );
   }
 
+  // Determine verdict. In demo mode (or when coach inputs are absent) fall
+  // back to the demo verdict so the flow still produces a HashScan link.
+  const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  const hasCoachInputs =
+    typeof intention === 'string' &&
+    typeof artifact === 'string' &&
+    typeof foregroundTime === 'number' &&
+    typeof interruptionCount === 'number';
+
+  let verdict: SettlementVerdict;
+  if (!isDemo && hasCoachInputs) {
+    // Coach inputs are passed to 0G only — never stored, never logged, never in HCS.
+    verdict = await askCoach({
+      intention: intention!,
+      artifact: artifact!,
+      foregroundTime: foregroundTime!,
+      interruptionCount: interruptionCount!,
+    });
+  } else {
+    verdict = DEMO_VERDICT;
+  }
+
   // Settlement first: it moves real money, and its result stands on its own
   // even if the ledger record afterwards fails.
   let settlement;
   try {
     settlement = await settleSession({
       sessionId,
-      verdict: HARDCODED_VERDICT,
+      verdict,
       amountHbar: stakeHbar,
       sourceAccountId,
     });
   } catch (err) {
     return NextResponse.json(
       {
-        verdict: HARDCODED_VERDICT,
+        verdict,
         settlement: { ok: false, error: err instanceof Error ? err.message : String(err) },
         hcs: { ok: false, error: 'Not attempted: settlement failed' },
         hcsTopicId,
@@ -103,7 +142,7 @@ export async function POST(request: Request) {
   const hcsRecord = {
     sessionId,
     commitmentHash,
-    verdict: HARDCODED_VERDICT === 'kept',
+    verdict: verdict === 'kept',
     amountTinybar: hbarToTinybar(stakeHbar),
     timestamp: Date.now(),
   };
@@ -119,7 +158,7 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({
-    verdict: HARDCODED_VERDICT,
+    verdict,
     settlement: { ok: true, ...settlement },
     hcs,
     hcsTopicId,

@@ -6,7 +6,7 @@ import {
   commitmentHash,
 } from '@/lib/session';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 
 type SessionPhase =
   | 'idle'
@@ -117,12 +117,46 @@ const HcsPayload = ({
 export const SessionFlow = () => {
   const [phase, setPhase] = useState<SessionPhase>('idle');
   const [intention, setIntention] = useState('');
+  const [artifact, setArtifact] = useState('');
   const [stakeHbar, setStakeHbar] = useState<number>(STAKE_OPTIONS_HBAR[0]);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [secondsLeft, setSecondsLeft] = useState(SESSION_DURATION_SECONDS);
   const [result, setResult] = useState<SettleResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [responseStatus, setResponseStatus] = useState<number | null>(null);
+
+  // Page Visibility integrity tracking — foreground time and interruptions.
+  const foregroundTimeRef = useRef(0);
+  const interruptionCountRef = useRef(0);
+  const lastFocusRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (phase !== 'running') return;
+
+    lastFocusRef.current = Date.now();
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (lastFocusRef.current !== null) {
+          foregroundTimeRef.current += (Date.now() - lastFocusRef.current) / 1000;
+          lastFocusRef.current = null;
+        }
+        interruptionCountRef.current += 1;
+      } else {
+        lastFocusRef.current = Date.now();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      // Flush any remaining foreground time when phase changes.
+      if (lastFocusRef.current !== null) {
+        foregroundTimeRef.current += (Date.now() - lastFocusRef.current) / 1000;
+        lastFocusRef.current = null;
+      }
+    };
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== 'created') {
@@ -165,6 +199,10 @@ export const SessionFlow = () => {
     setResult(null);
     setErrorMessage(null);
     setResponseStatus(null);
+    setArtifact('');
+    foregroundTimeRef.current = 0;
+    interruptionCountRef.current = 0;
+    lastFocusRef.current = null;
     setSessionId(crypto.randomUUID());
     setSecondsLeft(SESSION_DURATION_SECONDS);
     setPhase('created');
@@ -190,6 +228,10 @@ export const SessionFlow = () => {
           sessionId,
           commitmentHash: hash,
           stakeHbar,
+          intention,
+          artifact,
+          foregroundTime: foregroundTimeRef.current,
+          interruptionCount: interruptionCountRef.current,
         }),
       });
 
@@ -281,6 +323,16 @@ export const SessionFlow = () => {
         <h2 className="text-lg font-semibold">Claim and settle</h2>
         <p className="text-sm text-gray-700">Session ID: {sessionId}</p>
         <p className="text-sm text-gray-700">Stake: {stakeHbar} HBAR</p>
+        <label className="block space-y-2">
+          <span className="text-sm text-gray-700">What did you actually do?</span>
+          <textarea
+            className="w-full rounded-lg border border-gray-300 p-3 text-sm"
+            rows={3}
+            value={artifact}
+            onChange={(event) => setArtifact(event.target.value)}
+            placeholder="Briefly describe what you completed during this session"
+          />
+        </label>
         <LiveFeedback
           label={LIVE_FEEDBACK_LABELS}
           state={undefined}
@@ -391,10 +443,6 @@ export const SessionFlow = () => {
           ) : null}
         </>
       )}
-
-      <p className="text-sm text-gray-600">
-        Verdict is currently hardcoded, and the 0G coach replaces it next.
-      </p>
     </section>
   );
 };
