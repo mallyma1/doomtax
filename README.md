@@ -205,3 +205,6 @@ product that gets better the longer you stay, and it's why 0G Storage is
 something we sell, not just something we use.
 
 ---
+## License
+
+MIT. See `LICENSE`.
