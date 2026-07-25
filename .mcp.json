@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "world-docs": { "type": "http", "url": "https://docs.world.org/mcp" },
+    "context7": { "command": "npx", "args": ["-y", "@upstash/context7-mcp"] },
+    "playwright": { "command": "npx", "args": ["-y", "@playwright/mcp@latest"] },
+    "hedera": {
+      "command": "npx",
+      "args": ["-y", "@hashgraph/hedera-agent-kit-mcp"],
+      "env": {
+        "HEDERA_ACCOUNT_ID": "${HEDERA_ACCOUNT_ID}",
+        "HEDERA_PRIVATE_KEY": "${HEDERA_PRIVATE_KEY}",
+        "HEDERA_NETWORK": "testnet"
+      }
+    }
+  }
+}
