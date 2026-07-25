@@ -88,6 +88,6 @@ docs; 0G is migrating from @0glabs to @0gfoundation.
 - Conventional commits, scoped: feat(hedera):, fix(world):, docs(readme):
 - Small and frequent. One logical change per commit. Never squash this weekend.
 - Body explains why, not what.
-- Commit before every agent handoff.
+- Commit before every handoff.
 - Every commit that used an AI tool carries an "AI-Assisted:" trailer naming the
   tool and what it did. ETHGlobal requires this. See AI-USAGE.md.
