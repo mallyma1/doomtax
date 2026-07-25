@@ -120,6 +120,27 @@ product in the marketing copy only. These aren't bolt-ons, they're the product.
   shows only the collective total, never who slipped. A bad day becomes
   something good for someone else, not a public score.
 
+ ## Design decisions
+
+| Decision | Reasoning |
+|---|---|
+| **Personal app, solo** | Competing on kept-rate puts most pressure on whoever struggles most. Inverted for a wellness product. |
+| **No teams, pots, leaderboards, rankings** | Cut, not deferred. A team pot also dilutes the stake by 1/N and a solo-controlled team means no penalty at all. |
+| **Circles are the social layer** | Shared cause, collective total shown, individual contributions never shown. Makes a slip prosocial rather than punitive. Membership stays off-chain. |
+| **No accountability partner in v1** | Replaced by self-appeal: optimistic settlement, short window to contest, resolves toward the user. |
+| **Forfeits go to charity only** | Never the platform, never an individual. This is the ethical load-bearing wall and the Beeminder differentiator. |
+| **Pending account before charity** | Once money reaches a charity it cannot be reversed, so appeals and amnesty would be unfunded promises. |
+| **Honest custody** | World App signs World Chain, not Hedera. The app provisions and holds a Hedera testnet account per user and records consent to HCS. **Never write copy claiming the user signed the forfeit themselves.** |
+| **Charity is a placeholder** | No partnership exists. Mainnet target is The Giving Block, blocked on unconfirmed HBAR support and a commercial agreement. Say so in the README. |
+| **Business model: premium coach** | Free tier returns a verdict, paid tier is the long-memory coach on 0G Storage. Makes 0G Storage commercially load-bearing. A fee on successful refunds is an **open question**, not decided. |
+
+**Verdicts are judged only against the intention the user stated at session
+start.** Never against a general notion of productivity. Rest is productive.
+
+**Ambiguity always resolves toward the user.** Contested, failed inference,
+timeout, missing evidence: refund. A wrong "kept" costs nothing. A wrong
+"slipped" costs trust.
+
 ## Privacy by construction
 
 We're a Next.js app in a World App webview. We have **no access** to Screen
@@ -138,7 +159,7 @@ artifact content, coaching messages, or circle membership.
 A **"what we can see about this session"** panel shows every field we hold and
 nothing else. ⚪
 
-## Honest disclosures
+## Disclosures
 
 **Custody.** World App signs World Chain, not Hedera. We provision and hold a
 Hedera testnet account for you, and record your consent to arm each forfeit on
