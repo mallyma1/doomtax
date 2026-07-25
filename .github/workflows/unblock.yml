@@ -1,0 +1,68 @@
+# When an issue closes, flip any issue whose dependencies are now all done
+# from status:blocked to status:ready, and comment on it so it shows up as a
+# notification for anyone watching the repo. Dependency graph mirrors
+# docs/BUILD-ORDER.md exactly; update both together if the plan changes.
+#
+# This does not decide who picks the work up next, it only removes the "is
+# this actually unblocked yet" question, which is the part that's easy to
+# miss when Copilot, Claude and a human are all closing issues independently.
+
+name: Unblock dependents
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  unblock:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            // issue number -> issues that must ALL be closed before it's ready.
+            // #6 and #7 are already closed as of writing, kept here so the
+            // graph stays a complete record even after they drop out of the
+            // "open issues" queries this script runs.
+            const DEPENDS_ON = {
+              9:  [5, 6, 7],
+              10: [5, 6, 7, 9],
+              14: [5],
+            };
+
+            const closedNumber = context.payload.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            async function isClosed(number) {
+              if (number === closedNumber) return true;
+              const { data } = await github.rest.issues.get({ owner, repo, issue_number: number });
+              return data.state === 'closed';
+            }
+
+            for (const [dependent, deps] of Object.entries(DEPENDS_ON)) {
+              if (!deps.includes(closedNumber)) continue;
+
+              const results = await Promise.all(deps.map(isClosed));
+              if (!results.every(Boolean)) continue;
+
+              const num = Number(dependent);
+              const { data: issue } = await github.rest.issues.get({ owner, repo, issue_number: num });
+              if (issue.state === 'closed') continue;
+
+              const labels = issue.labels.map((l) => (typeof l === 'string' ? l : l.name));
+              if (labels.includes('status:ready')) continue; // already flipped
+
+              const newLabels = labels.filter((l) => l !== 'status:blocked');
+              if (!newLabels.includes('status:ready')) newLabels.push('status:ready');
+
+              await github.rest.issues.update({ owner, repo, issue_number: num, labels: newLabels });
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: num,
+                body: `Unblocked: #${closedNumber} closed and all dependencies (${deps.map((d) => `#${d}`).join(', ')}) are now done. Marked \`status:ready\`.`,
+              });
+            }
