@@ -33,8 +33,9 @@ WORLD "AgentKit New Use Cases" ($8,000):
 WORLD "Selfie Check Beta" ($1,750, 2 winners):
 - Selfie Check as a risk / eligibility / fairness / continuity / abuse signal,
   NOT login.
-- Testing doc with BOTH developer and user feedback. Check
-  docs/SELFIE-CHECK-TESTING.md covers World's six published headings:
+- Testing doc with BOTH developer and user feedback. Check the "Selfie Check
+  Testing" wiki page (staged at docs/wiki-export/Selfie-Check-Testing.md
+  until it's live on the wiki) covers World's six published headings:
   integration experience, ease of integration, value of Selfie Check, value of
   the Sybil score, orb-verified POH vs Selfie Check cohorts, overall sentiment.
 - Working prototype.

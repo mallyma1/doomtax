@@ -7,7 +7,7 @@
 
 Built at **ETHGlobal Lisbon 2026**.
 
-🚀 **[Live Mini App](TBD)** · 🎬 **[3-min demo](TBD)** · 🏗 **[Architecture](docs/ARCHITECTURE.md)**
+🚀 **[Live Mini App](TBD)** · 🎬 **[3-min demo](TBD)** · 🏗 **[Architecture](https://github.com/mallyma1/doomtax/wiki/Architecture)**
 
 > Every claim below is marked 🟢 built, 🟡 in progress, or ⚪ planned. Nothing is
 > claimed working until it's green with a link next to it.
@@ -96,7 +96,7 @@ Storage, key held by you. `src/ai/coach.ts` · attestation: `TBD` · Agentic ID:
 
 ### 🤳 World, Selfie Check Beta ($1,750) ⚪
 Liveness at claim, not login. Testing doc:
-[`docs/SELFIE-CHECK-TESTING.md`](docs/SELFIE-CHECK-TESTING.md)
+[Selfie Check Testing wiki page](https://github.com/mallyma1/doomtax/wiki/Selfie-Check-Testing)
 
 ### 🤖 World, AgentKit ($8,000) ⚪ *stretch*
 Submitted, not the design driver. See architecture doc for the honest framing.
