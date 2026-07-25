@@ -1,4 +1,6 @@
 
+
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  World Mini App (Next.js 15 + MiniKit)                          │
 │  Set intention · Timer · Submit artifact · Claim · Appeal        │
@@ -13,7 +15,7 @@
     │ Focus Coach on 0G Compute      │   TEE-sealed, attention data stays private
     │  · verdict: kept / slipped     │
     │  · supportive coaching message │
-    │ Encrypted history on 0G Storage│   user holds the key; this is also the
+    │ Encrypted history on 0G Storage│   user holds the key, and this is the
     └───────────┬────────────────────┘   paid tier of the product
                 │
     ┌───────────▼──────────────────────────────┐  VALUE + TRUTH (Hedera)
