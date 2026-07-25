@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
   },
   allowedDevOrigins,
   reactStrictMode: false,
+  serverExternalPackages: [
+    '@hiero-ledger/sdk',
+    '@hashgraph/hedera-agent-kit',
+    '@hashgraph/sdk',
+    '@0gfoundation/0g-compute-ts-sdk',
+  ],
 };
 
 export default nextConfig;
