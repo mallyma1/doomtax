@@ -8,34 +8,36 @@ The rule that decides ownership: **anything needing live testnet egress, funded
 keys or real secrets goes to Claude or Mally. Anything that is pure code against
 a written spec goes to Copilot.**
 
----
-
-## Stage 1: unblock the demo (no dependencies, start now)
-
-These three run in parallel. Nothing else can finish until stage 1 does.
-
-| # | Task | Owner | Notes |
-|---|---|---|---|
-| #6 | Mint the HCS topic | Claude | Script written, needs one run |
-| #7 | Create pending + charity accounts | Claude | Fixes the `0.0.0` placeholder failure |
-| #5 | Build `SessionFlow` UI | Copilot | The long pole, spec is in the issue |
-
-**#5 is the critical path.** It is the only item here that takes real build time,
-and it gates everything in stage 3. It should start first and run while Claude
-does the config work.
-
-Stage 1 exit condition: `HEDERA_HCS_TOPIC_ID` and `PENDING_ACCOUNT_ID` are set
-in `.env.local`, and a `SessionFlow` PR is open.
+> **Status as of the first verified end to end run.** Stages 1 through 3 are
+> done. The spine is demoable: a session moves real testnet HBAR and writes a
+> hash to a public topic, with the HashScan link on screen. Evidence is in the
+> README's submission checklist. What remains is stage 4 and the human-only
+> submission tasks.
 
 ---
 
-## Stage 2: make it correct (needs stage 1)
+## Stage 1: unblock the demo — DONE
 
-| # | Task | Owner | Depends on |
+| # | Task | Owner | Result |
 |---|---|---|---|
-| #8 | Add the two missing vars to `.env.example` | Copilot | none, but pairs with #6, #7 |
-| — | Review the `SessionFlow` PR | Claude | #5 |
-| #9 | `tsc --noEmit` and `pnpm build` clean | Claude | #5 merged |
+| #6 | Mint the HCS topic | Claude | Topic `0.0.9748699` |
+| #7 | Create pending + charity accounts | Claude | Pending `0.0.9755741`, charity `0.0.9743301` |
+| #5 | Build `SessionFlow` UI | Copilot | Merged, rendered below `AuthButton` |
+
+Both accounts must stay **distinct**. They were briefly set to the same ID,
+which silently collapses the escrow-then-sweep design: a forfeit that lands
+straight at the charity is irreversible, so appeals and amnesty become promises
+that cannot be kept.
+
+---
+
+## Stage 2: make it correct — DONE
+
+| # | Task | Owner | Result |
+|---|---|---|---|
+| #8 | Add missing vars to `.env.example` | Copilot | Landed on `main` |
+| #49 | Harden settle payload, expose HCS evidence | Copilot | Merged |
+| #9 | `tsc --noEmit` and `pnpm build` clean | Claude | Both clean, `pnpm lint` clean too |
 
 `pnpm build` is the gate that matters. It is the only check that catches
 Node-only Hedera imports leaking into the client bundle, which is the most
@@ -45,35 +47,63 @@ likely way the spine breaks. See finding #1 in `SPINE-PLAN-AUDIT.md`.
 
 ## Stage 3: prove it (needs stage 2)
 
-| # | Task | Owner | Depends on |
+| # | Task | Owner | Result |
 |---|---|---|---|
-| #10 | Full end-to-end session, confirmed on chain | Mally + Claude | #5, #6, #7, #9 |
+| #10 | Full end-to-end session, confirmed on chain | Mally + Claude | Verified on testnet |
 
-Capture: the HashScan transaction URL, the HCS message, and a devtools shot
-showing the request body carries only the commitment hash and never the
-intention text.
+Captured and recorded in the README's submission evidence checklist: the
+HashScan transaction URL, the HCS topic and exact message JSON, and the real
+`POST /api/session/settle` request body showing only `sessionId`,
+`commitmentHash` and `stakeHbar`, never the intention text.
 
-**At the end of stage 3 the project is submittable for the Hedera track.**
-Everything after this is upside.
+**The project is now submittable for the Hedera track.** Everything below is
+upside on top of a working submission.
 
 ---
 
-## Stage 4: upside, only if stage 3 is done
-
-Do not start any of these while stage 3 is open. A working 30 second session
-that moves testnet HBAR beats four half-built features.
+## Stage 4: upside, now unblocked
 
 | # | Task | Owner | State |
 |---|---|---|---|
-| #14 | HTS streak token | Copilot | Ready, spec written. Adds a third native Hedera service to the No Solidity track. |
-| #11 | 0G Compute coach | Claude | 🔒 Needs spec. Replaces the hardcoded verdict. Highest product value. |
-| #12 | Per-user Hedera custody | Claude | 🔒 Needs spec. Removes the operator-account-as-source temporary state. |
-| #13 | Claim-time Selfie Check | Mally + Claude | 🔒 Needs spec, and needs real human testers with phones. |
+| #14 | HTS streak token | Copilot | ✅ Merged. `src/hedera/token.ts` plus `scripts/create-token.ts`. Third native Hedera service for the No Solidity track. |
+| #11 | 0G Compute coach | Claude | 🚧 In progress. `src/ai/coach.ts` is implemented and wired into `settle/route.ts`. `src/ai/memory.ts` is still a deliberate no-op stub (M3 / paid tier). No live 0G inference call proven yet. |
+| #12 | Per-user Hedera custody | Claude | 🔒 Needs spec. `src/identity/agentkit.ts` is 0 bytes. Removes the operator-account-as-source temporary state. |
+| #13 | Claim-time Selfie Check | Mally + Claude | 🔒 Needs spec. `src/identity/selfieCheck.ts` is 0 bytes. Also needs real human testers with phones. |
 
-The three marked 🔒 are empty files with no written spec. They are deliberately
-not handed to an agent yet, because an agent would invent a design, and all
-three touch constraints where an invented design is expensive to unpick.
+#14 landed as code only: `HEDERA_STREAK_TOKEN_ID` is not set in `.env.local`, so
+no STREAK token type exists on testnet yet, and `mintStreakToken()` has no
+caller. Running `scripts/create-token.ts` and wiring the `kept` path is
+follow-up work that needs testnet egress.
+
+The two still marked 🔒 are empty files with no written spec. They are
+deliberately not handed to an agent yet, because an agent would invent a design,
+and both touch constraints where an invented design is expensive to unpick.
 Claude writes the specs, then they get owners.
+
+**#11 is the highest-value remaining item.** It is what turns the hardcoded
+`'slipped'` into a real verdict, and it is the whole 0G track. The code path
+exists; what is missing is proof that a real 0G provider answers.
+
+---
+
+## Human-only track, runs in parallel with stage 4
+
+None of these can be done by an agent. They gate the submission itself, not the
+code, and several are already done.
+
+| Area | Issues | State |
+|---|---|---|
+| World Developer Portal credentials | #30 | ✅ Closed. App ID, action ID, API key, RP signing key all populated in `.env.local`. |
+| Auth.js secrets and login round-trip | #31 | 🚧 Open. `AUTH_SECRET` populated, but `AUTH_URL` is still empty — needs an ngrok tunnel and a real login through `AuthButton`. |
+| Faucet funding, Codespace port public | #29, #32 | ✅ Both closed. |
+| Deadline confirmation | #33 | ✅ Closed. |
+| Physical phone test of the deep link / QR flow | #37 | 🚧 Open. |
+| Mentor questions for each sponsor track | #39 (Hedera), #40 (World), #41 (0G) | Checklists written, need asking. |
+| Demo video, submission copy, charity placeholder copy | #35, #36, #38 | Pending. |
+
+0G account credentials are not a tracked issue; `ZG_PRIVATE_KEY` and
+`ZG_RPC_URL` are populated in `.env.local`. `ANTHROPIC_API_KEY` and
+`OPENAI_API_KEY` are still empty and nothing on the spine reads them.
 
 ---
 
@@ -94,6 +124,23 @@ Every Copilot issue carries a full spec in a pinned comment, including the
 constraints it must not violate. Copilot does not read `CLAUDE.md` the way
 Claude does, so those constraints are restated inline in each issue rather than
 referenced.
+
+**Keeping this honest.** `.claude/agents/project-manager.md` defines a
+reconciliation agent for exactly this problem: four workers commit in parallel,
+so the board drifts from the repo constantly. Run it after any burst of merges.
+Its one rule is to verify against the repo and the ledger, never against what an
+issue claims.
+
+Note that the dependency graph in this document is mirrored in
+`.github/workflows/unblock.yml`, which auto-flips `status:blocked` to
+`status:ready` when an issue's dependencies all close. **Update both together**
+or the automation will disagree with the plan.
+
+That workflow's graph is currently `{9: [5,6,7], 10: [5,6,7,9], 14: [5]}`. Every
+issue in it is now closed, so the workflow is **inert**: it can never fire again.
+Stage 4 (#11, #12, #13) has no entries, so nothing will auto-flip those off
+`status:blocked`. That is deliberate for now — they are blocked on a written
+spec, not on another issue — but it means stage 4 unblocking is manual.
 
 ---
 
