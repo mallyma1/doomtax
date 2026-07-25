@@ -141,6 +141,32 @@ start.** Never against a general notion of productivity. Rest is productive.
 timeout, missing evidence: refund. A wrong "kept" costs nothing. A wrong
 "slipped" costs trust.
 
+## Tech Facts
+
+- **Scheduled transactions execute on signature collection by default**, which
+  would fire the forfeit at session start. You need **`setWaitForExpiry(true)`**
+  to evaluate at `expirationTime`. That is HIP-423, max window two months.
+  `adminKey` is what lets you `ScheduleDelete` on success. Fallback: plain
+  operator-held escrow, stated honestly.
+- **0G Compute and 0G Storage are different packages.** Inference is
+  `@0gfoundation/0g-compute-ts-sdk` (renamed from `@0glabs/0g-serving-broker`).
+  Storage is `@0glabs/0g-ts-sdk`. 0G is mid-migration between namespaces.
+  **Verify both on npm before building.** Start from `0g-compute-ts-starter-kit`.
+  The broker has explicit TEE verification: that is your attestation proof.
+- **Mirror Node lags consensus by 1 to 3 seconds.** Confirm from the transaction
+  **receipt**, render success immediately, reconcile with Mirror Node afterwards.
+  Polling Mirror Node for a balance makes the app look broken after the money
+  has definitively moved.
+- **Idempotency:** Hedera transaction IDs are client-generated. If no receipt
+  comes back, **query for that transaction ID before retrying.** Never blind-retry.
+- **One atomic `TransferTransaction`** moves everything at once. No partial
+  states, one HashScan link.
+- **Fund the operator account** and handle `INSUFFICIENT_PAYER_BALANCE`
+  explicitly. Testnet faucets are rate limited.
+- **Codespaces port must be Public** or the phone cannot load the mini app.
+  `gh codespace ports visibility 3000:public -c $CODESPACE_NAME`, or the Ports
+  panel in VS Code. Verify in an incognito window, not by reading a log line.
+
 ## Privacy by construction
 
 We're a Next.js app in a World App webview. We have **no access** to Screen
