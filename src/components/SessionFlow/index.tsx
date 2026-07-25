@@ -268,7 +268,16 @@ export const SessionFlow = () => {
         {errorMessage && <p className="text-sm text-red-700">{errorMessage}</p>}
         {couldHaveMoved && (
           <p className="text-sm text-gray-700">
-            The transfer may still have gone through. Check HashScan before taking any next step.
+            The transfer may still have gone through. Check{' '}
+            <a
+              className="text-blue-600 underline"
+              href="https://hashscan.io/testnet"
+              target="_blank"
+              rel="noreferrer"
+            >
+              HashScan testnet
+            </a>{' '}
+            before taking any next step.
           </p>
         )}
       </section>
@@ -286,7 +295,7 @@ export const SessionFlow = () => {
       <p className="text-sm text-gray-700">Stake: {stakeHbar} HBAR</p>
       <p className="text-sm text-gray-700">Session ID: {sessionId}</p>
 
-      {moved && 'hashScanUrl' in settlement ? (
+      {moved ? (
         <p className="text-sm text-gray-700">
           HashScan:{' '}
           <a className="text-blue-600 underline" href={settlement.hashScanUrl} target="_blank" rel="noreferrer">
