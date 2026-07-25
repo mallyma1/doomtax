@@ -7,7 +7,9 @@
 
 Built at **ETHGlobal Lisbon 2026**.
 
-🚀 **[Live Mini App](TBD)** · 🎬 **[3-min demo](TBD)** · 🏗 **[Architecture](docs/wiki-export/Architecture.md)**
+🚀 Live Mini App: pending deployment · 🎬 3-min demo: pending · 🏗 **[Architecture](docs/wiki-export/Architecture.md)**
+
+**Proof:** source code and docs are available in this repository, including `docs/SELFIE-CHECK-TESTING.md`, the architecture wiki, and the current `src/` implementation.
 
 > Every claim below is marked 🟢 built, 🟡 in progress, or ⚪ planned. Nothing is
 > claimed working until it's green with a link next to it.
@@ -92,7 +94,7 @@ and payout log), **Scheduled Transactions** (the pre-armed forfeit).
 
 ### 🧠 0G, Best AI Product ($6,000) ⚪
 **Focus Coach** runs on 0G Compute, TEE-sealed. Encrypted session history on 0G
-Storage, key held by you. `src/ai/coach.ts` · attestation: `TBD` · Agentic ID: `TBD`
+Storage, key held by you. `src/ai/coach.ts` · attestation pending · Agentic ID pending
 
 ### 🤳 World, Selfie Check Beta ($1,750) ⚪
 Liveness at claim, not login. Testing doc:
