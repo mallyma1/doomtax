@@ -5,9 +5,9 @@
 #   1. Create a Personal Access Token (classic) with the "project" scope:
 #      github.com → Settings → Developer settings → Personal access tokens →
 #      Tokens (classic) → Generate new token → check ✅ project
-#   2. Add it as a repository secret:
+#   2. Add it as a repository secret named PAT:
 #      doomtax → Settings → Secrets and variables → Actions → New repository secret
-#      Name:  GH_PROJECT_TOKEN
+#      Name:  PAT
 #      Value: <your PAT>
 #   3. Add the project number as a repository variable (not a secret):
 #      same page → Variables → New repository variable
@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Add PR to project and set status to Review & Merge
         env:
-          GH_TOKEN: ${{ secrets.GH_PROJECT_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT }}
           PR_NODE_ID: ${{ github.event.pull_request.node_id }}
           PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
           OWNER: mallyma1
