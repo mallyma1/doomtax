@@ -83,7 +83,7 @@ without.
 ### 🤖 Hedera, AI & Agentic Payments ($6,000) ⚪
 An autonomous **Settlement Agent** reads the session outcome and executes the
 HBAR/HTS transfer on Hedera Testnet via the Hedera Agent Kit.
-`src/agent/settlement.ts` · tx: `TBD` → [HashScan](TBD) · HCS topic: `TBD`
+`src/agent/settlement.ts` · tx: `pending` · HashScan link: `pending` · HCS topic: `pending`
 
 ### 🛠️ Hedera, No Solidity Allowed ($3,000) ⚪
 Zero Solidity. Three native services: **HTS** (streak token), **HCS** (verdict
@@ -100,6 +100,17 @@ Liveness at claim, not login. Testing doc:
 
 ### 🤖 World, AgentKit ($8,000) ⚪ *stretch*
 Submitted, not the design driver. See architecture doc for the honest framing.
+
+---
+
+## Submission evidence checklist (issue #10)
+
+Run one full 30 second session after `pnpm dev`, then fill these:
+
+- HashScan transfer URL: `pending`
+- HCS topic ID: `pending`
+- HCS message JSON (must include only `sessionId`, `commitmentHash`, `verdict`, `amountTinybar`, `timestamp`): `pending`
+- Devtools screenshot for `POST /api/session/settle` request body (must not include intention text): `pending`
 
 ---
 
