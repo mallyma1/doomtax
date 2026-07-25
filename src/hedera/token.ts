@@ -50,7 +50,7 @@ export async function createStreakToken(): Promise<string> {
     .setSupplyKey(operatorKey)
     .setSupplyType(TokenSupplyType.Infinite)
     .setTokenType(TokenType.FungibleCommon)
-    .setTokenMemo('doomtax: kept-session streak counter, testnet only');
+    .setTokenMemo('doomtax:streak-counter, testnet only');
 
   const submitted = await tx.execute(client);
   const receipt = await submitted.getReceipt(client);
