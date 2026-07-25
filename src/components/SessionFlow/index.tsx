@@ -260,7 +260,7 @@ export const SessionFlow = () => {
         {errorMessage && <p className="text-sm text-red-700">{errorMessage}</p>}
         {couldHaveMoved && (
           <p className="text-sm text-gray-700">
-            The transfer may still have gone through. Check HashScan before creating a new settlement.
+            The transfer may still have gone through. Check HashScan before taking any next step.
           </p>
         )}
       </section>
