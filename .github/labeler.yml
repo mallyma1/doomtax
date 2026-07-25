@@ -1,0 +1,25 @@
+hedera:
+  - src/hedera/**/*
+  - scripts/check-hedera.ts
+
+agent:
+  - src/agent/**/*
+
+world:
+  - src/auth/**/*
+  - src/identity/**/*
+  - src/abi/**/*
+
+0g:
+  - src/ai/**/*
+
+ui:
+  - src/app/**/*
+  - src/components/**/*
+  - src/providers/**/*
+
+docs:
+  - '**/*.md'
+
+ci:
+  - .github/**/*
