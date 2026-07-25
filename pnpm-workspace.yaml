@@ -1,6 +1,6 @@
 allowBuilds:
-  blake-hash: set this to true or false
-  esbuild: set this to true or false
-  protobufjs: set this to true or false
+  blake-hash: true
+  esbuild: true
+  protobufjs: true
   sharp: false
   unrs-resolver: false
