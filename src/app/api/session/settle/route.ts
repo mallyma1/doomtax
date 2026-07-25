@@ -24,21 +24,48 @@ type RequestBody = {
   stakeHbar: number;
 };
 
+const ALLOWED_REQUEST_KEYS = ['sessionId', 'commitmentHash', 'stakeHbar'] as const;
+const ALLOWED_REQUEST_KEY_SET = new Set<string>(ALLOWED_REQUEST_KEYS);
+
 export async function POST(request: Request) {
-  let body: RequestBody;
+  let rawBody: unknown;
   try {
-    body = await request.json();
+    rawBody = await request.json();
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { sessionId, commitmentHash, stakeHbar } = body;
-  if (!sessionId || !commitmentHash || typeof stakeHbar !== 'number') {
+  if (!rawBody || typeof rawBody !== 'object' || Array.isArray(rawBody)) {
+    return NextResponse.json({ error: 'Request body must be a JSON object' }, { status: 400 });
+  }
+
+  const body = rawBody as Record<string, unknown>;
+  const extraKeys = Object.keys(body).filter((key) => !ALLOWED_REQUEST_KEY_SET.has(key));
+  if (extraKeys.length > 0) {
+    const error = extraKeys.includes('intention')
+      ? 'Never send intention text to /api/session/settle. Send only sessionId, commitmentHash, and stakeHbar.'
+      : `Unexpected request fields: ${extraKeys.join(', ')}`;
+    return NextResponse.json(
+      { error },
+      { status: 400 },
+    );
+  }
+
+  const { sessionId, commitmentHash, stakeHbar } = body as Partial<RequestBody>;
+  if (
+    typeof sessionId !== 'string' ||
+    sessionId.trim() === '' ||
+    typeof commitmentHash !== 'string' ||
+    commitmentHash.trim() === '' ||
+    typeof stakeHbar !== 'number'
+  ) {
     return NextResponse.json(
       { error: 'sessionId, commitmentHash and stakeHbar are required' },
       { status: 400 },
     );
   }
+
+  const hcsTopicId = process.env.HEDERA_HCS_TOPIC_ID ?? null;
 
   // Until per-user custody exists, the operator account is the only account
   // whose key this server can sign with, so it is also the stake's source.
@@ -66,26 +93,36 @@ export async function POST(request: Request) {
         verdict: HARDCODED_VERDICT,
         settlement: { ok: false, error: err instanceof Error ? err.message : String(err) },
         hcs: { ok: false, error: 'Not attempted: settlement failed' },
+        hcsTopicId,
+        hcsRecord: null,
       },
       { status: 502 },
     );
   }
 
+  const hcsRecord = {
+    sessionId,
+    commitmentHash,
+    verdict: HARDCODED_VERDICT === 'kept',
+    amountTinybar: hbarToTinybar(stakeHbar),
+    timestamp: Date.now(),
+  };
+
   // A failure from here on does not undo the transfer above, so the response
   // reports the two outcomes separately rather than as one success flag.
   let hcs;
   try {
-    const transactionId = await submitSessionRecord({
-      sessionId,
-      commitmentHash,
-      verdict: HARDCODED_VERDICT === 'kept',
-      amountTinybar: hbarToTinybar(stakeHbar),
-      timestamp: Date.now(),
-    });
+    const transactionId = await submitSessionRecord(hcsRecord);
     hcs = { ok: true as const, transactionId };
   } catch (err) {
     hcs = { ok: false as const, error: err instanceof Error ? err.message : String(err) };
   }
 
-  return NextResponse.json({ verdict: HARDCODED_VERDICT, settlement: { ok: true, ...settlement }, hcs });
+  return NextResponse.json({
+    verdict: HARDCODED_VERDICT,
+    settlement: { ok: true, ...settlement },
+    hcs,
+    hcsTopicId,
+    hcsRecord,
+  });
 }

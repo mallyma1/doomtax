@@ -6,7 +6,7 @@ import {
   commitmentHash,
 } from '@/lib/session';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 
 type SessionPhase =
   | 'idle'
@@ -50,6 +50,14 @@ type SettleResponse = {
   verdict: 'kept' | 'slipped';
   settlement: SettlementSuccess | SettlementFailure;
   hcs: HcsResult;
+  hcsTopicId?: string | null;
+  hcsRecord?: {
+    sessionId: string;
+    commitmentHash: string;
+    verdict: boolean;
+    amountTinybar: number;
+    timestamp: number;
+  } | null;
 };
 
 const HTTP_STATUS_BAD_GATEWAY = 502;
@@ -81,6 +89,28 @@ const isSettleResponse = (value: unknown): value is SettleResponse => {
     !!candidate.hcs &&
     typeof candidate.hcs === 'object' &&
     typeof (candidate.hcs as { ok?: unknown }).ok === 'boolean'
+  );
+};
+
+const HcsPayload = ({
+  label,
+  record,
+}: {
+  label: string;
+  record: NonNullable<SettleResponse['hcsRecord']>;
+}) => {
+  const id = useId();
+  const labelId = `hcs-payload-${id}`;
+
+  return (
+    <section aria-labelledby={labelId}>
+      <p id={labelId} className="text-sm text-gray-700">
+        {label}
+      </p>
+    <pre className="text-xs text-gray-700 whitespace-pre-wrap break-all rounded border border-gray-200 bg-gray-50 p-2">
+      {JSON.stringify(record, null, 2)}
+    </pre>
+    </section>
   );
 };
 
@@ -338,12 +368,28 @@ export const SessionFlow = () => {
       ) : null}
 
       {hcs?.ok ? (
-        <p className="text-sm text-gray-700">HCS transaction ID: {hcs.transactionId}</p>
+        <>
+          <p className="text-sm text-gray-700">HCS transaction ID: {hcs.transactionId}</p>
+          {result?.hcsTopicId ? (
+            <p className="text-sm text-gray-700">HCS topic ID: {result.hcsTopicId}</p>
+          ) : null}
+          {result?.hcsRecord ? (
+            <HcsPayload label="HCS message payload:" record={result.hcsRecord} />
+          ) : null}
+        </>
       ) : (
-        <p className="text-sm text-gray-700">
-          HCS record failed: {hcs?.error ?? 'Unknown error'}
-          {moved ? ' Settlement still moved funds.' : ''}
-        </p>
+        <>
+          <p className="text-sm text-gray-700">
+            HCS record failed: {hcs?.error ?? 'Unknown error'}
+            {moved ? ' Settlement still moved funds.' : ''}
+          </p>
+          {result?.hcsTopicId ? (
+            <p className="text-sm text-gray-700">HCS topic ID: {result.hcsTopicId}</p>
+          ) : null}
+          {result?.hcsRecord ? (
+            <HcsPayload label="Attempted HCS message payload:" record={result.hcsRecord} />
+          ) : null}
+        </>
       )}
 
       <p className="text-sm text-gray-600">
