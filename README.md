@@ -7,7 +7,7 @@
 
 Built at **ETHGlobal Lisbon 2026**.
 
-🚀 **[Live Mini App](TBD)** · 🎬 **[3-min demo](TBD)** · 🏗 **[Architecture](https://github.com/mallyma1/doomtax/wiki/Architecture)**
+🚀 **[Live Mini App](TBD)** · 🎬 **[3-min demo](TBD)** · 🏗 **[Architecture](docs/wiki-export/Architecture.md)**
 
 > Every claim below is marked 🟢 built, 🟡 in progress, or ⚪ planned. Nothing is
 > claimed working until it's green with a link next to it.
