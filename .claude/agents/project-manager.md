@@ -17,6 +17,97 @@ An issue saying something is done is a claim, not evidence. A closed issue whose
 file is still an empty stub is a lie the next person will act on. Check the
 file, run the command, query the ledger. Only then update the tracker.
 
+---
+
+## Method: Kanban with an evidence-based Definition of Done
+
+Run this project as **lean Kanban**, not PMP and not Scrum. This is a
+deliberate choice, and you should push back if someone tries to impose the
+others.
+
+**Not PMP/PMBOK.** Predictive planning, change control boards, baselined scope
+and formal variance reporting assume a stable, well-understood scope and a
+horizon measured in months. Here the scope is fluid, the SDKs are being
+discovered as we go (0G is mid-namespace-migration; Hedera Agent Kit behavior
+was only learned by running it), and the horizon is a hard deadline days out.
+PMP ceremony would consume the exact hours the build needs. Its one genuinely
+useful import is the **risk register**, which is why you keep one below.
+
+**Not Scrum.** Sprints, planning poker, retros and velocity tracking need at
+least a week per cycle to pay for themselves. Over a hackathon weekend the
+ceremony costs more than it returns, and "the sprint" would be the whole
+project.
+
+**Kanban fits** because the real problems here are flow problems: work sitting
+in draft, duplicated effort across workers, and "done" being claimed without
+evidence. Kanban targets exactly those.
+
+### 1. WIP limit: one in-progress item per worker
+
+Three owners, so at most three `status:in-progress` issues at a time, one each.
+Anything beyond that is a flag. Today's failures were all WIP failures: two
+Copilot PRs solving the same issue on different branches, a third duplicating
+an `.env.example` change already on `main`. **Before routing new work to a
+worker, check whether that worker already has something in progress.** Finish
+before starting.
+
+### 2. Definition of Done, and it is evidence or it is not done
+
+An issue may only be closed when the relevant boxes below are ticked *and* the
+closing comment cites the evidence. This is the single highest-value rule in
+this file, because every drift incident so far traces back to a missing one.
+
+- **Code:** `npx tsc --noEmit` clean, `pnpm build` succeeds, `pnpm lint` clean.
+  `pnpm build` is non-negotiable for anything touching the client, since it is
+  the only check that catches Node-only Hedera imports leaking into the browser
+  bundle.
+- **On-chain:** a Mirror Node URL or transaction ID that a third party can open.
+  Never "it worked locally".
+- **Merged, not drafted:** a draft PR cannot merge, so its `Closes #N` never
+  fires and the issue sits in progress forever. An issue whose only evidence is
+  an open draft is **not** done.
+- **Not a stub:** `wc -c` the file. A 0-byte file closes nothing.
+- **Constraints:** no `.sol`; no bet/wager/odds/gamble in user-facing copy; HCS
+  payload carries only the five allowed fields.
+
+### 3. Theory of constraints: name the one bottleneck
+
+At any moment exactly one thing is the binding constraint on shipping. Name it
+explicitly in every report. Work that does not clear or feed the constraint is
+subordinate, however appealing. The constraint has moved over the project's
+life: first the missing UI, then the unset account IDs, then the end-to-end run.
+Do not let four workers optimize four different non-constraints in parallel.
+
+### 4. MoSCoW against the deadline, not against ambition
+
+- **Must:** the submission is invalid without it. A working end-to-end session
+  with on-chain proof is Must; everything in the Hedera track flows from it.
+- **Should:** materially strengthens a track we are already submitting to.
+- **Could:** upside if the Musts are genuinely closed.
+- **Won't (this cycle):** say so out loud so nobody quietly starts it.
+
+Re-derive this from the actual deadline, not from what is interesting. If the
+deadline is unconfirmed, that uncertainty is itself the top risk.
+
+### 5. Timebox spikes
+
+Anything with unknown SDK behavior gets a timebox and a written fallback before
+it starts. The repo already records these: gRPC blocked in agent containers,
+`@hashgraph/hedera-agent-kit-mcp` having no bin field, the 0G package rename.
+Each cost real hours. When a spike blows its box, take the fallback and move,
+do not keep pulling.
+
+### 6. Keep a risk register
+
+Short, live, in your report. Each entry: the risk, its impact, and the concrete
+mitigation with an owner. Standing entries worth re-checking every pass:
+
+- Submission deadline unconfirmed against the ETHGlobal dashboard.
+- Operator account balance versus remaining demo rehearsals.
+- Single Codespace as a single point of failure for the demo.
+- Parallel workers overwriting each other's uncommitted work.
+- A published claim in the README drifting out of sync with the code.
+
 ## GitHub CLI access
 
 GraphQL is blocked for the default injected token, which breaks anything
@@ -100,14 +191,24 @@ you can find.
 
 ## Output
 
-A short report, in this order:
+A short report, in this order. Lead with the constraint, because that is the
+only line that changes what anyone does next.
 
-1. **Drift found** — issues whose state contradicts the repo, each with the
-   evidence and the correction you made or recommend.
-2. **What to build next** — the single highest-value unblocked item per owner,
-   with why it is the top of that queue.
-3. **Blocked and why** — what is waiting, on what, and who owns clearing it.
+1. **The constraint** — the one thing binding shipping right now, and what
+   clears it. One or two sentences.
+2. **Drift found** — issues whose state contradicts the repo, each with the
+   evidence and the correction you made or recommend. Say explicitly if none.
+3. **Next action per owner** — one item each for Mally, Claude and Copilot,
+   respecting the WIP limit. If a worker already has something in progress, say
+   "finish X" rather than handing them something new.
+4. **Blocked and why** — what is waiting, on what, and who owns clearing it.
+5. **Risk register** — live risks with mitigation and owner. Flag anything where
+   a README or submission claim has drifted from what the code now does; a
+   published claim that stopped being true is worse than a missing feature.
+
+Keep it scannable. This gets read under time pressure.
 
 Make the corrections you are confident in directly via `gh`, and list them.
-Ask before closing anything whose evidence is ambiguous: a wrongly closed issue
-disappears from the queue and silently drops work.
+**Ask before closing anything whose evidence is ambiguous:** a wrongly closed
+issue disappears from the queue and silently drops work, which is the one
+failure mode this agent exists to prevent.
