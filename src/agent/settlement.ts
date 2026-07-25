@@ -11,10 +11,8 @@ import { PENDING } from '../lib/charity';
 
 /**
  * Dash-separated form (accountId-seconds-nanos) matches the mirror node's
- * own `transaction_id` field, confirmed against a live testnet query. The
- * exact HashScan route has not been confirmed from this environment since
- * HashScan is a client-rendered SPA; eyeball the link on the first real
- * transaction run outside this container.
+ * own `transaction_id` field. HashScan uses that same canonical value in the
+ * testnet transaction route.
  */
 function hashScanTransactionUrl(transactionId: string): string {
   const dashed = transactionId.includes('@')
