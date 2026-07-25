@@ -1,0 +1,28 @@
+{
+  "name": "DoomTax",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postCreateCommand": "npm install -g pnpm && pnpm install",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js dev server",
+      "onAutoForward": "notify",
+      // Public visibility is required for World App on a phone to reach the
+      // dev server. Codespace URLs are ephemeral and session-scoped.
+      // Never store production secrets (mainnet keys, live API tokens) in a
+      // Codespace environment when the port is public.
+      "visibility": "public"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
