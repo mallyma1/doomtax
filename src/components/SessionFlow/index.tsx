@@ -52,6 +52,8 @@ type SettleResponse = {
   hcs: HcsResult;
 };
 
+const HTTP_STATUS_BAD_GATEWAY = 502;
+
 const formatSeconds = (seconds: number) => {
   const minutes = Math.floor(seconds / 60)
     .toString()
@@ -151,7 +153,11 @@ export const SessionFlow = () => {
 
       setPhase('complete');
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Settlement request failed.');
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Failed to submit settlement. Check your connection.',
+      );
       setPhase('error');
     }
   };
@@ -252,7 +258,9 @@ export const SessionFlow = () => {
   }
 
   if (phase === 'error') {
-    const couldHaveMoved = responseStatus === 502 && result?.settlement.ok === false;
+    const couldHaveMoved =
+      responseStatus === HTTP_STATUS_BAD_GATEWAY &&
+      result?.settlement.ok === false;
 
     return (
       <section className="w-full max-w-xl rounded-xl border border-red-200 p-4 space-y-3">
