@@ -1,6 +1,6 @@
 import { AgentMode } from '@hashgraph/hedera-agent-kit';
 import { coreAccountPlugin } from '@hashgraph/hedera-agent-kit/plugins';
-import { getHederaClient } from '../src/hedera/client';
+import { closeHederaClient, getHederaClient } from '../src/hedera/client';
 
 process.loadEnvFile('.env.local');
 
@@ -26,8 +26,6 @@ async function createAccount(memo: string): Promise<string> {
 }
 
 async function main() {
-  // Ensure the client is created up-front so we can close it when we're done.
-  const client = getHederaClient();
   try {
     const pendingId = await createAccount('doomtax pending (holds forfeits during appeal window)');
     console.log(`PENDING_ACCOUNT_ID=${pendingId}`);
@@ -35,22 +33,9 @@ async function main() {
     const charityId = await createAccount('doomtax charity (testnet placeholder, no partnership)');
     console.log(`CHARITY_ACCOUNT_ID=${charityId}`);
   } finally {
-    // The Hedera client keeps node handles open which keeps Node.js alive.
-    // Close the client if the SDK exposes a close method so the script exits
-    // promptly. Use a defensive call in case the method is not present.
-    try {
-      // `close` may be synchronous or return a Promise depending on SDK.
-      const maybeClose = (client as any).close;
-      if (typeof maybeClose === 'function') {
-        const res = maybeClose.call(client);
-        if (res && typeof (res as Promise<unknown>).then === 'function') {
-          await res;
-        }
-      }
-    } catch (err) {
-      // Do not fail the script on close errors; just log for audit.
-      console.warn('Warning: error while closing Hedera client:', err);
-    }
+    // Without this the gRPC channel pool keeps the process alive for ~45s
+    // after main() resolves (same issue fixed in scripts/create-topic.ts).
+    closeHederaClient();
   }
 }
 
