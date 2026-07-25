@@ -10,5 +10,6 @@ It is isolated in the first commit so all later diffs are my own work.
 | Area | Files | Tool | What the AI did | What I did |
 |---|---|---|---|---|
 | Project instructions | CLAUDE.md | Claude Opus | Drafted from the audited build plan | Set every constraint, made the custody and privacy calls |
+| Handover | HANDOVER.md | Claude Opus | Compiled from the session's design and audit work; verified repo state and wrote the section 0 note | Made every product, scope and design decision recorded in it |
 
 No AI-generated code was merged without being read and run.
