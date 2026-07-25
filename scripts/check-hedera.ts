@@ -7,10 +7,15 @@ import { AccountBalanceQuery, Client } from '@hiero-ledger/sdk';
  */
 async function main() {
   const client = Client.forTestnet();
-  const balance = await new AccountBalanceQuery()
-    .setAccountId('0.0.2')
-    .execute(client);
-  console.log(`gRPC transport OK. 0.0.2 balance: ${balance.hbars.toString()}`);
+  try {
+    const balance = await new AccountBalanceQuery()
+      .setAccountId('0.0.2')
+      .execute(client);
+    console.log(`gRPC transport OK. 0.0.2 balance: ${balance.hbars.toString()}`);
+  } finally {
+    // Without this the gRPC channel pool keeps the process alive for ~45s.
+    client.close();
+  }
 }
 
 main().catch((err) => {
