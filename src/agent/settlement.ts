@@ -7,7 +7,21 @@ import {
   TransferTransaction,
 } from '@hiero-ledger/sdk';
 import { getHederaClient } from '../hedera/client';
-import { getPendingAccountId, hashScanTransactionUrl } from '../lib/charity';
+import { PENDING } from '../lib/charity';
+
+/**
+ * Dash-separated form (accountId-seconds-nanos) matches the mirror node's
+ * own `transaction_id` field, confirmed against a live testnet query. The
+ * exact HashScan route has not been confirmed from this environment since
+ * HashScan is a client-rendered SPA; eyeball the link on the first real
+ * transaction run outside this container.
+ */
+function hashScanTransactionUrl(transactionId: string): string {
+  const dashed = transactionId.includes('@')
+    ? transactionId.replace('@', '-').replace('.', '-')
+    : transactionId;
+  return `https://hashscan.io/testnet/transaction/${dashed}`;
+}
 
 export type SettlementVerdict = 'kept' | 'slipped';
 
@@ -27,7 +41,7 @@ function destinationFor(verdict: SettlementVerdict, sourceAccountId: string): st
   // Kept: refund back to the session's own account. Slipped: to the
   // pending account, never directly to charity and never to the platform,
   // so a dispute or amnesty inside the appeal window is still refundable.
-  return verdict === 'kept' ? sourceAccountId : getPendingAccountId();
+  return verdict === 'kept' ? sourceAccountId : PENDING.accountId;
 }
 
 async function fetchExistingReceipt(

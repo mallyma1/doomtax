@@ -1,6 +1,6 @@
 import { AgentMode } from '@hashgraph/hedera-agent-kit';
 import { coreAccountPlugin } from '@hashgraph/hedera-agent-kit/plugins';
-import { getPendingAccountId } from '../lib/charity';
+import { PENDING } from '../lib/charity';
 import { getHederaClient } from './client';
 
 // Same result shape as consensus.ts: BaseTool.execute() never throws, a
@@ -44,7 +44,7 @@ export async function armForfeit(input: ArmForfeitInput): Promise<string> {
   const { tool, context } = accountTool('Transfer HBAR');
 
   const result = (await tool.execute(client, context, {
-    transfers: [{ accountId: getPendingAccountId(), amount: input.amountHbar }],
+    transfers: [{ accountId: PENDING.accountId, amount: input.amountHbar }],
     sourceAccountId: input.sourceAccountId,
     transactionMemo: `doomtax:${input.sessionId}:armed`,
     schedulingParams: {
