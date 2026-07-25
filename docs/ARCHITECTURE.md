@@ -1,19 +1,30 @@
-```
-World Mini App (Next.js 15 + MiniKit)
-  set intention → timer → submit artifact → claim → appeal window
-        │
-   Selfie Check at CLAIM (World)      liveness where the money is
-        │
-   Focus Coach on 0G Compute          TEE-sealed verdict + coaching message
-   Encrypted history on 0G Storage    user holds the key; also the paid tier
-        │
-   Settlement Agent (Hedera Agent Kit)
-     ScheduleCreate + setWaitForExpiry   forfeit pre-armed and dated
-     kept  → ScheduleDelete, refund      finishing disarms it
-     slip  → fires to PENDING account
-     sweep pending → charity after appeal window
-     HTS streak token · HCS: hash, verdict, amount, timestamp only
-```
+
+┌─────────────────────────────────────────────────────────────────┐
+│  World Mini App (Next.js 15 + MiniKit)                          │
+│  Set intention · Timer · Submit artifact · Claim · Appeal        │
+└───────────────┬─────────────────────────────────────────────────┘
+                │
+    ┌───────────▼───────────┐   IDENTITY (World)
+    │ Selfie Check at CLAIM │   liveness at the one moment with a
+    │                       │   financial incentive to cheat
+    └───────────┬───────────┘
+                │
+    ┌───────────▼────────────────────┐   INTELLIGENCE (0G)
+    │ Focus Coach on 0G Compute      │   TEE-sealed, attention data stays private
+    │  · verdict: kept / slipped     │
+    │  · supportive coaching message │
+    │ Encrypted history on 0G Storage│   user holds the key; this is also the
+    └───────────┬────────────────────┘   paid tier of the product
+                │
+    ┌───────────▼──────────────────────────────┐  VALUE + TRUTH (Hedera)
+    │ Settlement Agent (Hedera Agent Kit)      │
+    │  · ScheduleCreate + setWaitForExpiry     │  forfeit pre-armed and dated
+    │  · kept  → ScheduleDelete, refund        │  finishing disarms it
+    │  · slip  → fires to PENDING account      │
+    │  · sweep pending → charity after appeal  │  makes appeals reversible
+    │  · HTS: streak token                     │
+    │  · HCS: hash + verdict + payout only     │
+    └──────────────────────────────────────────┘
 
 **Session lifecycle:** start (intention + scheduled transfer armed + consent hash
 to HCS) → during (Page Visibility API counts foreground time and interruptions)
