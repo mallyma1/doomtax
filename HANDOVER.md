@@ -52,6 +52,14 @@ Seven secrets exist as GitHub **Actions** repo secrets: `HEDERA_ACCOUNT_ID`,
   name and use it in both the code and the template. DER parses with
   `PrivateKey.fromStringDER()`.
 - `HEDERA_PAT` is portal auth. The SDK does not need it at runtime.
+- `DER_ENCODED_PUBLIC_KEY` is not needed. `Client.setOperator(accountId,
+  privateKey)` derives the public key from the private key. Leave it unused.
+- `HEDERA_EVM_ADDRESS` is not needed for the settlement path in section 5,
+  which is pure native SDK (`TransferTransaction`, `ScheduleCreate`, HCS, HTS)
+  against `0.0.x` account IDs. It only matters on the JSON-RPC relay or when
+  resolving an EVM-wallet-created account back to its native ID
+  (`AccountId.fromEvmAddress`). Keep it around in case a later Agent Kit call
+  needs it, do not wire it into `client.ts`.
 - **Still empty and blocking:** `CHARITY_ACCOUNT_ID` and `PENDING_ACCOUNT_ID`,
   both required by the settlement path in section 5; `ZG_PRIVATE_KEY` and
   `ZG_RPC_URL` for the coach; `WORLD_APP_ID` and `WORLD_ACTION_ID`.
