@@ -1,0 +1,7 @@
+---
+description: DoomTax house rules
+alwaysApply: true
+---
+Read and follow CLAUDE.md in the repo root before making any change. Its hard
+constraints (no Solidity, no PII on HCS, no gambling language, no em dashes,
+testnet only) are binding.
