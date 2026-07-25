@@ -82,10 +82,12 @@ without.
 
 ## 🏆 Tracks
 
-### 🤖 Hedera, AI & Agentic Payments ($6,000) ⚪
+### 🤖 Hedera, AI & Agentic Payments ($6,000) 🟢
 An autonomous **Settlement Agent** reads the session outcome and executes the
-HBAR/HTS transfer on Hedera Testnet via the Hedera Agent Kit.
-`src/agent/settlement.ts` · tx: `pending` · HashScan link: `pending` · HCS topic: `pending`
+HBAR/HTS transfer on Hedera Testnet.
+`src/agent/settlement.ts` · tx: `0.0.9695721-1785022437-972362991` ·
+[HashScan link](https://hashscan.io/testnet/transaction/0-0.9695721-1785022437.972362991) ·
+HCS topic: `0.0.9748699`
 
 ### 🛠️ Hedera, No Solidity Allowed ($3,000) ⚪
 Zero Solidity. Three native services: **HTS** (streak token), **HCS** (verdict
@@ -109,10 +111,17 @@ Submitted, not the design driver. See architecture doc for the honest framing.
 
 Run one full 30 second session after `pnpm dev`, then fill these:
 
-- HashScan transfer URL: `pending`
-- HCS topic ID: `pending`
-- HCS message JSON (must include only `sessionId`, `commitmentHash`, `verdict`, `amountTinybar`, `timestamp`): `pending`
-- Devtools screenshot for `POST /api/session/settle` request body (must not include intention text): `pending`
+- HashScan transfer URL: https://hashscan.io/testnet/transaction/0-0.9695721-1785022437.972362991
+- HCS topic ID: `0.0.9748699`
+- HCS message JSON (must include only `sessionId`, `commitmentHash`, `verdict`, `amountTinybar`, `timestamp`):
+  ```json
+  {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","verdict":false,"amountTinybar":100000000,"timestamp":1785022446771}
+  ```
+- Request body for `POST /api/session/settle` (must not include intention text), captured from the real network request:
+  ```json
+  {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","stakeHbar":1}
+  ```
+  Verified independently against the Hedera testnet mirror node, not just the app's own response — both the transfer and the HCS message match the values above, and the request body contains no intention text.
 
 ---
 
