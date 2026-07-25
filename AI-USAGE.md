@@ -11,5 +11,7 @@ It is isolated in the first commit so all later diffs are my own work.
 |---|---|---|---|---|
 | Project instructions | CLAUDE.md | Claude Opus | Drafted from the audited build plan | Set every constraint, made the custody and privacy calls |
 | Handover | HANDOVER.md | Claude Opus | Compiled from the session's design and audit work; verified repo state and wrote the section 0 note | Made every product, scope and design decision recorded in it |
+| Codespace port config | .devcontainer/devcontainer.json, next.config.ts | GitHub Copilot | Generated devcontainer.json and allowedDevOrigins Codespace detection | Verified port visibility requirement, confirmed no secrets |
 
 No AI-generated code was merged without being read and run.
+
