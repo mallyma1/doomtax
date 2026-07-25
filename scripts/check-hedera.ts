@@ -1,9 +1,9 @@
-import { AccountBalanceQuery, Client } from '@hashgraph/sdk';
+import { AccountBalanceQuery, Client } from '@hiero-ledger/sdk';
 
 /**
  * Transport check only, no operator key. Confirms this environment can
  * reach Hedera testnet consensus nodes over gRPC before anything else is
- * built on top of @hashgraph/sdk.
+ * built on top of @hiero-ledger/sdk.
  */
 async function main() {
   const client = Client.forTestnet();

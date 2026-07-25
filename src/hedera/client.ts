@@ -1,4 +1,4 @@
-import { AccountId, Client, PrivateKey } from '@hashgraph/sdk';
+import { AccountId, Client, PrivateKey } from '@hiero-ledger/sdk';
 
 class MissingHederaEnvError extends Error {
   constructor(missing: string[]) {
@@ -15,7 +15,7 @@ function parseOperatorKey(raw: string): PrivateKey {
   // Try DER first since both key types share the same DER envelope, then
   // fall back to the type-specific parsers for a raw hex string.
   try {
-    return PrivateKey.fromStringDER(raw);
+    return PrivateKey.fromStringDer(raw);
   } catch {
     // not DER, fall through
   }
