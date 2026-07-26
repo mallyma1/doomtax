@@ -5,6 +5,7 @@ import { submitSessionRecord } from '@/hedera/consensus';
 import { ensureStreakTokenAssociated, mintStreakToken } from '@/hedera/token';
 import { fundUserAccount, getOrCreateUserAccount } from '@/identity/agentkit';
 import { DEMO_MODE, hbarToTinybar } from '@/lib/session';
+import { recordForfeit } from '@/lib/sessionLedger';
 import { auth } from '@/auth';
 
 // The Hedera SDK is Node-only and this route holds the operator key.
@@ -188,6 +189,26 @@ export async function POST(request: Request) {
       },
       { status: 502 },
     );
+  }
+
+  // Record the forfeit so the appeal window and the charity sweep have
+  // something to act on. Best-effort: the money has already moved, so a
+  // ledger failure must not turn a successful settlement into an error.
+  // An unrecorded forfeit is one the sweep never touches, which errs toward
+  // the user — the direction ambiguity is supposed to resolve.
+  if (verdict === 'slipped' && settlement.moved) {
+    try {
+      recordForfeit({
+        sessionId,
+        amountTinybar: hbarToTinybar(stakeHbar),
+        transactionId: settlement.transactionId,
+      });
+    } catch (err) {
+      console.warn(
+        `[settle] Could not record forfeit for session ${sessionId}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
   }
 
   const hcsRecord = {
