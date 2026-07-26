@@ -155,10 +155,14 @@ const failOpen = (reason: string): CoachOutcome => ({ verdict: 'kept', answered:
 /**
  * Router path: 0G Compute's OpenAI-compatible endpoint.
  *
- * The broker path needs an on-chain ledger, and `broker.ledger.addLedger()`
- * enforces a 3 OG minimum that a faucet capped at 0.1/day cannot reach. The
- * Router bills a unified balance with no such floor, so it is the path that
- * can actually run.
+ * The broker path needs an on-chain ledger via `broker.ledger.addLedger()`.
+ * The Router replaces that with an API key and a prepaid balance, which is a
+ * simpler integration and works from any server without wallet signing.
+ *
+ * It does **not** avoid the funding requirement: the testnet Router enforces
+ * the same 3 OG minimum deposit. Both paths are blocked by the same 3 OG, and
+ * a faucet capped at 0.1/day reaches neither. Whichever path runs first, it is
+ * funding that unblocks it, not the choice of path.
  *
  * It returns no per-response attestation — verified against the live testnet
  * endpoint, whose only extra headers are rate-limit counters. So a verdict from
