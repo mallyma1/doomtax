@@ -21,7 +21,6 @@ export const walletAuth = async () => {
     notBefore: new Date(Date.now() - 24 * 60 * 60 * 1000),
     statement: `Authenticate (${crypto.randomUUID().replace(/-/g, '')}).`,
   });
-  console.log('Result', result);
 
   await signIn('credentials', {
     redirectTo: '/home',

@@ -25,7 +25,7 @@ export const Pay = () => {
     const { id } = await res.json();
 
     try {
-      const result = await MiniKit.pay({
+      await MiniKit.pay({
         reference: id,
         to: address ?? '0x0000000000000000000000000000000000000000',
         tokens: [
@@ -41,7 +41,6 @@ export const Pay = () => {
         description: 'Test example payment for minikit',
       });
 
-      console.log(result.data);
       setButtonState('success');
       // It's important to actually check the transaction result on-chain
       // You should confirm the reference id matches for security

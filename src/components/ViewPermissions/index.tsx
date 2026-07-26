@@ -22,16 +22,14 @@ export const ViewPermissions = () => {
           // MiniKit.user.permissions
           const result = await MiniKit.getPermissions();
           if (result.data.status !== 'success') {
-            console.log('No permissions found for user');
             return;
           }
           setPermissions(result.data.permissions || {});
-          console.log('permissions', result);
         } catch (error) {
           console.error('Failed to fetch permissions:', error);
         }
       } else {
-        console.log('MiniKit is not installed');
+        // MiniKit not installed — permissions unavailable
       }
     };
     fetchPermissions();

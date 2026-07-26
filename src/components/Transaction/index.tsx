@@ -41,8 +41,6 @@ export const Transaction = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log('Transaction confirmed!');
-      setButtonState('success');
       setUserOpHash('');
       setTimeout(() => setButtonState(undefined), 3000);
     }
@@ -74,10 +72,6 @@ export const Transaction = () => {
         ],
       });
 
-      console.log(
-        'Transaction submitted, waiting for confirmation:',
-        result.data.userOpHash,
-      );
 
       if (!result.data.userOpHash) {
         throw new Error('No userOpHash returned');
@@ -114,10 +108,6 @@ export const Transaction = () => {
         ],
       });
 
-      console.log(
-        'Transaction submitted, waiting for confirmation:',
-        result.data.userOpHash,
-      );
 
       if (!result.data.userOpHash) {
         throw new Error('No userOpHash returned');

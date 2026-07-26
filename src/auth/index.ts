@@ -36,7 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         signedNonce: { label: 'Signed Nonce', type: 'text' },
         finalPayloadJson: { label: 'Final Payload', type: 'text' },
       },
-      // @ts-expect-error TODO
+      // @ts-expect-error — NextAuth v5 Credentials authorize typing is overly narrow; cast is safe
       authorize: async ({
         nonce,
         signedNonce,
@@ -49,7 +49,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const expectedSignedNonce = hashNonce({ nonce });
 
         if (signedNonce !== expectedSignedNonce) {
-          console.log('Invalid signed nonce');
           return null;
         }
 
@@ -58,7 +57,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const result = await verifySiweMessage(finalPayload, nonce);
 
         if (!result.isValid || !result.siweMessageData.address) {
-          console.log('Invalid final payload');
           return null;
         }
         // Optionally, fetch the user info from your own database
