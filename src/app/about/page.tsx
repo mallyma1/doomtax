@@ -10,7 +10,7 @@ const HOW_IT_WORKS = [
   },
   {
     title: 'Put a small stake on it',
-    body: 'A stake changes the moment from “I should probably focus” into “this matters now.” Small and believable beats dramatic.',
+    body: 'A stake makes the commitment concrete. Research on commitment devices shows that even a small financial consequence meaningfully increases follow-through — the amount matters less than the act of choosing it.',
   },
   {
     title: 'Finish, then show your proof',
@@ -25,7 +25,7 @@ const HOW_IT_WORKS = [
 const BENEFITS = [
   'Less doomscrolling and fewer “where did the last hour go?” sessions.',
   'A cleaner start because you choose one intention instead of ten competing tabs.',
-  'A gentler finish because the app cares about honesty and follow-through, not perfection.',
+  'A clearer finish — the session ends with an actual answer, not a vague sense of whether the time was well spent.',
 ] as const;
 
 const COMPARISONS = [
@@ -63,10 +63,9 @@ export default function AboutPage() {
               A kinder way to turn intention into follow-through
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              DoomTax is a focus tool built around a simple idea: people follow
-              through more often when the promise becomes real. You name one
-              task, put a small stake behind it, and let the session end with an
-              honest answer instead of another vague “I&apos;ll try harder tomorrow.”
+              DoomTax is a focus tool grounded in commitment-device research
+              from behavioural economics. You name one task, put a small stake
+              behind it, and get an honest verdict at the end.
             </p>
           </section>
 
@@ -75,13 +74,15 @@ export default function AboutPage() {
               Why this method works
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              This approach is inspired by commitment-device research in
-              behavioral economics: when something meaningful is on the line and
-              the finish line is clearly defined, follow-through gets easier.
-              Research behind commitment devices suggests that accountability
-              and stakes can meaningfully improve goal attainment. The goal is
-              not pressure for its own sake. It is clarity, consequence, and a
-              reason to stay with the one thing you said mattered.
+              The mechanism is called a commitment device — a voluntary
+              constraint you place on your future self. Ariel Procaccia and
+              colleagues have shown that pre-commitment with financial stakes
+              significantly improves follow-through compared to intention alone.
+              Ariely and Wertenbroch&apos;s deadline research found the same
+              pattern: self-imposed consequences work, and they work better when
+              the person chose them. The stake here is small by design. The
+              research suggests that the act of committing matters more than
+              the size of what&apos;s on the line.
             </p>
             <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
               {BENEFITS.map((benefit) => (
@@ -101,9 +102,9 @@ export default function AboutPage() {
               How DoomTax feels different
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              Most focus apps help you plan, block, or track. DoomTax is built
-              for the moment when planning is over and follow-through is the
-              whole game.
+              Most focus tools help you plan or block distractions. DoomTax is
+              for after that — when you know what you want to do and the gap
+              between intending and actually doing it is what needs closing.
             </p>
             <div className="mt-4 grid gap-3">
               {COMPARISONS.map((item) => (
@@ -187,9 +188,9 @@ export default function AboutPage() {
               Ready to try it?
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              Keep the first stake small. The win is not the size of the
-              consequence — it is proving to yourself that you can close the gap
-              between “I meant to” and “I did.”
+              Start with a small stake. The research is clear that the size
+              matters less than making the commitment real — pick something you
+              genuinely intend to finish in the next session.
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               <Link

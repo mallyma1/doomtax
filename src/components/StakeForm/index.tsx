@@ -94,8 +94,8 @@ export const StakeForm = ({
         </Typography>
         <Typography variant="body" level={3} className="mt-1.5 text-muted">
           Write it like a promise to yourself. Your AI coach reads these exact
-          words when you submit proof — make it specific enough that you
-          couldn&apos;t argue your way out of it when it counted.
+          words when judging your proof — be specific enough that the verdict
+          is clear.
         </Typography>
       </div>
 

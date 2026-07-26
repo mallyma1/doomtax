@@ -64,13 +64,28 @@ shown is derived from demo fixture data.
 
 ---
 
-## Real charity partnership
+## Real charity partnership — The Giving Block
 
-The charity recipient is a testnet account (`0.0.9762856`) controlled by the
-operator. There is no partnership with any charitable organisation, no real money
-moves anywhere, and no donation infrastructure. This is a testnet proof of
-concept — the design intention is that forfeits settle to a real charity once the
-app is on mainnet with a verified partner.
+The charity recipient is currently a testnet account (`0.0.9762856`) controlled
+by the operator. No real money moves and there is no active partnership.
+
+The planned integration is **The Giving Block** — a crypto-native donation
+platform that accepts HBAR and routes funds to vetted nonprofits. It handles the
+regulatory and operational side (charity vetting, tax receipts, fiat conversion
+where needed), so the app just needs to send to a verified wallet address per
+cause.
+
+The design intention:
+- Users pick a cause when they join a circle; that cause maps to a Giving Block
+  wallet address
+- Solo users can pick a default cause at onboarding
+- Forfeits settle to the operator's pending account first, then sweep to the
+  Giving Block address after the appeal window closes
+- The app surfaces a link to the Giving Block campaign page so users can see
+  the collective impact
+
+No partnership with The Giving Block exists yet. The testnet accounts are
+placeholders until mainnet and a real integration.
 
 ---
 
