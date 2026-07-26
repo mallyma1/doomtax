@@ -3,13 +3,14 @@
 > **A tax on doomscrolling that funds something good.**
 > Stake on a focus session. State your intention. A private AI coach decides if
 > you kept it. Keep it, get refunded. Slip, and an autonomous agent sends your
-> forfeit to charity. Designed to be kind about the bad days.
+> forfeit to charity. Grounded in commitment-device research. Designed to be kind about the bad days.
 
 Built at **ETHGlobal Lisbon 2026**.
 
-🚀 Live Mini App: (https://doomtax.vercel.app/) · 🎬 3-min demo: pending · 🏗 **[Architecture](docs/wiki-export/Architecture.md)**
+🚀 **Live:** [doomtax.vercel.app](https://doomtax.vercel.app/) · 🏗 [Architecture](docs/ARCHITECTURE.md) · 📋 [What didn't ship](NOT-BUILT.md) · 🤖 [AI usage](AI-USAGE.md)
 
-**Proof:** source code and docs are available in this repository, including `docs/SELFIE-CHECK-TESTING.md`, the architecture wiki, and the current `src/` implementation.
+> **Testnet only.** No real funds, no real charity partnership (placeholder account).
+> See [`NOT-BUILT.md`](NOT-BUILT.md) for honest scope.
 
 > Every claim below is marked 🟢 built, 🟡 in progress, or ⚪ planned. Nothing is
 > claimed working until it's green with a link next to it.

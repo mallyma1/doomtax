@@ -1,13 +1,17 @@
 # Docs
 
 Long-form docs (architecture, Selfie Check test log, mentor questions) live in
-the [GitHub wiki](https://github.com/mallyma1/doomtax/wiki), not in this
-folder, so they can be edited without a PR.
+the [GitHub wiki](https://github.com/mallyma1/doomtax/wiki).
 
-`wiki-export/` holds the source-of-truth copies staged for the wiki: paste
-each file's content into the matching wiki page (same filename minus the
-`.md`, e.g. `Architecture.md` -> the "Architecture" wiki page). Once a page
-is live on the wiki, delete its copy here so there is only one place to edit.
+Local docs in this folder:
+
+| File | Purpose |
+|---|---|
+| `ARCHITECTURE.md` | How the three chains fit together (World, 0G, Hedera) |
+| `BUILD-ORDER.md` | Who builds what, ownership by stage, current blockers |
+| `SPINE-PLAN-AUDIT.md` | Why the settlement architecture is shaped the way it is |
+| `SELFIE-CHECK-SPEC.md` | Specification for World ID liveness check at claim time |
+| `UX-AUDIT.md` | UX audit findings (historical — most items are now fixed) |
 
 See [`../CLAUDE.md`](../CLAUDE.md) for the project's hard constraints and
 design rules, and [`../README.md`](../README.md) for the pitch.

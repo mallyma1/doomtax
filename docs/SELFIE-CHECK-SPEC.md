@@ -35,7 +35,7 @@ is interesting rather than decorative. Do not move it to sign-in.
 ### Non-goals — do not build these
 
 - **No Sybil score.** The Developer Portal v4 verify response does not return
-  one today. `docs/SELFIE-CHECK-TESTING.md` asks about it "once enabled",
+  one today. the wiki's Selfie-Check-Testing page asks about it "once enabled",
   which is the correct framing. Do not add a field for it, do not branch on it,
   do not write copy claiming we use it.
 - **No uniqueness or one-human-one-session enforcement.** Selfie Check's sybil
@@ -241,7 +241,7 @@ a phone in hand to see the flow complete.
 
 ## 7. Testing
 
-`docs/SELFIE-CHECK-TESTING.md` is the World track deliverable and it is a
+The wiki's Selfie-Check-Testing page is the World track deliverable and it is a
 template with empty bullets. **Fill it during integration, not retrospectively**
 — that instruction is in the file and it is the whole point of the artifact.
 
@@ -282,7 +282,7 @@ done, it worked locally is not done":
 - [x] `WORLD_SELFIE_ACTION_ID` documented in `.env.example`
 - [x] `npx tsc --noEmit`, `pnpm build`, `pnpm lint` all clean
 - [ ] All five acceptance checks in §7 run on a physical device, with results
-      written into `docs/SELFIE-CHECK-TESTING.md`
+      written into the wiki's Selfie-Check-Testing page
 - [x] A grep confirms no nullifier reaches `src/hedera/consensus.ts` —
       `grep -rn nullifier src/hedera/ src/agent/ src/lib/` returns 0 hits
 

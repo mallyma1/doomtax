@@ -1,10 +1,8 @@
 # DoomTax handover
 
-For the next Claude Code session. Written after the first verified end-to-end
-run on Hedera testnet.
-
-**Read `CLAUDE.md` first** for the hard constraints, then `docs/BUILD-ORDER.md`
-for who owns what. This file is only the current state and the open decisions.
+For the next development session. Read `CLAUDE.md` first for hard constraints,
+then `docs/BUILD-ORDER.md` for ownership. This file covers current state and
+open decisions only — it does not repeat the constraints.
 
 ---
 
@@ -44,7 +42,7 @@ promises that cannot be kept.
 **They must also be keyed to the operator, and originally they were not.** The
 first pair (`0.0.9755741`, `0.0.9743301`) came from the Agent Kit's "Create
 Account" tool, which mints a fresh keypair per account;
-`scripts/create-accounts.ts` logged only the account ID, so those private keys
+`scripts/create-accounts.DEPRECATED.ts` logged only the account ID, so those private keys
 were thrown away the moment they were created. Nothing here could sign a
 transfer *out* of pending, so the sweep to charity was not merely unimplemented,
 it was **impossible** — and appeals and amnesty were rhetorical for any money
@@ -63,13 +61,9 @@ has no admin key so it cannot be deleted. Ignore it, use `0.0.9748699`.
 
 ## 2. Do this first
 
-**Local `main` is 7 commits ahead of `origin/main` and unpushed.** Push it
-before anything else, or the next round of Copilot PRs will branch off a stale
-base and you will spend the time reconciling instead of building.
-
-```bash
-git push origin main
-```
+`git status` and `git log --oneline origin/main..HEAD` — confirm your local
+branch is clean and synced before starting. Other agents commit to this tree
+while you work.
 
 ---
 

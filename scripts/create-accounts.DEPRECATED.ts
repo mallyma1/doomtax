@@ -1,3 +1,16 @@
+/**
+ * ⚠️  DEPRECATED — DO NOT USE.
+ *
+ * This script creates accounts using the Hedera Agent Kit's "Create Account"
+ * tool, which generates a fresh keypair per account but only logs the account
+ * ID. The private keys are discarded the moment they are created, making every
+ * account this script touches permanently unspendable.
+ *
+ * Use scripts/create-escrow-accounts.ts instead — it sets the operator's
+ * public key explicitly so the operator can sign transfers out of the accounts.
+ *
+ * See HANDOVER.md section 1 for the full story.
+ */
 import { AgentMode } from '@hashgraph/hedera-agent-kit';
 import { coreAccountPlugin } from '@hashgraph/hedera-agent-kit/plugins';
 import { closeHederaClient, getHederaClient } from '../src/hedera/client';
