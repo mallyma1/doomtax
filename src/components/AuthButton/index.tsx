@@ -2,16 +2,17 @@
 import { walletAuth } from '@/auth/wallet';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
+import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
- * This component is an example of how to authenticate a user
- * We will use Next Auth for this example, but you can use any auth provider
+ * Prompts wallet authentication via MiniKit + Next Auth.
  * Read More: https://docs.world.org/mini-apps/commands/wallet-auth
  */
 export const AuthButton = () => {
   const [isPending, setIsPending] = useState(false);
   const { isInstalled } = useMiniKit();
+  const { status } = useSession();
   const hasAttemptedAuth = useRef(false);
 
   const onClick = useCallback(async () => {
@@ -30,7 +31,7 @@ export const AuthButton = () => {
 
   // Auto-authenticate on load when MiniKit is ready
   useEffect(() => {
-    if (isInstalled === true && !hasAttemptedAuth.current) {
+    if (isInstalled === true && status === 'unauthenticated' && !hasAttemptedAuth.current) {
       hasAttemptedAuth.current = true;
       setIsPending(true);
       walletAuth()
@@ -41,7 +42,11 @@ export const AuthButton = () => {
           setIsPending(false);
         });
     }
-  }, [isInstalled]);
+  }, [isInstalled, status]);
+
+  if (status === 'authenticated') {
+    return null;
+  }
 
   return (
     <LiveFeedback
