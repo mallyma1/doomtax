@@ -21,13 +21,29 @@ a written spec goes to Copilot.**
 | # | Task | Owner | Result |
 |---|---|---|---|
 | #6 | Mint the HCS topic | Claude | Topic `0.0.9748699` |
-| #7 | Create pending + charity accounts | Claude | Pending `0.0.9755741`, charity `0.0.9743301` |
+| #7 | Create pending + charity accounts | Claude | **Redone.** Pending `0.0.9762855`, charity `0.0.9762856` |
 | #5 | Build `SessionFlow` UI | Copilot | Merged, rendered below `AuthButton` |
 
 Both accounts must stay **distinct**. They were briefly set to the same ID,
 which silently collapses the escrow-then-sweep design: a forfeit that lands
 straight at the charity is irreversible, so appeals and amnesty become promises
 that cannot be kept.
+
+**They must also be keyed to the operator.** The original pair (`0.0.9755741`,
+`0.0.9743301`) was created with the Agent Kit's "Create Account" tool, which
+generates a fresh keypair per account, and `scripts/create-accounts.ts` logged
+only the account ID — so those private keys were discarded at creation. Nothing
+in this repo could sign a transfer *out* of either account, which made the sweep
+from pending to charity impossible and stranded every forfeit permanently. Same
+failure mode as collapsing the two IDs, arrived at from a different direction.
+
+Replaced by `scripts/create-escrow-accounts.ts`, which sets the operator's
+public key explicitly — the same custody model as `getOrCreateUserAccount()`.
+Verified: a 1 HBAR forfeit was funded into the new pending account and swept
+out to charity signed by the operator alone
+(`0.0.9695721@1785040706.898725235`). The ~57 HBAR in the old pending account
+is unspendable and abandoned; it is testnet, so it costs nothing but the lesson.
+Do not reuse `scripts/create-accounts.ts`.
 
 ---
 
@@ -116,11 +132,10 @@ code, and several are already done.
 valid — the remaining 0G problem is funding, not credentials. `ANTHROPIC_API_KEY`
 and `OPENAI_API_KEY` are still empty and nothing on the spine reads them.
 
-**In flight with Copilot:** the circle UI (`src/lib/circle.ts` has the types and
-invariants but no implementation) and the appeal + amnesty UI with
-`/api/session/appeal`. Both are additive and stay clear of the settlement path.
-The sweep from pending to charity is **not** in that scope — it needs testnet
-egress, so it stays with Claude.
+**Now landed in pure code:** the circle UI, the appeal + amnesty UI, and
+`/api/session/appeal` are implemented locally and stay clear of the settlement
+path. The sweep from pending to charity is **not** in that scope — it still
+needs testnet egress, so it stays with Claude.
 
 ---
 

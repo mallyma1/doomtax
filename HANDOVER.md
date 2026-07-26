@@ -32,13 +32,26 @@ Build is clean: `npx tsc --noEmit`, `pnpm build` and `pnpm lint` all pass.
 |---|---|
 | `HEDERA_ACCOUNT_ID` | `0.0.9695721` (operator, ~1096 HBAR) |
 | `HEDERA_HCS_TOPIC_ID` | `0.0.9748699` |
-| `PENDING_ACCOUNT_ID` | `0.0.9755741` |
-| `CHARITY_ACCOUNT_ID` | `0.0.9743301` |
+| `HEDERA_STREAK_TOKEN_ID` | `0.0.9762627` |
+| `PENDING_ACCOUNT_ID` | `0.0.9762855` |
+| `CHARITY_ACCOUNT_ID` | `0.0.9762856` |
 
 **The pending and charity accounts must stay distinct.** They were briefly set
 to the same ID, which silently collapses the escrow-then-sweep design: a forfeit
 landing straight at the charity is irreversible, so appeals and amnesty become
 promises that cannot be kept.
+
+**They must also be keyed to the operator, and originally they were not.** The
+first pair (`0.0.9755741`, `0.0.9743301`) came from the Agent Kit's "Create
+Account" tool, which mints a fresh keypair per account;
+`scripts/create-accounts.ts` logged only the account ID, so those private keys
+were thrown away the moment they were created. Nothing here could sign a
+transfer *out* of pending, so the sweep to charity was not merely unimplemented,
+it was **impossible** — and appeals and amnesty were rhetorical for any money
+that had already settled. Replaced via `scripts/create-escrow-accounts.ts` and
+proven with a real forfeit-and-sweep round trip
+(`0.0.9695721@1785040706.898725235`). The old accounts are abandoned with ~57
+and ~56 testnet HBAR locked in them forever.
 
 Empty and unread by any code: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`.
 Empty and genuinely needed for #31: `AUTH_URL` (needs an ngrok tunnel).
