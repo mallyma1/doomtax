@@ -107,7 +107,6 @@ export async function POST(request: Request) {
   if (userId) {
     try {
       sourceAccountId = await getOrCreateUserAccount(userId);
-      await fundUserAccount(sourceAccountId, stakeHbar);
     } catch (err) {
       // Custody provisioning failed. Fall back to the operator account so the
       // session still settles rather than leaving the user stranded. Record
@@ -137,6 +136,19 @@ export async function POST(request: Request) {
     });
   } else {
     verdict = DEMO_VERDICT;
+  }
+
+  // Only fund the per-user custody account when the verdict requires a real
+  // transfer out of it. A 'kept' verdict short-circuits to a no-op in
+  // settleSession() (destination === source), so funding before the verdict
+  // is known would gift the operator's HBAR to the user unconditionally.
+  if (userId && verdict === 'slipped' && sourceAccountId !== operatorAccountId) {
+    try {
+      await fundUserAccount(sourceAccountId, stakeHbar);
+    } catch (err) {
+      custodyError = err instanceof Error ? err.message : String(err);
+      sourceAccountId = operatorAccountId;
+    }
   }
 
   // Settlement first: it moves real money, and its result stands on its own
