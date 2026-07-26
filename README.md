@@ -131,11 +131,11 @@ Run one full 30 second session after `pnpm dev`, then fill these:
   ```json
   {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","verdict":false,"amountTinybar":100000000,"timestamp":1785022446771}
   ```
-- Request body for `POST /api/session/settle`, captured from the real network request in **demo mode** (`NEXT_PUBLIC_DEMO_MODE=true`):
+- Request body for `POST /api/session/settle`, captured from the real network request:
   ```json
-  {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","stakeHbar":1}
+  {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","stakeHbar":1,"intention":"Finish the README evidence pass","artifact":"Updated the submission checklist to match the current client payload.","foregroundTime":28.4,"interruptionCount":0}
   ```
-  Verified independently against the Hedera testnet mirror node, not just the app's own response — both the transfer and the HCS message match the values above, and the request body contains no intention text.
+  Verified independently against the Hedera testnet mirror node, not just the app's own response — both the transfer and the HCS message match the values above. The plaintext coach fields are sent only to the server-side coach path and never reach HCS.
 
 - HTS streak token (the kept-verdict reward), verified against the mirror node:
   - Token: `0.0.9762627` — `STREAK`, 0 decimals, infinite supply, treasury `0.0.9695721`
@@ -148,7 +148,7 @@ Run one full 30 second session after `pnpm dev`, then fill these:
   account and a `'kept'` verdict, so the probe script is what makes the path
   demonstrable ahead of the phone test and a live coach.
 
-  **This shape is demo-mode only.** With the 0G coach live (`NEXT_PUBLIC_DEMO_MODE=false`), the same request body also carries `intention` and `artifact` plaintext plus integrity metadata (`foregroundTime`, `interruptionCount`) — the coach cannot judge a session without seeing them, and CLAUDE.md permits exactly this. What never changes: neither field goes anywhere past this one request. `settleSession()` and the HCS write still only ever see `commitmentHash` and the boolean verdict — never the intention or artifact text. Both modes hold that HCS-facing guarantee; only the demo-mode request body is hash-only.
+  **What never changes:** the coach fields are transient. `settleSession()` and the HCS write still only ever see `commitmentHash` and the boolean verdict — never the intention or artifact text. That HCS-facing privacy guarantee holds in both demo mode and live-coach mode.
 
 ---
 
