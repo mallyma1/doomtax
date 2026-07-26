@@ -94,7 +94,7 @@ code, and several are already done.
 | Area | Issues | State |
 |---|---|---|
 | World Developer Portal credentials | #30 | ✅ Closed. App ID, action ID, API key, RP signing key all populated in `.env.local`. |
-| Auth.js secrets and login round-trip | #31 | 🚧 Open. `AUTH_SECRET` populated, but `AUTH_URL` is still empty — needs an ngrok tunnel and a real login through `AuthButton`. |
+| Auth.js secrets and login round-trip | #31 | 🚧 Open (human-only). Set `AUTH_SECRET` with `openssl rand -base64 32`, run ngrok, paste the https URL into `AUTH_URL` in `.env.local`, then confirm a real login round-trip through `AuthButton`. |
 | Faucet funding, Codespace port public | #29, #32 | ✅ Both closed. |
 | Deadline confirmation | #33 | ✅ Closed. |
 | Physical phone test of the deep link / QR flow | #37 | 🚧 Open. |
