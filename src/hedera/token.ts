@@ -2,6 +2,7 @@ import {
   AccountId,
   PrivateKey,
   Status,
+  TokenAssociateTransaction,
   TokenCreateTransaction,
   TokenMintTransaction,
   TokenSupplyType,
@@ -135,4 +136,36 @@ export async function mintStreakToken(input: MintStreakTokenInput): Promise<Mint
     mintTransactionId,
     transferTransactionId: transferSubmitted.transactionId.toString(),
   };
+}
+
+/**
+ * Associates HEDERA_STREAK_TOKEN_ID with the given account if not already
+ * associated. Call this before the first mintStreakToken() for a new account.
+ *
+ * Since per-user accounts are created with the operator's key, the operator
+ * can sign this transaction on the user's behalf — no separate user key needed.
+ *
+ * No-ops silently if HEDERA_STREAK_TOKEN_ID is not set (token not yet created).
+ */
+export async function ensureStreakTokenAssociated(accountId: string): Promise<void> {
+  const tokenId = process.env.HEDERA_STREAK_TOKEN_ID;
+  if (!tokenId) return;
+
+  const client = getHederaClient();
+
+  const tx = new TokenAssociateTransaction()
+    .setAccountId(AccountId.fromString(accountId))
+    .setTokenIds([tokenId]);
+
+  try {
+    const submitted = await tx.execute(client);
+    const receipt = await submitted.getReceipt(client);
+    if (receipt.status !== Status.Success) {
+      throw new Error(`ensureStreakTokenAssociated failed: ${receipt.status.toString()}`);
+    }
+  } catch (err) {
+    // TOKEN_ALREADY_ASSOCIATED_TO_ACCOUNT is fine — idempotent
+    const msg = err instanceof Error ? err.message : String(err);
+    if (!msg.includes('TOKEN_ALREADY_ASSOCIATED_TO_ACCOUNT')) throw err;
+  }
 }

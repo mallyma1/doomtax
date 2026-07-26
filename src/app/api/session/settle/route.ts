@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { settleSession, type SettlementVerdict } from '@/agent/settlement';
 import { askCoach } from '@/ai/coach';
 import { submitSessionRecord } from '@/hedera/consensus';
+import { ensureStreakTokenAssociated, mintStreakToken } from '@/hedera/token';
 import { fundUserAccount, getOrCreateUserAccount } from '@/identity/agentkit';
 import { hbarToTinybar } from '@/lib/session';
 import { auth } from '@/auth';
@@ -194,6 +195,23 @@ export async function POST(request: Request) {
     timestamp: Date.now(),
   };
 
+  // On a kept verdict, mint one streak token to the user's account.
+  // This is best-effort: a mint failure does not undo the settlement.
+  // Skips silently when HEDERA_STREAK_TOKEN_ID is not set.
+  let streak: { ok: boolean; mintTransactionId?: string; transferTransactionId?: string; error?: string } | null = null;
+  if (verdict === 'kept' && sourceAccountId !== operatorAccountId) {
+    try {
+      await ensureStreakTokenAssociated(sourceAccountId);
+      const mintResult = await mintStreakToken({
+        recipientAccountId: sourceAccountId,
+        sessionId,
+      });
+      streak = { ok: true, ...mintResult };
+    } catch (err) {
+      streak = { ok: false, error: err instanceof Error ? err.message : String(err) };
+    }
+  }
+
   // A failure from here on does not undo the transfer above, so the response
   // reports the two outcomes separately rather than as one success flag.
   let hcs;
@@ -215,5 +233,6 @@ export async function POST(request: Request) {
       usingPerUserAccount: sourceAccountId !== operatorAccountId,
       ...(custodyError ? { error: custodyError } : {}),
     },
+    ...(streak !== null ? { streak } : {}),
   });
 }
