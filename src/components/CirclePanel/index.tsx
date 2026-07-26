@@ -13,7 +13,7 @@ export const CirclePanel = ({
   pendingForfeitHbar: number | null;
 }) => {
   return (
-    <section className="w-full max-w-xl rounded-xl border border-gray-200 p-4 space-y-3">
+    <section className="w-full rounded-xl border border-gray-200 p-4 space-y-3">
       <div className="space-y-1">
         <h2 className="text-lg font-semibold">Circle</h2>
         <p className="text-sm text-gray-700">
@@ -23,13 +23,13 @@ export const CirclePanel = ({
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="rounded-lg border border-gray-100 bg-gray-50 p-3">
-          <p className="text-xs uppercase tracking-wide text-gray-500">Circle</p>
+          <p className="text-xs uppercase tracking-wide text-gray-600">Circle</p>
           <p className="text-sm font-medium text-gray-900">{DEMO_CIRCLE.name}</p>
           <p className="text-xs text-gray-600">{DEMO_CIRCLE.memberSessionKeys.length} members</p>
         </div>
 
         <div className="rounded-lg border border-gray-100 bg-gray-50 p-3">
-          <p className="text-xs uppercase tracking-wide text-gray-500">Shared cause</p>
+          <p className="text-xs uppercase tracking-wide text-gray-600">Shared cause</p>
           <p className="text-sm font-medium text-gray-900">{DEMO_CIRCLE.causeName}</p>
           <p className="text-xs text-gray-600">Account {DEMO_CIRCLE.causeAccountId}</p>
         </div>
@@ -54,8 +54,8 @@ export const CirclePanel = ({
         </p>
       ) : (
         <p className="text-sm text-gray-700">
-          Membership stays off-chain. The collective total is derived client-side from known member
-          session IDs, never from an HCS membership list.
+          Membership stays off-chain — nothing about who&apos;s in this circle goes on the public
+          ledger.
         </p>
       )}
     </section>
