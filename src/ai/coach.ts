@@ -11,6 +11,8 @@ export type CoachInput = {
 export type CoachVerdict = 'kept' | 'slipped';
 
 const COACH_TIMEOUT_MS = 15_000;
+const CHAT_SERVICE_TYPE = 'chatbot';
+const CRITICAL_HEALTH_STATUS = 'critical';
 
 const SYSTEM_PROMPT =
   'You are a neutral focus session judge. ' +
@@ -33,6 +35,7 @@ function buildUserPrompt(input: CoachInput): string {
 
 function parseVerdict(raw: string): CoachVerdict {
   const lower = raw.toLowerCase();
+  if (lower.includes('kept')) return 'kept';
   if (lower.includes('slipped')) return 'slipped';
   // Ambiguity always resolves toward the user (CLAUDE.md).
   return 'kept';
@@ -82,12 +85,30 @@ async function getBroker() {
       const broker = await createZGComputeNetworkBroker(
         wallet as unknown as Parameters<typeof createZGComputeNetworkBroker>[0],
       );
-      const services = await broker.inference.listService();
-      if (!services || services.length === 0) {
+      const preferredProvider = process.env.ZG_PROVIDER_ADDRESS?.trim().toLowerCase() ?? null;
+      const services = await broker.inference.listServiceWithDetail();
+      const candidates = services.filter((service) => {
+        if (service.serviceType !== CHAT_SERVICE_TYPE) return false;
+        if (!service.teeSignerAcknowledged) return false;
+        if (service.healthMetrics?.status === CRITICAL_HEALTH_STATUS) return false;
+        return true;
+      });
+
+      const providerAddress =
+        candidates.find((service) => service.provider.toLowerCase() === preferredProvider)?.provider ??
+        candidates[0]?.provider;
+
+      if (!providerAddress) {
         console.warn('[coach] No 0G inference services available');
         return null;
       }
-      const providerAddress = services[0].provider;
+
+      const signerStatus = await broker.inference.checkProviderSignerStatus(providerAddress);
+      if (!signerStatus.isAcknowledged) {
+        console.warn('[coach] Provider signer is not acknowledged — coach disabled');
+        return null;
+      }
+
       return { broker, providerAddress };
     } catch (e) {
       console.warn('[coach] Broker init failed:', (e as Error).message);
@@ -118,8 +139,9 @@ export async function askCoach(input: CoachInput): Promise<CoachVerdict> {
   const { broker, providerAddress } = context;
 
   try {
+    const prompt = buildUserPrompt(input);
     const { endpoint, model } = await broker.inference.getServiceMetadata(providerAddress);
-    const headers = await broker.inference.getRequestHeaders(providerAddress);
+    const headers = await broker.inference.getRequestHeaders(providerAddress, prompt);
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), COACH_TIMEOUT_MS);
@@ -133,15 +155,27 @@ export async function askCoach(input: CoachInput): Promise<CoachVerdict> {
           model,
           messages: [
             { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: buildUserPrompt(input) },
+            { role: 'user', content: prompt },
           ],
           max_tokens: 10,
           temperature: 0,
         }),
         signal: controller.signal,
       });
-      const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+      if (!res.ok) {
+        throw new Error(`Coach provider responded with status ${res.status}`);
+      }
+
+      const json = (await res.json()) as {
+        id?: string;
+        usage?: unknown;
+        choices?: { message?: { content?: string } }[];
+      };
       raw = json.choices?.[0]?.message?.content ?? '';
+      const chatID = res.headers.get('ZG-Res-Key') ?? json.id;
+      const usage = json.usage ? JSON.stringify(json.usage) : undefined;
+      const verified = await broker.inference.processResponse(providerAddress, chatID, usage);
+      if (verified !== true) return 'kept';
     } finally {
       clearTimeout(timer);
     }
