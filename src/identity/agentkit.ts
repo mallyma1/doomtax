@@ -28,8 +28,10 @@ type CustodyMap = Record<string, CustodyRecord>;
 function readCustodyMap(): CustodyMap {
   try {
     return JSON.parse(fs.readFileSync(CUSTODY_FILE, 'utf-8')) as CustodyMap;
-  } catch {
-    return {};
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException | undefined)?.code;
+    if (code === 'ENOENT') return {};
+    throw err;
   }
 }
 
