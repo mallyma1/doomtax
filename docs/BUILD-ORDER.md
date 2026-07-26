@@ -84,7 +84,7 @@ upside on top of a working submission.
 | #14 | HTS streak token | Copilot | ✅ Done and proven on chain. Token `0.0.9762627` (STREAK, 0 decimals, infinite supply, treasury `0.0.9695721`). Mint and delivery verified: recipient `0.0.9762638` holds 1, total supply 1. Third native Hedera service for the No Solidity track. |
 | #11 | 0G Compute coach | Claude | 🚧 **Code done, not proven.** `src/ai/coach.ts` is implemented and wired into `settle/route.ts`, and the key parses and reaches Galileo. But no 0G ledger exists for the wallet, so `getRequestHeaders()` throws on every request and `askCoach()` falls through its catch to `'kept'`. **A live inference call has never fired.** Blocked on #52. |
 | #12 | Per-user Hedera custody | Copilot | ✅ Merged (PR #54). `src/identity/agentkit.ts` — per-user Hedera accounts via operator-keyed custody. Fallback to operator for unauthenticated demo path. |
-| #13 | Claim-time Selfie Check | Mally + Claude | 🔒 Needs spec. `src/identity/selfieCheck.ts` is 0 bytes. Also needs real human testers with phones. |
+| #13 | Claim-time Selfie Check | Copilot (§5–6) + Mally & Claude (§7) | 📝 **Specified, not implemented.** `docs/SELFIE-CHECK-SPEC.md` (b7be71c). `src/identity/selfieCheck.ts` is still 0 bytes. Acceptance needs real human testers with phones. |
 
 #14 is now complete. `scripts/create-token.ts` created token `0.0.9762627` and
 `HEDERA_STREAK_TOKEN_ID` is set in `.env.local`. `scripts/check-streak.ts`
@@ -93,9 +93,17 @@ is the acceptance check — the settle route only reaches that code for an
 authenticated user with a `'kept'` verdict, which needs a phone, a World App
 login and a live coach, so the probe is what makes the path demonstrable today.
 
-#13 is an empty file with no written spec. It is deliberately not handed to an
-agent, because an agent would invent a design, and it touches constraints where
-an invented design is expensive to unpick.
+#13 now has a written spec, `docs/SELFIE-CHECK-SPEC.md`. It was held back from
+an agent until then because an agent would have invented a design, and this
+feature sits on both the money and the privacy constraints, where an invented
+design is expensive to unpick. Three decisions are now on paper: the check can
+never block a refund, the nullifier never reaches HCS, and `signal` binds to the
+`sessionId` rather than the user. Spec §9 splits ownership — §5–6 are pure code
+against the document and Copilot-safe; §7 acceptance needs a physical phone and
+Developer Portal access, so it stays with Mally and Claude.
+
+The spec does not reopen the timing call. #13 is still won't-this-cycle; the
+document exists so reversing that is cheap.
 
 **#11 is the highest-value remaining item and it is blocked on a faucet.** It is
 what turns the hardcoded `'slipped'` into a real verdict, and it is the whole 0G

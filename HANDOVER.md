@@ -120,11 +120,11 @@ those), and the HCS record still carries only the five allowed fields, so **no
 hard constraint is broken.** But the README's submission evidence says the
 request body carries only the hash, and that is no longer true in non-demo mode.
 
-**The user decided: gate by demo mode, document both.** The gating already
-exists in the route (`isDemo` check). **What remains is the documentation** —
-update the README evidence section to describe both modes honestly rather than
-claiming hash-only unconditionally. That is the next concrete task and it is
-small.
+**The user decided: gate by demo mode, document both.** ✅ Done. The gating is in
+the route (`isDemo` check) and the README evidence section now carries the real
+non-demo request body and states the guarantee that actually holds in both
+modes: `settleSession()` and the HCS write only ever see `commitmentHash` and
+the boolean verdict, never the intention or artifact text.
 
 ---
 
@@ -132,14 +132,16 @@ small.
 
 **Claude**
 
-- Implement 3b (README documents both modes). Small, unblocked, do it first.
 - Prove a live 0G inference call actually returns. #11 is the whole 0G track and
-  the code is written; what is missing is evidence any real provider answers.
-  Needs egress and `.env.local`, so it cannot go to Copilot.
-- Write specs for #12 (per-user custody) and #13 (Selfie Check). Both files are
-  0 bytes. They are deliberately not handed to an agent without a spec, because
-  an agent would invent a design and both touch constraints where an invented
-  design is expensive to unpick.
+  the code is written on **both** paths now — broker and Router — and neither
+  has ever fired. It is not a code problem: the wallet holds 0.6 OG, and the
+  broker's `addLedger()` and the testnet Router's deposit both enforce the same
+  3 OG minimum. Funding is the only constraint, and the faucet needs a browser,
+  so this is blocked on a human (#52), not on egress.
+- ~~Write specs for #12 and #13.~~ Both done. #12 shipped in PR #54
+  (`src/identity/agentkit.ts`). #13 is specified in `docs/SELFIE-CHECK-SPEC.md`
+  and `src/identity/selfieCheck.ts` is still 0 bytes — specified, not
+  implemented, and still won't-this-cycle.
 
 **Mally (human only)**
 
