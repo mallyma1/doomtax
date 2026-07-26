@@ -21,6 +21,10 @@ const SYSTEM_PROMPT =
   'Reply with exactly one word: "kept" if the evidence reasonably supports the intention was fulfilled, ' +
   'or "slipped" if it clearly was not. When in doubt, reply "kept".';
 
+function sameAddress(left: string, right: string): boolean {
+  return left.toLowerCase() === right.toLowerCase();
+}
+
 function buildUserPrompt(input: CoachInput): string {
   return [
     `Intention: ${input.intention}`,
@@ -35,7 +39,6 @@ function buildUserPrompt(input: CoachInput): string {
 
 function parseVerdict(raw: string): CoachVerdict {
   const lower = raw.toLowerCase();
-  if (lower.includes('kept')) return 'kept';
   if (lower.includes('slipped')) return 'slipped';
   // Ambiguity always resolves toward the user (CLAUDE.md).
   return 'kept';
@@ -85,7 +88,7 @@ async function getBroker() {
       const broker = await createZGComputeNetworkBroker(
         wallet as unknown as Parameters<typeof createZGComputeNetworkBroker>[0],
       );
-      const preferredProvider = process.env.ZG_PROVIDER_ADDRESS?.trim().toLowerCase() ?? null;
+      const preferredProviderAddress = process.env.ZG_PROVIDER_ADDRESS?.trim() ?? null;
       const services = await broker.inference.listServiceWithDetail();
       const candidates = services.filter((service) => {
         if (service.serviceType !== CHAT_SERVICE_TYPE) return false;
@@ -95,14 +98,20 @@ async function getBroker() {
       });
 
       const providerAddress =
-        candidates.find((service) => service.provider.toLowerCase() === preferredProvider)?.provider ??
+        candidates.find(
+          (service) =>
+            preferredProviderAddress !== null && sameAddress(service.provider, preferredProviderAddress),
+        )?.provider ??
         candidates[0]?.provider;
 
       if (!providerAddress) {
-        console.warn('[coach] No 0G inference services available');
+        console.warn(
+          `[coach] No eligible 0G chatbot providers available (${candidates.length}/${services.length} passed filters)`,
+        );
         return null;
       }
 
+      // Defense-in-depth: verify acknowledgement state from the contract before first use.
       const signerStatus = await broker.inference.checkProviderSignerStatus(providerAddress);
       if (!signerStatus.isAcknowledged) {
         console.warn('[coach] Provider signer is not acknowledged — coach disabled');
@@ -147,6 +156,7 @@ export async function askCoach(input: CoachInput): Promise<CoachVerdict> {
     const timer = setTimeout(() => controller.abort(), COACH_TIMEOUT_MS);
 
     let raw: string;
+    let verified: boolean | null = null;
     try {
       const res = await fetch(`${endpoint}/chat/completions`, {
         method: 'POST',
@@ -172,14 +182,28 @@ export async function askCoach(input: CoachInput): Promise<CoachVerdict> {
         choices?: { message?: { content?: string } }[];
       };
       raw = json.choices?.[0]?.message?.content ?? '';
+      // Verifiable providers return ZG-Res-Key in headers; completion id is the fallback
+      // when the header is absent.
       const chatID = res.headers.get('ZG-Res-Key') ?? json.id;
-      const usage = json.usage ? JSON.stringify(json.usage) : undefined;
-      const verified = await broker.inference.processResponse(providerAddress, chatID, usage);
-      if (verified !== true) return 'kept';
+      if (!chatID) {
+        console.warn('[coach] Missing chat ID for attestation verification — defaulting to kept');
+      } else {
+        const usage = json.usage ? JSON.stringify(json.usage) : undefined;
+        try {
+          verified = await broker.inference.processResponse(providerAddress, chatID, usage);
+        } catch (err) {
+          console.warn(
+            '[coach] Attestation verification failed:',
+            err instanceof Error ? err.message : String(err),
+            '— defaulting to kept',
+          );
+        }
+      }
     } finally {
       clearTimeout(timer);
     }
 
+    if (verified !== true) return 'kept';
     return parseVerdict(raw);
   } catch (e) {
     console.warn('[coach] Inference failed:', (e as Error).message, '— defaulting to kept');
