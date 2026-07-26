@@ -1,127 +1,31 @@
 @import 'tailwindcss';
 
-/**
- * DoomTax design tokens.
- *
- * Dark canvas, single luminous focal object, one accent. Amber is reserved for
- * anything involving a live commitment: if it glows, value is at stake. Green
- * and rust appear only at settlement, never during a session.
+/*
+ * Light-only, deliberately. Every surface in src/ hardcodes light-mode
+ * Tailwind colors (bg-white, text-gray-700, border-gray-200) with no dark:
+ * variants, so a prefers-color-scheme override here made body text nearly
+ * invisible against a near-black background. Pick this back up as a real
+ * dark theme (every surface gets a dark: variant) rather than half doing it.
  */
 :root {
-  --background: #08070a;
-  --surface: #131218;
-  --surface-raised: #1c1a22;
-  --foreground: #f7f5f3;
-  --muted: #9b95a3;
-  --faint: #635d6c;
-  --border: #262430;
-
-  --accent: #f59e0b;
-  --accent-dim: #7c4a06;
-  --accent-glow: rgba(245, 158, 11, 0.22);
-
-  --kept: #4ade80;
-  --kept-glow: rgba(74, 222, 128, 0.18);
-  --slipped: #fb7185;
-  --slipped-glow: rgba(251, 113, 133, 0.18);
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-surface-raised: var(--surface-raised);
   --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-faint: var(--faint);
-  --color-border: var(--border);
-  --color-accent: var(--accent);
-  --color-accent-dim: var(--accent-dim);
-  --color-kept: var(--kept);
-  --color-slipped: var(--slipped);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-/**
- * Invert the UI kit's grey ramp.
- *
- * @worldcoin/mini-apps-ui-kit-react ships a light-page scale: gray-0 is white
- * (button fills, sheet backgrounds) and gray-900 is near-black (label text).
- * On our dark canvas that renders white slabs and invisible active tab labels.
- * Remapping the ramp here fixes every kit component at once, rather than
- * overriding each one at the call site.
- */
-/*
- * The kit's light ramp is remapped inline on <body> in layout.tsx, not here.
- * A rule in this file cannot win: the kit's stylesheet is unlayered and is
- * injected after it, and Tailwind v4 drops bare custom properties it considers
- * unused. An inline style on the element itself is the one place that always
- * outranks both.
- */
-
-html,
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-body {
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Digits that must not reflow as they tick. */
 .tabular {
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
-}
-
-/* Grok's mono subtitle: used for supporting lines under a display heading. */
-.mono-caption {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  letter-spacing: 0.02em;
-}
-
-/**
- * The color wash behind a verdict, borrowed from The Outsiders: saturated
- * light bleeding from the top edge and falling off fast, so the headline sits
- * in it without losing contrast.
- */
-/**
- * Verdict washes. Applied to a fixed, full-width band anchored to the top of
- * the viewport, so the gradient falls off in open space. Constrained to a
- * container it reads as a flat rectangle instead of light.
- */
-.wash-kept {
-  background: radial-gradient(
-    140% 100% at 50% 0%,
-    var(--kept-glow) 0%,
-    transparent 72%
-  );
-}
-
-.wash-slipped {
-  background: radial-gradient(
-    140% 100% at 50% 0%,
-    var(--slipped-glow) 0%,
-    transparent 72%
-  );
-}
-
-.wash-accent {
-  background: radial-gradient(
-    140% 100% at 50% 0%,
-    var(--accent-glow) 0%,
-    transparent 72%
-  );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

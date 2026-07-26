@@ -1,20 +1,21 @@
+import { AuthButton } from '@/components/AuthButton';
 import { Page } from '@/components/PageLayout';
 import { SessionFlow } from '@/components/SessionFlow';
+import { UserInfo } from '@/components/UserInfo';
+import { auth } from '@/auth';
+import { TopBar } from '@worldcoin/mini-apps-ui-kit-react';
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
   return (
     <Page>
-      <Page.Main className="flex flex-col">
-        <div className="mx-auto flex w-full max-w-xl flex-1 flex-col">
-          {/*
-            Read here rather than in SessionFlow: this is a server component,
-            so the action stays a server-read env var instead of needing a
-            NEXT_PUBLIC_ twin.
-          */}
-          <SessionFlow
-            selfieAction={process.env.WORLD_SELFIE_ACTION_ID ?? null}
-          />
-        </div>
+      <Page.Header>
+        <TopBar title="DoomTax" />
+      </Page.Header>
+      <Page.Main className="flex flex-col items-center gap-6 pb-12">
+        {session ? <UserInfo /> : <AuthButton />}
+        <SessionFlow selfieAction={process.env.WORLD_SELFIE_ACTION_ID ?? null} />
       </Page.Main>
     </Page>
   );
