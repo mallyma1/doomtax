@@ -22,7 +22,6 @@ ETHGlobal Lisbon 2026.
    to a human identity.
 4. **Never say bet, wager, odds, or gamble.** Say stake, commitment, pledge,
    forfeit. There is no chance element and no house edge.
-5. **Testnet only.** No mainnet keys in this repo, ever.
 
 ## Product shape
 
