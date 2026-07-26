@@ -21,6 +21,7 @@
     "@worldcoin/minikit-js": "^2.0.3",
     "@worldcoin/minikit-react": "^2.0.3",
     "clsx": "^2.1.1",
+    "ethers": "^6.17.0",
     "geist": "^1.7.2",
     "iconoir-react": "^7.11.0",
     "next": "^15.2.8",
