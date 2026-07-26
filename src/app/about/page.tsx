@@ -1,0 +1,216 @@
+import { Page } from '@/components/PageLayout';
+import { PoweredBy } from '@/components/PoweredBy';
+import { WORLD_MINI_APP_URL } from '@/lib/world';
+import Link from 'next/link';
+
+const HOW_IT_WORKS = [
+  {
+    title: 'Name the session',
+    body: 'Say what you actually want to do. The verdict is judged against that sentence, not against a vague idea of productivity.',
+  },
+  {
+    title: 'Put a small stake on it',
+    body: 'A stake changes the moment from “I should probably focus” into “this matters now.” Small and believable beats dramatic.',
+  },
+  {
+    title: 'Finish, then show your proof',
+    body: 'When the session ends, you share what you got done. That can be a short note, summary, or artifact from the work itself.',
+  },
+  {
+    title: 'Keep it or let it go',
+    body: 'If you kept your word, your stake comes back. If you slipped, the forfeit goes to a shared cause — never to us.',
+  },
+] as const;
+
+const BENEFITS = [
+  'Less doomscrolling and fewer “where did the last hour go?” sessions.',
+  'A cleaner start because you choose one intention instead of ten competing tabs.',
+  'A gentler finish because the app cares about honesty and follow-through, not perfection.',
+] as const;
+
+const COMPARISONS = [
+  {
+    title: 'Timers and to-do apps',
+    body: 'Great for structure, but they still rely on willpower at the exact moment you are most tempted to drift.',
+  },
+  {
+    title: 'Blockers and lockout tools',
+    body: 'Useful if you want hard walls. DoomTax takes a lighter approach: it asks for a real commitment without policing your whole device.',
+  },
+  {
+    title: 'Accountability apps',
+    body: 'Many make your struggle visible to someone else. DoomTax keeps the session personal and private, while still making the outcome matter.',
+  },
+] as const;
+
+export default function AboutPage() {
+  return (
+    <Page>
+      <Page.Main className="flex flex-col">
+        <div className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 pb-8">
+          <Link
+            href="/"
+            className="w-fit text-sm font-medium text-muted underline underline-offset-4"
+          >
+            Back to session
+          </Link>
+
+          <section className="rounded-3xl border border-border bg-surface px-5 py-6">
+            <p className="mono-caption text-xs uppercase tracking-[0.18em] text-accent">
+              About DoomTax
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">
+              A kinder way to turn intention into follow-through
+            </h1>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              DoomTax is a focus tool built around a simple idea: people follow
+              through more often when the promise becomes real. You name one
+              task, put a small stake behind it, and let the session end with an
+              honest answer instead of another vague “I&apos;ll try harder tomorrow.”
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-border bg-surface px-5 py-6">
+            <h2 className="text-xl font-semibold text-foreground">
+              Why this method works
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              This approach is inspired by commitment-device research in
+              behavioral economics: when something meaningful is on the line and
+              the finish line is clearly defined, follow-through gets easier.
+              Research behind commitment devices suggests that accountability
+              and stakes can meaningfully improve goal attainment. The goal is
+              not pressure for its own sake. It is clarity, consequence, and a
+              reason to stay with the one thing you said mattered.
+            </p>
+            <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
+              {BENEFITS.map((benefit) => (
+                <li key={benefit} className="flex items-start gap-2">
+                  <span
+                    className="mt-2 size-1.5 rounded-full bg-accent"
+                    aria-hidden="true"
+                  />
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="rounded-3xl border border-border bg-surface px-5 py-6">
+            <h2 className="text-xl font-semibold text-foreground">
+              How DoomTax feels different
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              Most focus apps help you plan, block, or track. DoomTax is built
+              for the moment when planning is over and follow-through is the
+              whole game.
+            </p>
+            <div className="mt-4 grid gap-3">
+              {COMPARISONS.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-2xl border border-border bg-background px-4 py-4"
+                >
+                  <h3 className="text-base font-semibold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                    {item.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-border bg-surface px-5 py-6">
+            <h2 className="text-xl font-semibold text-foreground">
+              How a session works
+            </h2>
+            <div className="mt-4 grid gap-3">
+              {HOW_IT_WORKS.map((step, index) => (
+                <div
+                  key={step.title}
+                  className="rounded-2xl border border-border bg-background px-4 py-4"
+                >
+                  <p className="mono-caption text-xs uppercase tracking-[0.16em] text-faint">
+                    Step {index + 1}
+                  </p>
+                  <h3 className="mt-2 text-base font-semibold text-foreground">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                    {step.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-border bg-surface px-5 py-6">
+            <h2 className="text-xl font-semibold text-foreground">
+              Gentle by design
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              DoomTax is not here to shame you. If the evidence is unclear, the
+              call should fall your way. You can use amnesty before settlement,
+              and there is an appeal window when a slipped session feels wrong.
+              Wins should feel energizing. Losses should stay quiet.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-border bg-surface px-5 py-6">
+            <h2 className="text-xl font-semibold text-foreground">
+              What we see — and what we do not
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              We only use the intention you wrote, the artifact you submit at
+              the end, and simple integrity signals from this page like focus
+              time and interruptions. We do not see your screen, your browsing,
+              your keystrokes, or what you do in other apps.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-border bg-surface px-5 py-6">
+            <h2 className="text-xl font-semibold text-foreground">
+              Open source, on purpose
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              DoomTax is open source because trust matters here. You should be
+              able to inspect how the flow works, what gets sent where, and what
+              the app refuses to collect. That transparency is part of the
+              product, not an extra.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-accent/30 bg-accent/10 px-5 py-6">
+            <h2 className="text-xl font-semibold text-foreground">
+              Ready to try it?
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              Keep the first stake small. The win is not the size of the
+              consequence — it is proving to yourself that you can close the gap
+              between “I meant to” and “I did.”
+            </p>
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-accent px-5 text-sm font-semibold text-black"
+              >
+                Start a session
+              </Link>
+              <a
+                href={WORLD_MINI_APP_URL}
+                className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-surface px-5 text-sm font-semibold text-foreground"
+              >
+                Open in World App
+              </a>
+            </div>
+          </section>
+        </div>
+      </Page.Main>
+      <Page.Footer className="pt-0">
+        <PoweredBy />
+      </Page.Footer>
+    </Page>
+  );
+}
