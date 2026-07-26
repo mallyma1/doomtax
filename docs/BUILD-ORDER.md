@@ -148,7 +148,23 @@ held through a `--commit` run while the uncontested one swept
 (`0.0.9695721@1785042363.521580087`). Re-running sweeps nothing, and appealing
 an already-swept forfeit is refused.
 
-The sweep is dry-run by default. `--commit` moves funds.
+`scripts/refund-appeals.ts` closes the other half: it returns an appealed
+forfeit from pending to whoever staked it. Skipping the sweep kept contested
+money away from the charity but never gave it back, and an appeal that leaves
+the stake in escrow indefinitely is a slower way of keeping it.
+
+The refund destination is **derived from the chain, not stored**. The ledger
+holds no source account on purpose — that would be a durable session-to-identity
+link — and the settlement's transaction ID already resolves, via the mirror
+node, to the account that was actually debited.
+
+Verified on testnet: two appealed forfeits returned to source
+(`0.0.9695721@1785044392.278652183`), pending 3 HBAR → 1 HBAR. The 1 HBAR left
+behind is a forfeit that settled before the ledger existed; it is unrecorded, so
+nothing will ever sweep it — the safe direction, and a live demonstration of the
+fallback.
+
+Both scripts are dry-run by default. `--commit` moves funds.
 
 ---
 

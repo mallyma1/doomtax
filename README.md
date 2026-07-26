@@ -100,13 +100,24 @@ live and proven on testnet:
 
 Plus the escrow-then-sweep flow those services settle into. A forfeit lands in
 a pending account (`0.0.9762855`), never at the charity, so it can still be
-given back; `scripts/sweep-charity.ts` moves it to the charity
-(`0.0.9762856`) only after the appeal window closes and only if it was never
-contested. Proven with two forfeits — the appealed one held, the uncontested
-one swept
-([HashScan](https://hashscan.io/testnet/transaction/0-0.9695721-1785042363.521580087)).
-The sweep memo carries a count, never a session ID, so the public transaction
-cannot be used to work out who slipped.
+given back. Two scripts close the loop, both dry-run by default:
+
+- `scripts/sweep-charity.ts` moves a forfeit to the charity (`0.0.9762856`)
+  only after the appeal window closes and only if it was never contested
+  ([HashScan](https://hashscan.io/testnet/transaction/0-0.9695721-1785042363.521580087))
+- `scripts/refund-appeals.ts` returns an appealed forfeit to whoever staked it
+  ([HashScan](https://hashscan.io/testnet/transaction/0-0.9695721-1785044392.278652183))
+
+Proven with three forfeits: the uncontested one swept to charity, the two
+appealed ones were returned to source. **An appeal that only skipped the sweep
+would have left the stake in escrow forever, which is a slower way of keeping
+it** — so "resolves toward you" means the money comes back.
+
+Two privacy details. The sweep memo carries a count, never a session ID, so the
+public transaction cannot be used to work out who slipped. And the refund
+destination is derived from the settlement's transaction ID via the mirror node
+rather than stored, so the ledger never holds a durable link between a session
+and an account.
 
 A third, **Scheduled Transactions** (HIP-423) for the pre-armed forfeit, is
 written in `src/hedera/schedule.ts` but **not yet wired into the session flow** —
