@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "build:clean": "node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('.next', { recursive: true, force: true });\" && next build",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."

@@ -14,6 +14,7 @@ const ErudaProvider = dynamic(
 interface ClientProvidersProps {
   children: ReactNode;
   session: Session | null; // Use the appropriate type for session from next-auth
+  worldAppId: string | null;
 }
 
 /**
@@ -31,10 +32,13 @@ interface ClientProvidersProps {
 export default function ClientProviders({
   children,
   session,
+  worldAppId,
 }: ClientProvidersProps) {
   return (
     <ErudaProvider>
-      <MiniKitProvider>
+      {/* minikit-js 2.0.3 nests the app ID inside `props`; a bare `appId`
+          prop type-errors and never reaches MiniKit.install(). */}
+      <MiniKitProvider props={{ appId: worldAppId ?? undefined }}>
         <SessionProvider session={session}>{children}</SessionProvider>
       </MiniKitProvider>
     </ErudaProvider>

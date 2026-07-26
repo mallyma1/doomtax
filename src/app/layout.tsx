@@ -18,10 +18,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const worldAppId =
+    process.env.NEXT_PUBLIC_APP_ID?.trim() ||
+    process.env.WORLD_APP_ID?.trim() ||
+    null;
   return (
     <html lang="en">
       <body className={`${GeistSans.variable} ${GeistMono.variable} `}>
-        <ClientProviders session={session}>{children}</ClientProviders>
+        <ClientProviders session={session} worldAppId={worldAppId}>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );
