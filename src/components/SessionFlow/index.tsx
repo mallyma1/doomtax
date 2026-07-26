@@ -370,19 +370,19 @@ export const SessionFlow = ({
             aria-hidden="true"
           />
           <h1 className="text-[32px] font-semibold leading-[1.15] tracking-tight text-foreground">
-            Put something
+            Your word,
             <br />
-            behind it
+            on the line.
           </h1>
           <p className="mt-3.5 max-w-[26ch] text-[14px] leading-[1.55] text-muted">
-            Say what you will do, stake on it, and let a private coach decide
-            whether you kept your word.
+            Make one commitment, back it with a stake, and let a private coach
+            hold the verdict.
           </p>
           <Link
             href="/about"
             className="mt-4 text-sm font-medium text-foreground underline underline-offset-4"
           >
-            What is DoomTax?
+            How DoomTax works
           </Link>
         </div>
         <div className="flex w-full flex-col gap-3">

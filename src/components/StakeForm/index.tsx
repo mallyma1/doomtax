@@ -90,11 +90,12 @@ export const StakeForm = ({
           Back
         </button>
         <Typography variant="heading" level={2} className="text-foreground">
-          What will you do?
+          Make a commitment.
         </Typography>
         <Typography variant="body" level={3} className="mt-1.5 text-muted">
-          Your coach judges you against this sentence and nothing else. Be
-          specific enough that you could not talk yourself out of it later.
+          Write it like a promise to yourself. Your AI coach reads these exact
+          words when you submit proof — make it specific enough that you
+          couldn&apos;t argue your way out of it when it counted.
         </Typography>
       </div>
 
