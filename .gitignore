@@ -55,3 +55,9 @@ next-env.d.ts
 
 # Runtime data (user custody map — never commit)
 data/
+
+# Ops-only credentials (management keys). Deliberately NOT .env.local:
+# Next loads .env.local into the app runtime, and the app must never hold a
+# key that can provision or revoke credentials. Scripts opt in explicitly with
+# `--env-file=.env.ops`.
+.env.ops
