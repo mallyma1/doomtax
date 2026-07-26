@@ -66,8 +66,8 @@ upside on top of a working submission.
 | # | Task | Owner | State |
 |---|---|---|---|
 | #14 | HTS streak token | Copilot | ✅ Merged. `src/hedera/token.ts` plus `scripts/create-token.ts`. Third native Hedera service for the No Solidity track. |
-| #11 | 0G Compute coach | Claude | 🚧 In progress. `src/ai/coach.ts` is implemented and wired into `settle/route.ts`. `src/ai/memory.ts` is still a deliberate no-op stub (M3 / paid tier). No live 0G inference call proven yet. |
-| #12 | Per-user Hedera custody | Claude | 🔒 Needs spec. `src/identity/agentkit.ts` is 0 bytes. Removes the operator-account-as-source temporary state. |
+| #11 | 0G Compute coach | Claude | ✅ Closed. `src/ai/coach.ts` implemented and wired into `settle/route.ts`. 0G credentials resolved (#52 closed). Live call proven. |
+| #12 | Per-user Hedera custody | Copilot | ✅ Merged (PR #54). `src/identity/agentkit.ts` — per-user Hedera accounts via operator-keyed custody. Fallback to operator for unauthenticated demo path. |
 | #13 | Claim-time Selfie Check | Mally + Claude | 🔒 Needs spec. `src/identity/selfieCheck.ts` is 0 bytes. Also needs real human testers with phones. |
 
 #14 landed as code only: `HEDERA_STREAK_TOKEN_ID` is not set in `.env.local`, so
