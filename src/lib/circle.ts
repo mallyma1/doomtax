@@ -87,7 +87,7 @@ export const DEMO_CIRCLE: Circle = {
   // Must match CHARITY_ACCOUNT_ID. Hardcoded because this renders in a client
   // component and the account ID is not a NEXT_PUBLIC var. Update both together.
   causeAccountId: '0.0.9762856',
-  causeName: 'Placeholder charity (testnet)',
+  causeName: 'The Giving Block',
   memberSessionKeys: ['497d1101', '2f6db550', 'd9a12c44'],
 };
 

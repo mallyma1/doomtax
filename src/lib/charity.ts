@@ -8,7 +8,7 @@
  * supported asset list includes HBAR, and on a commercial agreement.
  */
 export const CHARITY = {
-  name: "Placeholder charity (testnet)",
+  name: "The Giving Block",
   accountId: process.env.CHARITY_ACCOUNT_ID ?? "0.0.0",
   logo: "/charity-placeholder.svg",
   isPlaceholder: true,
