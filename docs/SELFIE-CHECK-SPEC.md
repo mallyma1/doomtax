@@ -9,7 +9,8 @@ invented design here is expensive to unpick later.
 directly and are restated inline below. Copilot does not read `CLAUDE.md`
 automatically, so nothing here may be left implicit.
 
-Status: **specified, not implemented.** `src/identity/selfieCheck.ts` is 0 bytes.
+Status: **§5 and §6 implemented.** §7 acceptance is outstanding and needs a
+physical phone. See §10 for what was built and where it departs from §2.
 
 ---
 
@@ -58,6 +59,13 @@ session ends
       ├─ verdict 'kept'    → Selfie Check → settle (refund + streak mint)
       └─ verdict 'slipped' → NO Selfie Check → settle (forfeit to pending)
 ```
+
+> **As built, the check renders after settlement, not between the verdict and
+> settlement.** The verdict is produced inside `/api/session/settle`, so the
+> client cannot know it any earlier without splitting the one route that moves
+> real money — not worth it for a step §3 makes explicitly non-blocking. The two
+> properties that carry the design are unchanged: kept verdicts only, and the
+> outcome is recorded either way. See §10.
 
 **A slipped verdict never triggers a Selfie Check.** Making someone prove they
 are a live human in order to lose money is punitive, adds friction exactly
@@ -126,8 +134,12 @@ the same guarantees as `src/identity/agentkit.ts`'s custody map:
 - `data/` is already in `.gitignore`. Keep it that way.
 - Atomic temp-file-then-rename write, mode `0o600`. Copy the pattern from
   `writeCustodyMap()` rather than reinventing it.
-- Record shape: `{ verified: boolean, checkedAt: number, nullifier: string }`.
+- Record shape: `{ verified: boolean, checkedAt: number, nullifier?: string }`.
   Nothing else. No image, no score, no device metadata, no raw IDKit payload.
+  `nullifier` is present **only** on a verified check — as built, a declined or
+  unavailable check stores no nullifier rather than an empty string, so "the
+  user never proved anything" stays distinguishable from "we could not read the
+  proof". This record is the only place either fact survives.
 
 **No selfie image ever reaches our servers.** Capture and matching happen inside
 World ID. We receive a zero-knowledge proof. Copy must not imply we see a face.
@@ -263,15 +275,16 @@ Minimum acceptance:
 Evidence-based, per `.claude/agents/project-manager.md` — "a 0-byte file is not
 done, it worked locally is not done":
 
-- [ ] `src/identity/selfieCheck.ts` implements §5 and is non-empty
-- [ ] `src/components/SelfieCheck/index.tsx` renders on the claim screen for
+- [x] `src/identity/selfieCheck.ts` implements §5 and is non-empty
+- [x] `src/components/SelfieCheck/index.tsx` renders on the claim screen for
       kept verdicts only
-- [ ] `/api/session/selfie-check` verifies server-side and stores off-chain
-- [ ] `WORLD_SELFIE_ACTION_ID` documented in `.env.example`
-- [ ] `npx tsc --noEmit`, `pnpm build`, `pnpm lint` all clean
+- [x] `/api/session/selfie-check` verifies server-side and stores off-chain
+- [x] `WORLD_SELFIE_ACTION_ID` documented in `.env.example`
+- [x] `npx tsc --noEmit`, `pnpm build`, `pnpm lint` all clean
 - [ ] All five acceptance checks in §7 run on a physical device, with results
       written into `docs/SELFIE-CHECK-TESTING.md`
-- [ ] A grep confirms no nullifier reaches `src/hedera/consensus.ts`
+- [x] A grep confirms no nullifier reaches `src/hedera/consensus.ts` —
+      `grep -rn nullifier src/hedera/ src/agent/ src/lib/` returns 0 hits
 
 ## 9. Ownership
 
@@ -283,3 +296,46 @@ cannot be signed off by a sandboxed agent. Split it: Copilot may build §5 and
 **Timing: this is post-submission.** It was correctly declared won't-this-cycle
 on #13. This spec exists so that decision is reversible cheaply, not to reopen
 it under deadline.
+
+---
+
+## 10. As built
+
+Landed by Claude, not Copilot — §5–6 were Copilot-safe but the work happened in
+a session that already had the context.
+
+| Piece | File |
+|---|---|
+| Server module | `src/identity/selfieCheck.ts` |
+| Route | `src/app/api/session/selfie-check/route.ts` |
+| Client component | `src/components/SelfieCheck/index.tsx` |
+| Wiring | `src/components/SessionFlow/index.tsx`, action passed from `src/app/page.tsx` |
+
+**Three decisions the spec left open.**
+
+1. **Ordering.** The check renders after settlement rather than before it —
+   see the note in §2. The alternative was splitting `/api/session/settle`,
+   which is the proven, money-moving path on the Hedera track.
+2. **`WORLD_SELFIE_ACTION_ID` stays server-read.** `src/app/page.tsx` is a
+   server component, so it reads the action and passes it down as a prop. No
+   `NEXT_PUBLIC_` twin, and an unset value hides the step rather than breaking
+   the claim.
+3. **A decline is posted, not dropped.** The component sends a null proof when
+   the user cancels, so the route records `verified: false`. Dropping it would
+   leave "chose not to" indistinguishable from "never got there", and §1's
+   entire value is being able to say truthfully which happened.
+
+**Verified locally, without a phone.** `tsc --noEmit`, `pnpm build` and
+`pnpm lint` are clean, and the route is registered in the build output. A probe
+against the **live** Developer Portal confirmed the round trip: a null proof
+records `declined`, a well-formed but bogus proof is rejected by the Portal and
+also records `declined`, an unchecked session reads back `null`, and
+`data/selfie-checks.json` lands at mode `600` carrying only the specified
+fields. Wrong `rp_id` and missing `sessionId` both 400.
+
+**What none of that proves:** no real Selfie Check credential has ever been
+issued or verified here. Every path exercised so far is a rejection path. §7 is
+the acceptance run and it still needs a physical Android phone inside World App,
+plus the Beta credential enabled on the app in the Developer Portal. Until then
+this is implemented and unproven — the same distinction the 0G coach sat behind
+for weeks.

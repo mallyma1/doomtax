@@ -5,6 +5,7 @@ import { AuthButton } from '@/components/AuthButton';
 import { CirclePanel } from '@/components/CirclePanel';
 import { ConfirmSheet } from '@/components/ConfirmSheet';
 import { LiveSession } from '@/components/LiveSession';
+import { SelfieCheck } from '@/components/SelfieCheck';
 import { StakeForm } from '@/components/StakeForm';
 import { Verdict } from '@/components/Verdict';
 import {
@@ -15,6 +16,7 @@ import {
   type AppealResponse,
 } from '@/lib/appeal';
 import {
+  DEMO_MODE,
   SESSION_DURATION_SECONDS,
   STAKE_OPTIONS_HBAR,
   commitmentHash,
@@ -90,8 +92,17 @@ const isSettleResponse = (value: unknown): value is SettleResponse => {
  * hash in the browser so the intention never leaves the device, and still reads
  * SESSION_DURATION_SECONDS and STAKE_OPTIONS_HBAR so demo mode stays honest.
  * Only the presentation is new.
+ *
+ * @param selfieAction - Developer Portal action for the claim-time Selfie
+ *   Check, read server-side from `WORLD_SELFIE_ACTION_ID` and passed down.
+ *   Null when unconfigured, which hides the step rather than breaking the
+ *   claim — the check is optional evidence and never a prerequisite.
  */
-export const SessionFlow = () => {
+export const SessionFlow = ({
+  selfieAction = null,
+}: {
+  selfieAction?: string | null;
+}) => {
   const [phase, setPhase] = useState<SessionPhase>('idle');
   const [intention, setIntention] = useState('');
   const [stakeHbar, setStakeHbar] = useState<number>(STAKE_OPTIONS_HBAR[0]);
@@ -442,6 +453,23 @@ export const SessionFlow = () => {
         onSubmitAppeal={submitAppeal}
         onDone={beginDraft}
       />
+      {/*
+        Claim-time Selfie Check, kept verdicts only. A slipped verdict never
+        shows it: making someone prove they are a live human in order to lose
+        money is punitive, and there is no incentive to fake your way into a
+        forfeit (docs/SELFIE-CHECK-SPEC.md §2).
+
+        As built this renders after settlement rather than between the verdict
+        and settlement, because the verdict is produced inside
+        /api/session/settle — see spec §10.
+
+        The DEMO_MODE test is belt-and-braces (demo mode already pins the
+        verdict to 'slipped') so no future change to the demo verdict can put a
+        phone between a judge and a finished flow.
+      */}
+      {!DEMO_MODE && result?.verdict === 'kept' && sessionId && selfieAction ? (
+        <SelfieCheck sessionId={sessionId} action={selfieAction} />
+      ) : null}
       <CirclePanel
         pendingForfeitHbar={
           amnestiedAt !== null ? null : circlePendingForfeitHbar
