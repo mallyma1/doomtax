@@ -117,11 +117,13 @@ Run one full 30 second session after `pnpm dev`, then fill these:
   ```json
   {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","verdict":false,"amountTinybar":100000000,"timestamp":1785022446771}
   ```
-- Request body for `POST /api/session/settle` (must not include intention text), captured from the real network request:
+- Request body for `POST /api/session/settle`, captured from the real network request in **demo mode** (`NEXT_PUBLIC_DEMO_MODE=true`):
   ```json
   {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","stakeHbar":1}
   ```
   Verified independently against the Hedera testnet mirror node, not just the app's own response — both the transfer and the HCS message match the values above, and the request body contains no intention text.
+
+  **This shape is demo-mode only.** With the 0G coach live (`NEXT_PUBLIC_DEMO_MODE=false`), the same request body also carries `intention` and `artifact` plaintext plus integrity metadata (`foregroundTime`, `interruptionCount`) — the coach cannot judge a session without seeing them, and CLAUDE.md permits exactly this. What never changes: neither field goes anywhere past this one request. `settleSession()` and the HCS write still only ever see `commitmentHash` and the boolean verdict — never the intention or artifact text. Both modes hold that HCS-facing guarantee; only the demo-mode request body is hash-only.
 
 ---
 
