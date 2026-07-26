@@ -142,7 +142,7 @@ export async function POST(request: Request) {
   // transfer out of it. A 'kept' verdict short-circuits to a no-op in
   // settleSession() (destination === source), so funding before the verdict
   // is known would gift the operator's HBAR to the user unconditionally.
-  if (userId && verdict === 'slipped' && sourceAccountId !== operatorAccountId) {
+  if (userId && verdict === 'slipped' && custodyError === null) {
     try {
       await fundUserAccount(sourceAccountId, stakeHbar);
     } catch (err) {
