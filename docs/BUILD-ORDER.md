@@ -65,24 +65,34 @@ upside on top of a working submission.
 
 | # | Task | Owner | State |
 |---|---|---|---|
-| #14 | HTS streak token | Copilot | ✅ Merged. `src/hedera/token.ts` plus `scripts/create-token.ts`. Third native Hedera service for the No Solidity track. |
-| #11 | 0G Compute coach | Claude | ✅ Closed. `src/ai/coach.ts` implemented and wired into `settle/route.ts`. 0G credentials resolved (#52 closed). Live call proven. |
+| #14 | HTS streak token | Copilot | ✅ Done and proven on chain. Token `0.0.9762627` (STREAK, 0 decimals, infinite supply, treasury `0.0.9695721`). Mint and delivery verified: recipient `0.0.9762638` holds 1, total supply 1. Third native Hedera service for the No Solidity track. |
+| #11 | 0G Compute coach | Claude | 🚧 **Code done, not proven.** `src/ai/coach.ts` is implemented and wired into `settle/route.ts`, and the key parses and reaches Galileo. But no 0G ledger exists for the wallet, so `getRequestHeaders()` throws on every request and `askCoach()` falls through its catch to `'kept'`. **A live inference call has never fired.** Blocked on #52. |
 | #12 | Per-user Hedera custody | Copilot | ✅ Merged (PR #54). `src/identity/agentkit.ts` — per-user Hedera accounts via operator-keyed custody. Fallback to operator for unauthenticated demo path. |
 | #13 | Claim-time Selfie Check | Mally + Claude | 🔒 Needs spec. `src/identity/selfieCheck.ts` is 0 bytes. Also needs real human testers with phones. |
 
-#14 landed as code only: `HEDERA_STREAK_TOKEN_ID` is not set in `.env.local`, so
-no STREAK token type exists on testnet yet, and `mintStreakToken()` has no
-caller. Running `scripts/create-token.ts` and wiring the `kept` path is
-follow-up work that needs testnet egress.
+#14 is now complete. `scripts/create-token.ts` created token `0.0.9762627` and
+`HEDERA_STREAK_TOKEN_ID` is set in `.env.local`. `scripts/check-streak.ts`
+exercises `ensureStreakTokenAssociated()` and `mintStreakToken()` directly and
+is the acceptance check — the settle route only reaches that code for an
+authenticated user with a `'kept'` verdict, which needs a phone, a World App
+login and a live coach, so the probe is what makes the path demonstrable today.
 
-The two still marked 🔒 are empty files with no written spec. They are
-deliberately not handed to an agent yet, because an agent would invent a design,
-and both touch constraints where an invented design is expensive to unpick.
-Claude writes the specs, then they get owners.
+#13 is an empty file with no written spec. It is deliberately not handed to an
+agent, because an agent would invent a design, and it touches constraints where
+an invented design is expensive to unpick.
 
-**#11 is the highest-value remaining item.** It is what turns the hardcoded
-`'slipped'` into a real verdict, and it is the whole 0G track. The code path
-exists; what is missing is proof that a real 0G provider answers.
+**#11 is the highest-value remaining item and it is blocked on a faucet.** It is
+what turns the hardcoded `'slipped'` into a real verdict, and it is the whole 0G
+track. The wallet `0x2BC736A3d0e9c5B688de6858831260Db5E727096` holds 0.6 OG and
+`broker.ledger.addLedger()` enforces a 3 OG network minimum, so ledger creation
+reverts with `insufficient funds`. Send 3+ OG (chain 16602), then:
+
+```
+npx tsx --env-file=.env.local scripts/check-0g.ts
+```
+
+That provisions the ledger and makes a real inference call in one shot. The
+faucet needs a browser, so this is human-only. See #52.
 
 ---
 
@@ -95,15 +105,22 @@ code, and several are already done.
 |---|---|---|
 | World Developer Portal credentials | #30 | ✅ Closed. App ID, action ID, API key, RP signing key all populated in `.env.local`. |
 | Auth.js secrets and login round-trip | #31 | 🚧 Open. `AUTH_SECRET` and `AUTH_URL` are both populated — no ngrok needed, `AUTH_URL` is the Codespace forwarded port 3000 URL, and Auth.js issues HTTPS callbacks on it. What remains is human-only: set port 3000 to **public** in the Ports panel, then a real login through `AuthButton` in World App on a phone. |
-| Faucet funding, Codespace port public | #29, #32 | ✅ Both closed. |
+| Hedera faucet funding, Codespace port public | #29, #32 | ✅ Both closed. Operator holds ~1093 HBAR. |
+| **0G faucet funding** | #52 | 🚧 **Open and blocking the whole 0G track.** Send 3+ OG to `0x2BC736A3d0e9c5B688de6858831260Db5E727096` on chain 16602. Needs a browser, so no agent can do it. |
 | Deadline confirmation | #33 | ✅ Closed. |
 | Physical phone test of the deep link / QR flow | #37 | 🚧 Open. |
 | Mentor questions for each sponsor track | #39 (Hedera), #40 (World), #41 (0G) | Checklists written, need asking. |
 | Demo video, submission copy, charity placeholder copy | #35, #36, #38 | Pending. |
 
-0G account credentials are not a tracked issue; `ZG_PRIVATE_KEY` and
-`ZG_RPC_URL` are populated in `.env.local`. `ANTHROPIC_API_KEY` and
-`OPENAI_API_KEY` are still empty and nothing on the spine reads them.
+`ZG_PRIVATE_KEY` and `ZG_RPC_URL` are populated in `.env.local` and the key is
+valid — the remaining 0G problem is funding, not credentials. `ANTHROPIC_API_KEY`
+and `OPENAI_API_KEY` are still empty and nothing on the spine reads them.
+
+**In flight with Copilot:** the circle UI (`src/lib/circle.ts` has the types and
+invariants but no implementation) and the appeal + amnesty UI with
+`/api/session/appeal`. Both are additive and stay clear of the settlement path.
+The sweep from pending to charity is **not** in that scope — it needs testnet
+egress, so it stays with Claude.
 
 ---
 
@@ -149,9 +166,19 @@ spec, not on another issue — but it means stage 4 unblocking is manual.
 Both look like bugs. Both are load-bearing. They are restated here because they
 are the most likely thing for a well-meaning contributor to break.
 
-1. **The verdict is hardcoded to `'slipped'`.** A `'kept'` verdict settles back
-   to the source account, short-circuits to a no-op, and produces no transaction
-   and no HashScan link. The slip is the only path that proves the flow works.
+1. **The verdict is pinned to `'slipped'` in demo mode.** A `'kept'` verdict
+   settles back to the source account, so `settleSession()` short-circuits to a
+   no-op and the *transfer* produces no HashScan link. The slip is the only path
+   that proves the money movement works. A kept session is no longer completely
+   silent — it now mints a STREAK token (two transactions) — but that fires only
+   for an authenticated user with a custody account, so it is not a substitute
+   for the slip path in a demo.
+
+   Note the default: `DEMO_MODE` in `src/lib/session.ts` is on unless
+   `NEXT_PUBLIC_DEMO_MODE=false`, and `settle/route.ts` imports that same
+   constant. Do not reintroduce a separate `=== 'true'` test in the route — it
+   defaults the opposite way, which puts the UI in demo mode and the API in live
+   mode at the same time.
 2. **There is no retry button on settlement failure.** `settleSession()`
    generates a fresh `TransactionId` per call, so a retry is a genuinely
    separate transfer. The dangerous case is the one that fails: network
