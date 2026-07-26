@@ -44,18 +44,44 @@ export type ForfeitRecord = {
   /** Set once the forfeit has been swept from pending to charity. */
   sweptAt: number | null;
   sweepTransactionId: string | null;
+  /** Set once an appealed forfeit has been returned to its source account. */
+  refundedAt: number | null;
+  refundTransactionId: string | null;
 };
 
 type Ledger = Record<string, ForfeitRecord>;
 
 function readLedger(): Ledger {
+  let parsed: Record<string, Partial<ForfeitRecord>>;
   try {
-    return JSON.parse(fs.readFileSync(LEDGER_FILE, 'utf-8')) as Ledger;
+    parsed = JSON.parse(fs.readFileSync(LEDGER_FILE, 'utf-8')) as Record<
+      string,
+      Partial<ForfeitRecord>
+    >;
   } catch (err) {
     const code = (err as NodeJS.ErrnoException | undefined)?.code;
     if (code === 'ENOENT') return {};
     throw err;
   }
+
+  // Records written before a field existed read back as undefined, and every
+  // query here tests `=== null`. Without this, a forfeit settled by an older
+  // build would silently fall out of listRefundable() and never be returned.
+  const ledger: Ledger = {};
+  for (const [id, record] of Object.entries(parsed)) {
+    ledger[id] = {
+      sessionId: record.sessionId ?? id,
+      amountTinybar: record.amountTinybar ?? 0,
+      settledAt: record.settledAt ?? 0,
+      transactionId: record.transactionId ?? '',
+      appealedAt: record.appealedAt ?? null,
+      sweptAt: record.sweptAt ?? null,
+      sweepTransactionId: record.sweepTransactionId ?? null,
+      refundedAt: record.refundedAt ?? null,
+      refundTransactionId: record.refundTransactionId ?? null,
+    };
+  }
+  return ledger;
 }
 
 function writeLedger(ledger: Ledger): void {
@@ -92,6 +118,8 @@ export function recordForfeit(record: {
     appealedAt: null,
     sweptAt: null,
     sweepTransactionId: null,
+    refundedAt: null,
+    refundTransactionId: null,
   };
   writeLedger(ledger);
 }
@@ -138,15 +166,48 @@ export function recordAppeal(sessionId: string, now = Date.now()): RecordAppealR
  */
 export function listSweepable(appealWindowMs: number, now = Date.now()): ForfeitRecord[] {
   return Object.values(readLedger()).filter(
-    (r) => r.appealedAt === null && r.sweptAt === null && now >= r.settledAt + appealWindowMs,
+    (r) =>
+      r.appealedAt === null &&
+      r.sweptAt === null &&
+      r.refundedAt === null &&
+      now >= r.settledAt + appealWindowMs,
   );
 }
 
 /** Forfeits still inside the appeal window or contested. Reporting only. */
 export function listHeld(appealWindowMs: number, now = Date.now()): ForfeitRecord[] {
   return Object.values(readLedger()).filter(
-    (r) => r.sweptAt === null && (r.appealedAt !== null || now < r.settledAt + appealWindowMs),
+    (r) =>
+      r.sweptAt === null &&
+      r.refundedAt === null &&
+      (r.appealedAt !== null || now < r.settledAt + appealWindowMs),
   );
+}
+
+/**
+ * Appealed forfeits that are still sitting in the pending account.
+ *
+ * An appeal resolving "in the user's favour" has to mean the money comes back,
+ * not that it sits in escrow indefinitely. These are the ones to return.
+ * A swept forfeit is excluded because it is no longer ours to give back.
+ */
+export function listRefundable(): ForfeitRecord[] {
+  return Object.values(readLedger()).filter(
+    (r) => r.appealedAt !== null && r.sweptAt === null && r.refundedAt === null,
+  );
+}
+
+/** Marks a forfeit as refunded. Call only after the transfer has succeeded. */
+export function markRefunded(
+  sessionId: string,
+  refundTransactionId: string,
+  now = Date.now(),
+): void {
+  const ledger = readLedger();
+  const record = ledger[sessionId];
+  if (!record || record.refundedAt !== null) return;
+  ledger[sessionId] = { ...record, refundedAt: now, refundTransactionId };
+  writeLedger(ledger);
 }
 
 /** Marks forfeits as swept. Call only after the transfer has succeeded. */
