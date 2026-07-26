@@ -61,3 +61,10 @@ data/
 # key that can provision or revoke credentials. Scripts opt in explicitly with
 # `--env-file=.env.ops`.
 .env.ops
+
+# Scratch output from asset generation. The committed asset lives in public/.
+card-b64.txt
+card-preview.png
+
+# Local git worktrees.
+.claude/worktrees/

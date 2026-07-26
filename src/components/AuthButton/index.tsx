@@ -56,9 +56,10 @@ export const AuthButton = () => {
         onClick={onClick}
         disabled={isPending}
         size="lg"
-        variant="primary"
+        variant="tertiary"
+        fullWidth
       >
-        Login with Wallet
+        Connect World App
       </Button>
     </LiveFeedback>
   );
