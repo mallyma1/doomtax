@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { settleSession, type SettlementVerdict } from '@/agent/settlement';
 import { askCoach } from '@/ai/coach';
 import { submitSessionRecord } from '@/hedera/consensus';
+import { fundUserAccount, getOrCreateUserAccount } from '@/identity/agentkit';
 import { hbarToTinybar } from '@/lib/session';
+import { auth } from '@/auth';
 
 // The Hedera SDK is Node-only and this route holds the operator key.
 // Never let this become an edge function, and never import anything in
@@ -84,14 +86,35 @@ export async function POST(request: Request) {
 
   const hcsTopicId = process.env.HEDERA_HCS_TOPIC_ID ?? null;
 
-  // Until per-user custody exists, the operator account is the only account
-  // whose key this server can sign with, so it is also the stake's source.
-  const sourceAccountId = process.env.HEDERA_ACCOUNT_ID;
-  if (!sourceAccountId) {
+  // Resolve the stake's source account. With per-user custody, each
+  // authenticated user has their own Hedera account provisioned on first use.
+  // If auth is unavailable (demo POST without a session), fall back to the
+  // operator account — the flow still works and the demo path stays alive.
+  const operatorAccountId = process.env.HEDERA_ACCOUNT_ID;
+  if (!operatorAccountId) {
     return NextResponse.json(
       { error: 'HEDERA_ACCOUNT_ID is not set on the server' },
       { status: 500 },
     );
+  }
+
+  let sourceAccountId = operatorAccountId;
+  let custodyError: string | null = null;
+
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (userId) {
+    try {
+      sourceAccountId = await getOrCreateUserAccount(userId);
+      await fundUserAccount(sourceAccountId, stakeHbar);
+    } catch (err) {
+      // Custody provisioning failed. Fall back to the operator account so the
+      // session still settles rather than leaving the user stranded. Record
+      // the error so the response is honest about what happened.
+      custodyError = err instanceof Error ? err.message : String(err);
+      sourceAccountId = operatorAccountId;
+    }
   }
 
   // Determine verdict. In demo mode (or when coach inputs are absent) fall
@@ -134,6 +157,11 @@ export async function POST(request: Request) {
         hcs: { ok: false, error: 'Not attempted: settlement failed' },
         hcsTopicId,
         hcsRecord: null,
+        custody: {
+          sourceAccountId,
+          usingPerUserAccount: sourceAccountId !== operatorAccountId,
+          ...(custodyError ? { error: custodyError } : {}),
+        },
       },
       { status: 502 },
     );
@@ -163,5 +191,10 @@ export async function POST(request: Request) {
     hcs,
     hcsTopicId,
     hcsRecord,
+    custody: {
+      sourceAccountId,
+      usingPerUserAccount: sourceAccountId !== operatorAccountId,
+      ...(custodyError ? { error: custodyError } : {}),
+    },
   });
 }
