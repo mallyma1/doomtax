@@ -41,7 +41,7 @@ function writeCustodyMap(map: CustodyMap): void {
   // concurrent write never leaves a truncated/corrupted custody.json.
   // Mode 0o600 restricts the file to the owning process only, since it
   // links user wallet addresses to custody accounts.
-  const tmp = `${CUSTODY_FILE}.tmp.${process.pid}`;
+  const tmp = `${CUSTODY_FILE}.tmp.${process.pid}.${Date.now()}.${Math.random().toString(36).slice(2)}`;
   fs.writeFileSync(tmp, JSON.stringify(map, null, 2), { encoding: 'utf-8', mode: 0o600 });
   fs.renameSync(tmp, CUSTODY_FILE);
 }
