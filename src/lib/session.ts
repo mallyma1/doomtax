@@ -30,6 +30,14 @@ export async function commitmentHash(
  * Demo mode keeps sessions at 30 seconds. A real session length makes the
  * submission video unwatchable, and the whole flow needs to be demonstrable
  * end to end in front of a judge.
+ *
+ * Unset means on. Demo mode is the safe default: it pins the verdict to
+ * 'slipped', which is the only path that moves money and produces a HashScan
+ * link. Defaulting the other way would run the coach, and every coach failure
+ * returns 'kept', which settles to a no-op and leaves no on-chain evidence.
+ *
+ * The settle route must read this same constant rather than testing the env
+ * var itself, or the UI and the API can disagree about which mode they are in.
  */
 export const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE !== 'false';
 export const SESSION_DURATION_SECONDS = DEMO_MODE ? 30 : 25 * 60;

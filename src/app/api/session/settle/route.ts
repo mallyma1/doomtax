@@ -4,7 +4,7 @@ import { askCoach } from '@/ai/coach';
 import { submitSessionRecord } from '@/hedera/consensus';
 import { ensureStreakTokenAssociated, mintStreakToken } from '@/hedera/token';
 import { fundUserAccount, getOrCreateUserAccount } from '@/identity/agentkit';
-import { hbarToTinybar } from '@/lib/session';
+import { DEMO_MODE, hbarToTinybar } from '@/lib/session';
 import { auth } from '@/auth';
 
 // The Hedera SDK is Node-only and this route holds the operator key.
@@ -126,7 +126,10 @@ export async function POST(request: Request) {
 
   // Determine verdict. In demo mode (or when coach inputs are absent) fall
   // back to the demo verdict so the flow still produces a HashScan link.
-  const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  // Shared with the UI. Testing the env var here instead would default the
+  // opposite way when it is unset: a 30-second demo timer on screen while the
+  // API ran the live coach.
+  const isDemo = DEMO_MODE;
   const hasCoachInputs =
     typeof intention === 'string' &&
     typeof artifact === 'string' &&
