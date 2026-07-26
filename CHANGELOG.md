@@ -39,6 +39,15 @@ not every commit. See `git log` for the full history.
   Tailwind grays and blues, which rendered as white cards on the dark canvas.
 - `AuthButton` is now full width and reads "Connect World App".
 
+- The appeal window is now 24 hours by default, up from 60 seconds. A slipped
+  verdict is the only outcome that costs a user money, and the window is what
+  makes that cost reversible. A window shorter than a sleep cycle means the
+  appeal path exists on paper but not in practice: the user has to notice, come
+  back and contest before the sweep runs. Set `APPEAL_WINDOW_MS` to shorten it
+  for a live demo.
+- `scripts/sweep-charity.ts` reports time remaining in scaled units, since raw
+  seconds are unreadable against a 24 hour window.
+
 ### Fixed
 
 - The UI kit's grey ramp is remapped for a dark canvas in `layout.tsx`.

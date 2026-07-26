@@ -31,6 +31,15 @@ function formatHbar(tinybar: number): string {
   return (tinybar / 100_000_000).toFixed(8).replace(/0+$/, '').replace(/\.$/, '');
 }
 
+/** Seconds are unreadable against a 24 hour window. Scale the unit to fit. */
+function formatRemaining(ms: number): string {
+  const seconds = Math.max(0, Math.ceil(ms / 1000));
+  if (seconds < 90) return `${seconds}s`;
+  const minutes = Math.ceil(seconds / 60);
+  if (minutes < 90) return `${minutes}m`;
+  return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+}
+
 async function main() {
   const commit = process.argv.includes('--commit');
   const now = Date.now();
@@ -47,7 +56,7 @@ async function main() {
     const reason =
       record.appealedAt !== null
         ? 'appealed'
-        : `in window, ${Math.ceil((record.settledAt + APPEAL_WINDOW_MS - now) / 1000)}s left`;
+        : `in window, ${formatRemaining(record.settledAt + APPEAL_WINDOW_MS - now)} left`;
     console.log(`  HOLD  ${record.sessionId}  ${formatHbar(record.amountTinybar)} HBAR  (${reason})`);
   }
 
