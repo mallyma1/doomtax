@@ -229,7 +229,10 @@ export const SessionFlow = () => {
     if (startedAtRef.current === null) {
       return SESSION_DURATION_SECONDS;
     }
-    const elapsed = Math.floor((Date.now() - startedAtRef.current) / 1000);
+    // Clamp elapsed at 0 so a startedAt in the future — clock skew, or a
+    // persisted session hydrated a beat ahead of Date.now() — can't push the
+    // displayed countdown above the configured session length.
+    const elapsed = Math.max(0, Math.floor((Date.now() - startedAtRef.current) / 1000));
     return Math.max(0, SESSION_DURATION_SECONDS - elapsed);
   };
 
