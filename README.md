@@ -98,6 +98,16 @@ live and proven on testnet:
   ([HashScan](https://hashscan.io/testnet/token/0.0.9762627)), minted and
   delivered on a kept verdict
 
+Plus the escrow-then-sweep flow those services settle into. A forfeit lands in
+a pending account (`0.0.9762855`), never at the charity, so it can still be
+given back; `scripts/sweep-charity.ts` moves it to the charity
+(`0.0.9762856`) only after the appeal window closes and only if it was never
+contested. Proven with two forfeits — the appealed one held, the uncontested
+one swept
+([HashScan](https://hashscan.io/testnet/transaction/0-0.9695721-1785042363.521580087)).
+The sweep memo carries a count, never a session ID, so the public transaction
+cannot be used to work out who slipped.
+
 A third, **Scheduled Transactions** (HIP-423) for the pre-armed forfeit, is
 written in `src/hedera/schedule.ts` but **not yet wired into the session flow** —
 `armForfeit()` and `disarmForfeit()` have no caller. Counting it would be an

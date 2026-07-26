@@ -132,10 +132,23 @@ code, and several are already done.
 valid — the remaining 0G problem is funding, not credentials. `ANTHROPIC_API_KEY`
 and `OPENAI_API_KEY` are still empty and nothing on the spine reads them.
 
-**Now landed in pure code:** the circle UI, the appeal + amnesty UI, and
-`/api/session/appeal` are implemented locally and stay clear of the settlement
-path. The sweep from pending to charity is **not** in that scope — it still
-needs testnet egress, so it stays with Claude.
+**Landed:** the circle UI, the appeal + amnesty UI, and `/api/session/appeal`
+(Copilot), plus the session ledger and the charity sweep (Claude).
+
+`src/lib/sessionLedger.ts` records every forfeit that reaches the pending
+account; an appeal marks it contested. `scripts/sweep-charity.ts` moves a
+forfeit only when it is recorded, past the appeal window, never contested and
+not already swept — everything else is held. **This is the half that made the
+escrow design real.** Before it, the appeal endpoint returned
+`nextAction: 'hold_pending_funds'` and persisted nothing, so nothing held
+anything.
+
+Verified on testnet: two forfeits settled, one appealed; the appealed one was
+held through a `--commit` run while the uncontested one swept
+(`0.0.9695721@1785042363.521580087`). Re-running sweeps nothing, and appealing
+an already-swept forfeit is refused.
+
+The sweep is dry-run by default. `--commit` moves funds.
 
 ---
 
