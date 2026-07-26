@@ -23,10 +23,16 @@ name: Move Copilot draft PR to Review & Merge
 on:
   pull_request:
     types: [opened]
+  workflow_dispatch:
+    inputs:
+      pr_node_id:
+        description: 'PR node ID to add to the board (e.g. PR_kwDO...)'
+        required: true
+        type: string
 
 jobs:
   move-to-review:
-    if: github.event.pull_request.draft == true
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == true
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,7 +42,7 @@ jobs:
       - name: Add PR to project and set status to Review & Merge
         env:
           GH_TOKEN: ${{ secrets.PAT }}
-          PR_NODE_ID: ${{ github.event.pull_request.node_id }}
+          PR_NODE_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_node_id || github.event.pull_request.node_id }}
           PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
           OWNER: mallyma1
         run: |
