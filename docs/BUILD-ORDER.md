@@ -94,7 +94,7 @@ code, and several are already done.
 | Area | Issues | State |
 |---|---|---|
 | World Developer Portal credentials | #30 | ✅ Closed. App ID, action ID, API key, RP signing key all populated in `.env.local`. |
-| Auth.js secrets and login round-trip | #31 | 🚧 Open. `AUTH_SECRET` populated, but `AUTH_URL` is still empty — needs an ngrok tunnel and a real login through `AuthButton`. |
+| Auth.js secrets and login round-trip | #31 | 🚧 Open. `AUTH_SECRET` and `AUTH_URL` are both populated — no ngrok needed, `AUTH_URL` is the Codespace forwarded port 3000 URL, and Auth.js issues HTTPS callbacks on it. What remains is human-only: set port 3000 to **public** in the Ports panel, then a real login through `AuthButton` in World App on a phone. |
 | Faucet funding, Codespace port public | #29, #32 | ✅ Both closed. |
 | Deadline confirmation | #33 | ✅ Closed. |
 | Physical phone test of the deep link / QR flow | #37 | 🚧 Open. |
