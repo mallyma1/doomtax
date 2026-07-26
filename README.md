@@ -89,14 +89,28 @@ HBAR/HTS transfer on Hedera Testnet.
 [HashScan link](https://hashscan.io/testnet/transaction/0-0.9695721-1785022437.972362991) ·
 HCS topic: `0.0.9748699`
 
-### 🛠️ Hedera, No Solidity Allowed ($3,000) ⚪
-Zero Solidity. Three native services: **HTS** (streak token), **HCS** (verdict
-and payout log), **Scheduled Transactions** (the pre-armed forfeit).
-`find . -name "*.sol"` returns nothing.
+### 🛠️ Hedera, No Solidity Allowed ($3,000) 🟢
+Zero Solidity — `find . -name "*.sol"` returns nothing. Two native services are
+live and proven on testnet:
+
+- **HCS** — verdict and payout log, topic `0.0.9748699`
+- **HTS** — streak token `0.0.9762627`
+  ([HashScan](https://hashscan.io/testnet/token/0.0.9762627)), minted and
+  delivered on a kept verdict
+
+A third, **Scheduled Transactions** (HIP-423) for the pre-armed forfeit, is
+written in `src/hedera/schedule.ts` but **not yet wired into the session flow** —
+`armForfeit()` and `disarmForfeit()` have no caller. Counting it would be an
+overclaim, so it is listed here as what it is.
 
 ### 🧠 0G, Best AI Product ($6,000) ⚪
 **Focus Coach** runs on 0G Compute, TEE-sealed. Encrypted session history on 0G
 Storage, key held by you. `src/ai/coach.ts` · attestation pending · Agentic ID pending
+
+**Not yet proven live.** The code path is complete and the wallet reaches
+Galileo testnet, but no 0G ledger has been provisioned for it (the wallet is
+under `addLedger()`'s 3 OG minimum), so `askCoach()` fails safe to `'kept'` and
+a real inference call has never fired. Tracked as #52.
 
 ### 🤳 World, Selfie Check Beta ($1,750) ⚪
 Liveness at claim, not login. Testing doc:
@@ -122,6 +136,17 @@ Run one full 30 second session after `pnpm dev`, then fill these:
   {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","stakeHbar":1}
   ```
   Verified independently against the Hedera testnet mirror node, not just the app's own response — both the transfer and the HCS message match the values above, and the request body contains no intention text.
+
+- HTS streak token (the kept-verdict reward), verified against the mirror node:
+  - Token: `0.0.9762627` — `STREAK`, 0 decimals, infinite supply, treasury `0.0.9695721`
+    ([HashScan](https://hashscan.io/testnet/token/0.0.9762627))
+  - Mint: `0.0.9695721@1785039170.758949116` · Transfer: `0.0.9695721@1785039171.047140243`
+  - Result: custody account `0.0.9762638` holds `1` STREAK, token total supply `1`
+  - Reproduce: `npx tsx --env-file=.env.local scripts/check-streak.ts <accountId>`
+
+  The settle route reaches this only for an authenticated user with a custody
+  account and a `'kept'` verdict, so the probe script is what makes the path
+  demonstrable ahead of the phone test and a live coach.
 
   **This shape is demo-mode only.** With the 0G coach live (`NEXT_PUBLIC_DEMO_MODE=false`), the same request body also carries `intention` and `artifact` plaintext plus integrity metadata (`foregroundTime`, `interruptionCount`) — the coach cannot judge a session without seeing them, and CLAUDE.md permits exactly this. What never changes: neither field goes anywhere past this one request. `settleSession()` and the HCS write still only ever see `commitmentHash` and the boolean verdict — never the intention or artifact text. Both modes hold that HCS-facing guarantee; only the demo-mode request body is hash-only.
 
