@@ -84,6 +84,13 @@ export async function POST(request: Request) {
     );
   }
 
+  if (!Number.isFinite(stakeHbar) || stakeHbar <= 0) {
+    return NextResponse.json(
+      { error: 'stakeHbar must be a finite positive number' },
+      { status: 400 },
+    );
+  }
+
   const hcsTopicId = process.env.HEDERA_HCS_TOPIC_ID ?? null;
 
   // Resolve the stake's source account. With per-user custody, each

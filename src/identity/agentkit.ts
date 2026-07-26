@@ -37,7 +37,13 @@ function readCustodyMap(): CustodyMap {
 
 function writeCustodyMap(map: CustodyMap): void {
   fs.mkdirSync(DATA_DIR, { recursive: true });
-  fs.writeFileSync(CUSTODY_FILE, JSON.stringify(map, null, 2), 'utf-8');
+  // Write to a temp file first, then rename atomically so a crash or
+  // concurrent write never leaves a truncated/corrupted custody.json.
+  // Mode 0o600 restricts the file to the owning process only, since it
+  // links user wallet addresses to custody accounts.
+  const tmp = `${CUSTODY_FILE}.tmp.${process.pid}`;
+  fs.writeFileSync(tmp, JSON.stringify(map, null, 2), { encoding: 'utf-8', mode: 0o600 });
+  fs.renameSync(tmp, CUSTODY_FILE);
 }
 
 /**
