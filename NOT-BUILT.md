@@ -93,13 +93,55 @@ and no screen showing your token history.
 
 ---
 
-## Submission video / screen recording
+## Evidence tiers — privacy levels as a product mechanic
 
-An early spec (`docs/SELFIE-CHECK-SPEC.md`) described optional screen recording
-as a richer evidence artifact. It was ruled out as a privacy non-starter — we
-have no business seeing your screen — and replaced with the Selfie Check (a
-World App camera selfie at claim time to prove presence). The Selfie Check is
-implemented; the screen recording path was never started.
+The fully-designed concept (not yet implemented) is a tiered evidence model
+analogous to AI model tiers: the more evidence you provide, the lower your
+required stake and the lower the platform fee, because the system needs less
+trust from you.
+
+```
+Tier 1 — Word only
+  Evidence:  Just what you say happened. No artifact, no recording.
+  Stake:     Highest. The system is extending you full trust.
+  Fee:       A small maintenance fee applies — the platform is taking on
+             the most risk and the coach is doing the most interpretive work.
+
+Tier 2 — Artifact (current v1 behaviour)
+  Evidence:  A text summary, note, or file you submit at claim time.
+  Stake:     Standard. The coach has something to read against your intention.
+  Fee:       None by default; the stake is the mechanism.
+
+Tier 3 — Screen recording
+  Evidence:  An opt-in recording of the session window (tab only, no system
+             audio, no other apps). Maximum verifiability.
+  Stake:     Lowest. Hard evidence means little trust is required.
+  Fee:       None. The recording does the work the coach would otherwise do.
+```
+
+The privacy logic is intentionally inverted from what feels intuitive: sharing
+more evidence *earns* a lower stake, because the user is reducing the system's
+exposure, not increasing their own. Screen recording is not surveillance — it is
+a voluntary trade of privacy for reduced financial commitment.
+
+**Why screen recording wasn't ruled out entirely:** The earlier note in this file
+was wrong to call it a privacy non-starter. The right design is: opt-in only,
+tab-capture only (not `getDisplayMedia` on the full desktop), processed locally
+or sent only to the 0G coach, never stored, and clearly disclosed. The Selfie
+Check proves *presence* at claim time; a tab recording proves *what you actually
+did*. They serve different tiers and are not substitutes.
+
+**What the browser extension adds here:** The extension tier would be Tier 3.5 —
+richer integrity signals than a tab recording (idle detection, tab switching,
+active-window time) without capturing screen content, sitting between recording
+and word-only on the trust spectrum.
+
+**What needs building:**
+- A tier selector at session start (before the stake screen)
+- Stake-amount logic that adjusts the minimum and default by tier
+- The maintenance fee calculation and settlement path for Tier 1
+- The tab capture flow for Tier 3 (screen recording)
+- Clear disclosure UI before any recording starts
 
 ---
 
