@@ -14,6 +14,11 @@ const COACH_TIMEOUT_MS = 15_000;
 const CHAT_SERVICE_TYPE = 'chatbot';
 const CRITICAL_HEALTH_STATUS = 'critical';
 
+// 0G Compute Router, testnet. Overridable so the same code points at mainnet
+// or a future endpoint without a redeploy of this file's logic.
+const DEFAULT_ROUTER_URL = 'https://router-api-testnet.integratenetwork.work/v1';
+const DEFAULT_ROUTER_MODEL = 'qwen2.5-omni';
+
 const SYSTEM_PROMPT =
   'You are a neutral focus session judge. ' +
   'A user committed to a specific intention and has submitted evidence. ' +
@@ -129,7 +134,95 @@ async function getBroker() {
 }
 
 /**
+ * The verdict plus whether a provider actually produced it.
+ *
+ * Every failure path here returns 'kept', which is correct for the user but
+ * makes a dead endpoint indistinguishable from a working one. That is not
+ * hypothetical: the missing 0G ledger hid behind exactly this shape for weeks,
+ * with nothing but a console.warn to show for it. `answered` is what lets a
+ * caller tell "the coach judged this" from "the coach never replied", without
+ * changing what the user gets in either case.
+ */
+export type CoachOutcome = {
+  verdict: CoachVerdict;
+  answered: boolean;
+  /** Present only when answered is false. Safe to log: never contains user text. */
+  reason?: string;
+};
+
+const failOpen = (reason: string): CoachOutcome => ({ verdict: 'kept', answered: false, reason });
+
+/**
+ * Router path: 0G Compute's OpenAI-compatible endpoint.
+ *
+ * The broker path needs an on-chain ledger, and `broker.ledger.addLedger()`
+ * enforces a 3 OG minimum that a faucet capped at 0.1/day cannot reach. The
+ * Router bills a unified balance with no such floor, so it is the path that
+ * can actually run.
+ *
+ * It returns no per-response attestation — verified against the live testnet
+ * endpoint, whose only extra headers are rate-limit counters. So a verdict from
+ * here is *not* TEE-verified the way the broker path's is, and documentation
+ * must not claim otherwise for this mode.
+ */
+async function askViaRouter(input: CoachInput, apiKey: string): Promise<CoachOutcome> {
+  const baseUrl = process.env.ZG_ROUTER_URL?.trim() || DEFAULT_ROUTER_URL;
+  const model = process.env.ZG_ROUTER_MODEL?.trim() || DEFAULT_ROUTER_MODEL;
+  const prompt = buildUserPrompt(input);
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), COACH_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(`${baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: prompt },
+        ],
+        max_tokens: 10,
+        temperature: 0,
+      }),
+      signal: controller.signal,
+    });
+
+    if (!res.ok) {
+      // The body carries a machine-readable code (insufficient_balance,
+      // invalid_auth, ...). Surfacing it is the difference between a
+      // five-minute fix and re-debugging the whole path.
+      let detail = `status ${res.status}`;
+      try {
+        const body = (await res.json()) as { error?: { code?: string; message?: string } };
+        if (body.error?.code) detail = `${body.error.code}: ${body.error.message ?? ''}`.trim();
+      } catch {
+        // Non-JSON error body; the status alone is what we have.
+      }
+      return failOpen(`router rejected the request (${detail})`);
+    }
+
+    const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+    const raw = json.choices?.[0]?.message?.content;
+    if (!raw) return failOpen('router returned no message content');
+
+    return { verdict: parseVerdict(raw), answered: true };
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    return failOpen(`router call failed (${message})`);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
  * Ask the 0G Compute coach for a verdict.
+ *
+ * Uses the Router when ZG_ROUTER_API_KEY is set, otherwise the broker. The two
+ * are separate implementations on purpose: the broker path is the one that
+ * carries TEE attestation, so it stays intact and takes over again the moment
+ * a ledger can be funded.
  *
  * Defaults to 'kept' on any error, timeout, or ambiguous response —
  * ambiguity always resolves toward the user (CLAUDE.md).
@@ -137,13 +230,19 @@ async function getBroker() {
  * The inputs are forwarded to 0G only. They are never stored, never logged,
  * and never written to HCS.
  */
-export async function askCoach(input: CoachInput): Promise<CoachVerdict> {
+export async function askCoach(input: CoachInput): Promise<CoachOutcome> {
+  const routerKey = process.env.ZG_ROUTER_API_KEY?.trim();
+  if (routerKey) return askViaRouter(input, routerKey);
+  return askViaBroker(input);
+}
+
+async function askViaBroker(input: CoachInput): Promise<CoachOutcome> {
   const context = await Promise.race([
     getBroker(),
     new Promise<null>((resolve) => setTimeout(() => resolve(null), COACH_TIMEOUT_MS)),
   ]);
 
-  if (!context) return 'kept';
+  if (!context) return failOpen('broker unavailable (no wallet, no eligible provider, or init timed out)');
 
   const { broker, providerAddress } = context;
 
@@ -203,10 +302,9 @@ export async function askCoach(input: CoachInput): Promise<CoachVerdict> {
       clearTimeout(timer);
     }
 
-    if (verified !== true) return 'kept';
-    return parseVerdict(raw);
+    if (verified !== true) return failOpen('response attestation could not be verified');
+    return { verdict: parseVerdict(raw), answered: true };
   } catch (e) {
-    console.warn('[coach] Inference failed:', (e as Error).message, '— defaulting to kept');
-    return 'kept';
+    return failOpen(`inference failed (${(e as Error).message})`);
   }
 }

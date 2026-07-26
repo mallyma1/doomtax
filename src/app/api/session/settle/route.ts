@@ -138,14 +138,24 @@ export async function POST(request: Request) {
     typeof interruptionCount === 'number';
 
   let verdict: SettlementVerdict;
+  // Reported alongside the verdict so a fail-open is visible rather than
+  // silent. A coach that never answered still returns 'kept', which is right
+  // for the user, but indistinguishable from a real verdict without this.
+  let coach: { ran: boolean; answered: boolean; reason?: string } = {
+    ran: false,
+    answered: false,
+  };
+
   if (!isDemo && hasCoachInputs) {
     // Coach inputs are passed to 0G only — never stored, never logged, never in HCS.
-    verdict = await askCoach({
+    const outcome = await askCoach({
       intention: intention!,
       artifact: artifact!,
       foregroundTime: foregroundTime!,
       interruptionCount: interruptionCount!,
     });
+    verdict = outcome.verdict;
+    coach = { ran: true, answered: outcome.answered, ...(outcome.reason ? { reason: outcome.reason } : {}) };
   } else {
     verdict = DEMO_VERDICT;
   }
@@ -248,6 +258,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     verdict,
+    coach,
     settlement: { ok: true, ...settlement },
     hcs,
     hcsTopicId,
