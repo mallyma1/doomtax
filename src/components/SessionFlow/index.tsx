@@ -63,7 +63,7 @@ type StreakResult = {
   error?: string;
 };
 
-type SettleResponse = {
+export type SettleResponse = {
   verdict: 'kept' | 'slipped';
   settlement: SettlementSuccess | SettlementFailure;
   hcs: HcsResult;
