@@ -58,7 +58,7 @@ export const ArtifactForm = ({
   const tooShort = draft.trim().length < 12;
 
   return (
-    <div className="flex w-full flex-col gap-6">
+    <div className="animate-fade-up flex w-full flex-col gap-6">
       <div>
         <Typography variant="heading" level={2} className="text-foreground">
           Show your work
@@ -66,7 +66,7 @@ export const ArtifactForm = ({
         <Typography variant="body" level={3} className="mt-1 text-muted">
           You committed to this:
         </Typography>
-        <div className="mt-3 rounded-2xl border border-border bg-surface px-4 py-3">
+        <div className="card-raised mt-3 rounded-2xl border border-border bg-surface px-4 py-3">
           <Typography variant="body" level={3} className="text-foreground">
             {intention}
           </Typography>
@@ -81,14 +81,14 @@ export const ArtifactForm = ({
           autoFocus
           placeholder="Paste what you produced, or describe what you finished and where it lives."
           aria-label="Your artifact for this session"
-          className="w-full resize-none rounded-2xl border border-border bg-surface p-4 text-base leading-relaxed text-foreground outline-none placeholder:text-faint focus:border-accent"
+          className="w-full resize-none rounded-2xl border border-border bg-surface p-4 text-base leading-relaxed text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
         />
         <div className="mt-1.5 text-right text-xs text-faint">
           {draft.length}/{MAX_ARTIFACT}
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-surface p-4">
+      <div className="card-raised rounded-2xl border border-border bg-surface p-4">
         <span className="mono-caption text-xs uppercase tracking-widest text-faint">
           What your coach receives
         </span>

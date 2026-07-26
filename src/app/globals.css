@@ -1,31 +1,226 @@
 @import 'tailwindcss';
 
-/*
- * Light-only, deliberately. Every surface in src/ hardcodes light-mode
- * Tailwind colors (bg-white, text-gray-700, border-gray-200) with no dark:
- * variants, so a prefers-color-scheme override here made body text nearly
- * invisible against a near-black background. Pick this back up as a real
- * dark theme (every surface gets a dark: variant) rather than half doing it.
+/**
+ * DoomTax design tokens.
+ *
+ * Dark canvas, single luminous focal object, one accent. Amber is reserved for
+ * anything involving a live commitment: if it glows, value is at stake. Green
+ * and rust appear only at settlement, never during a session.
  */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #08070a;
+  --surface: #131218;
+  --surface-raised: #1c1a22;
+  --foreground: #f7f5f3;
+  --muted: #9b95a3;
+  --faint: #635d6c;
+  --border: #262430;
+
+  --accent: #f59e0b;
+  --accent-dim: #7c4a06;
+  --accent-glow: rgba(245, 158, 11, 0.22);
+
+  --kept: #4ade80;
+  --kept-glow: rgba(74, 222, 128, 0.18);
+  --slipped: #fb7185;
+  --slipped-glow: rgba(251, 113, 133, 0.18);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-kept: var(--kept);
+  --color-slipped: var(--slipped);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+/**
+ * Invert the UI kit's grey ramp.
+ *
+ * @worldcoin/mini-apps-ui-kit-react ships a light-page scale: gray-0 is white
+ * (button fills, sheet backgrounds) and gray-900 is near-black (label text).
+ * On our dark canvas that renders white slabs and invisible active tab labels.
+ * Remapping the ramp here fixes every kit component at once, rather than
+ * overriding each one at the call site.
+ */
+/*
+ * The kit's light ramp is remapped inline on <body> in layout.tsx, not here.
+ * A rule in this file cannot win: the kit's stylesheet is unlayered and is
+ * injected after it, and Tailwind v4 drops bare custom properties it considers
+ * unused. An inline style on the element itself is the one place that always
+ * outranks both.
+ */
+
+html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
+body {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Digits that must not reflow as they tick. */
 .tabular {
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
+}
+
+/* Grok's mono subtitle: used for supporting lines under a display heading. */
+.mono-caption {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  letter-spacing: 0.02em;
+}
+
+/**
+ * The color wash behind a verdict, borrowed from The Outsiders: saturated
+ * light bleeding from the top edge and falling off fast, so the headline sits
+ * in it without losing contrast.
+ */
+/**
+ * Verdict washes. Applied to a fixed, full-width band anchored to the top of
+ * the viewport, so the gradient falls off in open space. Constrained to a
+ * container it reads as a flat rectangle instead of light.
+ */
+.wash-kept {
+  background: radial-gradient(
+    140% 100% at 50% 0%,
+    var(--kept-glow) 0%,
+    transparent 72%
+  );
+}
+
+.wash-slipped {
+  background: radial-gradient(
+    140% 100% at 50% 0%,
+    var(--slipped-glow) 0%,
+    transparent 72%
+  );
+}
+
+.wash-accent {
+  background: radial-gradient(
+    140% 100% at 50% 0%,
+    var(--accent-glow) 0%,
+    transparent 72%
+  );
+}
+
+/**
+ * Micro-interactions and entrance animations.
+ *
+ * All durations respect prefers-reduced-motion via the rule at the bottom of
+ * this file. Every keyframe is safe to leave in the bundle because the media
+ * query collapses them to 0.01 ms — an instant snap to the final state.
+ */
+
+/* Phase entrance — content fades and lifts into view */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Verdict icon — spring pop on mount */
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Idle-screen hero orb — breathing amber glow */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 48px 12px rgba(245, 158, 11, 0.22);
+  }
+  50% {
+    box-shadow: 0 0 84px 26px rgba(245, 158, 11, 0.42);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2.8s ease-in-out infinite;
+}
+
+/* Live session badge — pulsing dot */
+@keyframes dot-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.animate-dot-live {
+  animation: dot-live 1.6s ease-in-out infinite;
+}
+
+/* Bottom sheet — slides up from off-screen */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.7;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-sheet-up {
+  animation: sheet-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/**
+ * Elevated card for dark-canvas UIs.
+ *
+ * A downward shadow grounds the card and a 1-px inset highlight on the top
+ * edge catches the imaginary overhead light source, producing a glossy lift
+ * without needing a lighter background colour.
+ */
+.card-raised {
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

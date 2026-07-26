@@ -1,5 +1,11 @@
 import { ethers } from 'ethers';
 import { createZGComputeNetworkBroker } from '@0gfoundation/0g-compute-ts-sdk';
+import {
+  getZeroGInferenceApiKey,
+  getZeroGInferenceBaseUrl,
+  getZeroGInferenceModel,
+  joinZeroGUrl,
+} from '@/ai/zero-g';
 
 export type CoachInput = {
   intention: string;
@@ -13,11 +19,6 @@ export type CoachVerdict = 'kept' | 'slipped';
 const COACH_TIMEOUT_MS = 15_000;
 const CHAT_SERVICE_TYPE = 'chatbot';
 const CRITICAL_HEALTH_STATUS = 'critical';
-
-// 0G Compute Router, testnet. Overridable so the same code points at mainnet
-// or a future endpoint without a redeploy of this file's logic.
-const DEFAULT_ROUTER_URL = 'https://router-api-testnet.integratenetwork.work/v1';
-const DEFAULT_ROUTER_MODEL = 'qwen2.5-omni';
 
 const SYSTEM_PROMPT =
   'You are a neutral focus session judge. ' +
@@ -153,11 +154,13 @@ export type CoachOutcome = {
 const failOpen = (reason: string): CoachOutcome => ({ verdict: 'kept', answered: false, reason });
 
 /**
- * Router path: 0G Compute's OpenAI-compatible endpoint.
+ * API-key path: 0G Compute's OpenAI-compatible HTTPS endpoint.
  *
  * The broker path needs an on-chain ledger via `broker.ledger.addLedger()`.
- * The Router replaces that with an API key and a prepaid balance, which is a
- * simpler integration and works from any server without wallet signing.
+ * This path replaces wallet signing with a bearer key and prepaid balance,
+ * which is a simpler integration and works from any server without wallet
+ * signing. In practice the base URL may be the shared Router (`/v1`) or a
+ * provider-scoped `compute-network-*` endpoint created in pc.0g.ai.
  *
  * It does **not** avoid the funding requirement: the testnet Router enforces
  * the same 3 OG minimum deposit. Both paths are blocked by the same 3 OG, and
@@ -169,16 +172,16 @@ const failOpen = (reason: string): CoachOutcome => ({ verdict: 'kept', answered:
  * here is *not* TEE-verified the way the broker path's is, and documentation
  * must not claim otherwise for this mode.
  */
-async function askViaRouter(input: CoachInput, apiKey: string): Promise<CoachOutcome> {
-  const baseUrl = process.env.ZG_ROUTER_URL?.trim() || DEFAULT_ROUTER_URL;
-  const model = process.env.ZG_ROUTER_MODEL?.trim() || DEFAULT_ROUTER_MODEL;
+async function askViaApiKey(input: CoachInput, apiKey: string): Promise<CoachOutcome> {
+  const baseUrl = getZeroGInferenceBaseUrl();
+  const model = getZeroGInferenceModel();
   const prompt = buildUserPrompt(input);
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), COACH_TIMEOUT_MS);
 
   try {
-    const res = await fetch(`${baseUrl}/chat/completions`, {
+    const res = await fetch(joinZeroGUrl(baseUrl, '/chat/completions'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
       body: JSON.stringify({
@@ -204,17 +207,17 @@ async function askViaRouter(input: CoachInput, apiKey: string): Promise<CoachOut
       } catch {
         // Non-JSON error body; the status alone is what we have.
       }
-      return failOpen(`router rejected the request (${detail})`);
+      return failOpen(`0G API-key endpoint rejected the request (${detail})`);
     }
 
     const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
     const raw = json.choices?.[0]?.message?.content;
-    if (!raw) return failOpen('router returned no message content');
+    if (!raw) return failOpen('0G API-key endpoint returned no message content');
 
     return { verdict: parseVerdict(raw), answered: true };
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
-    return failOpen(`router call failed (${message})`);
+    return failOpen(`0G API-key call failed (${message})`);
   } finally {
     clearTimeout(timer);
   }
@@ -223,10 +226,10 @@ async function askViaRouter(input: CoachInput, apiKey: string): Promise<CoachOut
 /**
  * Ask the 0G Compute coach for a verdict.
  *
- * Uses the Router when ZG_ROUTER_API_KEY is set, otherwise the broker. The two
- * are separate implementations on purpose: the broker path is the one that
- * carries TEE attestation, so it stays intact and takes over again the moment
- * a ledger can be funded.
+ * Uses the API-key path when a compute or legacy router key is set, otherwise
+ * the broker. The two are separate implementations on purpose: the broker path
+ * is the one that carries TEE attestation, so it stays intact and takes over
+ * again the moment a ledger can be funded.
  *
  * Defaults to 'kept' on any error, timeout, or ambiguous response —
  * ambiguity always resolves toward the user (CLAUDE.md).
@@ -235,8 +238,8 @@ async function askViaRouter(input: CoachInput, apiKey: string): Promise<CoachOut
  * and never written to HCS.
  */
 export async function askCoach(input: CoachInput): Promise<CoachOutcome> {
-  const routerKey = process.env.ZG_ROUTER_API_KEY?.trim();
-  if (routerKey) return askViaRouter(input, routerKey);
+  const apiKey = getZeroGInferenceApiKey();
+  if (apiKey) return askViaApiKey(input, apiKey);
   return askViaBroker(input);
 }
 

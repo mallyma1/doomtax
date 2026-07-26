@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { createZGComputeNetworkBroker } from '@0gfoundation/0g-compute-ts-sdk';
+import { getZeroGNetwork } from '../src/ai/zero-g';
 
 /**
  * Live probe for the 0G Compute coach path (#11).
@@ -9,7 +10,7 @@ import { createZGComputeNetworkBroker } from '@0gfoundation/0g-compute-ts-sdk';
  * that ambiguity by failing loudly at each step, and it is the only place
  * that provisions the 0G ledger the coach needs.
  *
- * Spends testnet OG on first run (ledger creation). Read-only afterwards.
+ * Spends OG on first run (ledger creation). Read-only afterwards.
  */
 
 /**
@@ -40,7 +41,9 @@ async function main() {
   const wallet = buildWallet();
   const address = await wallet.getAddress();
   const balance = await wallet.provider!.getBalance(address);
+  const network = getZeroGNetwork();
   console.log(`wallet   ${address}`);
+  console.log(`network  ${network}`);
   console.log(`balance  ${ethers.formatEther(balance)} OG`);
 
   const broker = await createZGComputeNetworkBroker(

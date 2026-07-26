@@ -13,49 +13,50 @@ export const CirclePanel = ({
   pendingForfeitHbar: number | null;
 }) => {
   return (
-    <section className="w-full rounded-xl border border-gray-200 p-4 space-y-3">
+    <section className="card-raised w-full max-w-xl rounded-2xl border border-border bg-surface p-4 space-y-3">
       <div className="space-y-1">
         <h2 className="text-lg font-semibold">Circle</h2>
-        <p className="text-sm text-gray-700">
-          Social, not competitive. Circles share one cause and show only the collective total.
+        <p className="text-sm text-muted">
+          A circle gives your slips somewhere good to go. You back one cause
+          together and only see the total you have funded as a group.
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div className="rounded-lg border border-gray-100 bg-gray-50 p-3">
-          <p className="text-xs uppercase tracking-wide text-gray-600">Circle</p>
-          <p className="text-sm font-medium text-gray-900">{DEMO_CIRCLE.name}</p>
-          <p className="text-xs text-gray-600">{DEMO_CIRCLE.memberSessionKeys.length} members</p>
+        <div className="card-raised rounded-lg border border-border bg-surface p-3">
+          <p className="text-xs uppercase tracking-wide text-faint">Circle</p>
+          <p className="text-sm font-medium text-foreground">{DEMO_CIRCLE.name}</p>
+          <p className="text-xs text-faint">{DEMO_CIRCLE.memberSessionKeys.length} members</p>
         </div>
 
-        <div className="rounded-lg border border-gray-100 bg-gray-50 p-3">
-          <p className="text-xs uppercase tracking-wide text-gray-600">Shared cause</p>
-          <p className="text-sm font-medium text-gray-900">{DEMO_CIRCLE.causeName}</p>
-          <p className="text-xs text-gray-600">Account {DEMO_CIRCLE.causeAccountId}</p>
+        <div className="card-raised rounded-lg border border-border bg-surface p-3">
+          <p className="text-xs uppercase tracking-wide text-faint">Shared cause</p>
+          <p className="text-sm font-medium text-foreground">{DEMO_CIRCLE.causeName}</p>
+          <p className="text-xs text-faint">Current demo account: {DEMO_CIRCLE.causeAccountId}</p>
         </div>
       </div>
 
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
-        <p className="text-xs uppercase tracking-wide text-amber-700">{IMPACT.periodLabel}</p>
-        <p className="text-2xl font-semibold text-gray-900">
+      <div className="card-raised rounded-lg border border-accent/30 bg-accent/10 p-3">
+        <p className="text-xs uppercase tracking-wide text-accent">{IMPACT.periodLabel}</p>
+        <p className="text-2xl font-semibold text-foreground">
           {formatTinybarAsHbar(IMPACT.totalTinybars)} HBAR
         </p>
-        <p className="text-sm text-gray-700">
-          {IMPACT.sessionCount} forfeits funded this cause. No leaderboard, no per-member totals,
-          and never who slipped.
+        <p className="text-sm text-muted">
+          {IMPACT.sessionCount} forfeits funded this cause. No leaderboard, no
+          individual totals, and never a callout of who slipped.
         </p>
       </div>
 
       {pendingForfeitHbar !== null ? (
-        <p className="text-sm text-gray-700">
-          Your latest slipped session is parked in the pending account. If it stands,{' '}
-          {pendingForfeitHbar} HBAR will join the collective total quietly once the separate
-          charity sweep runs, without naming anyone.
+        <p className="text-sm text-muted">
+          If this session stands, {pendingForfeitHbar} HBAR joins your circle’s
+          total after the appeal window. The good still counts, but your name
+          does not go with it.
         </p>
       ) : (
-        <p className="text-sm text-gray-700">
-          Membership stays off-chain — nothing about who&apos;s in this circle goes on the public
-          ledger.
+        <p className="text-sm text-muted">
+          Your circle stays private. We show what you have funded together, not
+          a list of members — and never who slipped.
         </p>
       )}
     </section>

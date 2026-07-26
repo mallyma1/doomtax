@@ -12,9 +12,16 @@
  * /chat/completions. 0G's own guidance is to ship sk- to the runtime and keep
  * mk- for dashboards and CI.
  *
+ * This script is Router-only: point it at a `/v1` Router base URL, not a
+ * provider-scoped `compute-network-*` endpoint.
+ *
  * Usage: npx tsx --env-file=.env.ops scripts/check-0g-router.ts
  */
-const DEFAULT_ROUTER_URL = 'https://router-api-testnet.integratenetwork.work/v1';
+import {
+  getZeroGNetwork,
+  getZeroGPortalUrl,
+  getZeroGRouterBaseUrl,
+} from '../src/ai/zero-g';
 
 type Balance = {
   address?: string;
@@ -45,8 +52,10 @@ async function main() {
     );
   }
 
-  const baseUrl = process.env.ZG_ROUTER_URL?.trim() || DEFAULT_ROUTER_URL;
+  const baseUrl = getZeroGRouterBaseUrl();
+  const network = getZeroGNetwork();
   console.log(`router ${baseUrl}`);
+  console.log(`network ${network}`);
 
   const balance = await get<Balance>(baseUrl, '/account/balance', key);
   if (balance) {
@@ -57,8 +66,13 @@ async function main() {
     console.log(`total   ${balance.total_balance ?? '?'}`);
 
     if ((balance.total_balance ?? '0') === '0') {
+      const portalUrl = getZeroGPortalUrl(network);
       console.log('\nBalance is zero — inference will fail with insufficient_balance.');
-      console.log('Deposit at https://pc.testnet.0g.ai, then re-run this.');
+      if (portalUrl) {
+        console.log(`Deposit at ${portalUrl}, then re-run this.`);
+      } else {
+        console.log('Set ZG_NETWORK=mainnet or testnet so this script can point at the right 0G console.');
+      }
     }
   }
 

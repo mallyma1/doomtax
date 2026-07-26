@@ -62,10 +62,10 @@ export const Verdict = ({
   // be dressed up as one.
   if (errorMessage) {
     return (
-      <div className="flex h-full w-full flex-col justify-between">
+      <div className="animate-fade-up flex h-full w-full flex-col justify-between">
         <div className="flex flex-1 flex-col items-center justify-center text-center">
           <div
-            className="grid size-16 place-items-center rounded-full"
+            className="animate-pop-in grid size-16 place-items-center rounded-full"
             style={{ background: 'var(--slipped-glow)' }}
             aria-hidden="true"
           >
@@ -128,7 +128,7 @@ export const Verdict = ({
   const hcs = result?.hcs;
 
   return (
-    <div className="flex h-full w-full flex-col justify-between">
+    <div className="animate-fade-up flex h-full w-full flex-col justify-between">
       {/*
         Fixed rather than absolute: the wash should read as light falling from
         the top of the screen, not as a panel inside the scroll container.
@@ -142,7 +142,7 @@ export const Verdict = ({
 
       <div className="relative flex flex-1 flex-col items-center text-center">
         <div
-          className="mt-4 grid size-16 place-items-center rounded-full"
+          className="animate-pop-in mt-4 grid size-16 place-items-center rounded-full"
           style={{
             background:
               tone === 'kept' ? 'var(--kept-glow)' : 'var(--slipped-glow)',
@@ -170,7 +170,7 @@ export const Verdict = ({
         </Typography>
 
         {result && (
-          <div className="mt-5 flex w-full items-center justify-between rounded-2xl border border-border bg-surface px-4 py-3.5 text-left">
+          <div className="card-raised mt-5 flex w-full items-center justify-between rounded-2xl border border-border bg-surface px-4 py-3.5 text-left">
             <div className="min-w-0">
               <Typography variant="body" level={4} className="text-muted">
                 Settled on Hedera testnet
@@ -204,7 +204,7 @@ export const Verdict = ({
         )}
 
         {hcs && (
-          <div className="mt-2 w-full rounded-2xl border border-border bg-surface px-4 py-3 text-left">
+          <div className="card-raised mt-2 w-full rounded-2xl border border-border bg-surface px-4 py-3 text-left">
             <span className="mono-caption text-xs uppercase tracking-widest text-faint">
               Public receipt
             </span>
@@ -221,7 +221,7 @@ export const Verdict = ({
         )}
 
         {slipped && reviewState === 'appeal_open' && (
-          <div className="mt-3 w-full rounded-2xl border border-border bg-surface p-4 text-left">
+          <div className="card-raised mt-3 w-full rounded-2xl border border-border bg-surface p-4 text-left">
             <span className="mono-caption text-xs uppercase tracking-widest text-faint">
               Appeal window
             </span>
@@ -242,7 +242,7 @@ export const Verdict = ({
               rows={3}
               placeholder="Why should this resolve in your favour?"
               aria-label="Reason for your appeal"
-              className="mt-3 w-full resize-none rounded-xl border border-border bg-background p-3 text-sm text-foreground outline-none placeholder:text-faint focus:border-accent"
+              className="mt-3 w-full resize-none rounded-xl border border-border bg-background p-3 text-sm text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface"
             />
             <button
               type="button"
@@ -252,7 +252,7 @@ export const Verdict = ({
                 borderColor: 'var(--slipped)',
                 color: 'var(--slipped)',
               }}
-              className="mt-2 h-12 w-full rounded-full border text-sm font-semibold disabled:opacity-40"
+              className="mt-2 h-12 w-full rounded-full border text-sm font-semibold transition-all hover:opacity-80 active:scale-[0.98] disabled:opacity-40"
             >
               {isSubmittingAppeal ? 'Submitting appeal' : 'Appeal this verdict'}
             </button>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const MAX_INTENTION = 140;
 
@@ -13,7 +13,16 @@ interface StakeFormProps {
   /** From lib/session, so demo mode and the API agree on the options. */
   stakeOptions: readonly number[];
   durationSeconds: number;
+  onBack: () => void;
   onStart: () => void;
+}
+
+function parseStake(value: string): number | null {
+  const normalized = value.trim();
+  if (normalized === '') return null;
+  const parsed = Number(normalized);
+  if (!Number.isFinite(parsed) || parsed <= 0) return null;
+  return parsed;
 }
 
 function describeDuration(seconds: number): string {
@@ -36,14 +45,50 @@ export const StakeForm = ({
   onStakeChange,
   stakeOptions,
   durationSeconds,
+  onBack,
   onStart,
 }: StakeFormProps) => {
   const [touched, setTouched] = useState(false);
+  const [customStake, setCustomStake] = useState(
+    stakeOptions.includes(stakeHbar) ? '' : String(stakeHbar),
+  );
   const tooShort = intention.trim().length < 8;
+  const parsedCustomStake = parseStake(customStake);
+  const hasCustomStake = customStake.trim() !== '';
+  const invalidCustomStake = hasCustomStake && parsedCustomStake === null;
+
+  useEffect(() => {
+    if (stakeOptions.includes(stakeHbar)) {
+      setCustomStake('');
+      return;
+    }
+
+    setCustomStake(String(stakeHbar));
+  }, [stakeHbar, stakeOptions]);
+
+  const selectPresetStake = (option: number) => {
+    setCustomStake('');
+    onStakeChange(option);
+  };
+
+  const updateCustomStake = (value: string) => {
+    setCustomStake(value);
+    const parsed = parseStake(value);
+    if (parsed !== null) {
+      onStakeChange(parsed);
+    }
+  };
 
   return (
-    <div className="flex w-full flex-col gap-7">
-      <div>
+    <div className="animate-fade-up flex w-full flex-col gap-7">
+      <div className="flex flex-col gap-4">
+        <button
+          type="button"
+          onClick={onBack}
+          className="w-fit text-sm font-medium text-muted underline underline-offset-4"
+        >
+          Back
+        </button>
         <Typography variant="heading" level={2} className="text-foreground">
           What will you do?
         </Typography>
@@ -65,7 +110,7 @@ export const StakeForm = ({
           placeholder="Finish the settlement agent and get one payout working end to end"
           aria-label="Your intention for this session"
           aria-invalid={touched && tooShort}
-          className="w-full resize-none rounded-2xl border border-border bg-surface p-4 text-base leading-relaxed text-foreground outline-none placeholder:text-faint focus:border-accent"
+          className="w-full resize-none rounded-2xl border border-border bg-surface p-4 text-base leading-relaxed text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
         />
         <div className="mt-1.5 flex items-center justify-between">
           <span className="text-xs text-slipped">
@@ -83,12 +128,12 @@ export const StakeForm = ({
         </legend>
         <div className="grid auto-cols-fr grid-flow-col gap-2">
           {stakeOptions.map((option) => {
-            const selected = option === stakeHbar;
+            const selected = option === stakeHbar && customStake.trim() === '';
             return (
               <button
                 key={option}
                 type="button"
-                onClick={() => onStakeChange(option)}
+                onClick={() => selectPresetStake(option)}
                 aria-pressed={selected}
                 style={
                   selected
@@ -100,8 +145,10 @@ export const StakeForm = ({
                     : undefined
                 }
                 className={[
-                  'h-12 rounded-2xl border text-sm font-semibold transition-colors',
-                  selected ? '' : 'border-border bg-surface text-muted',
+                  'h-12 rounded-2xl border text-sm font-semibold transition-all duration-150 active:scale-[0.96]',
+                  selected
+                    ? 'scale-[1.03]'
+                    : 'border-border bg-surface text-muted hover:scale-[1.03] hover:border-muted hover:text-foreground',
                 ].join(' ')}
               >
                 {option} ℏ
@@ -109,9 +156,29 @@ export const StakeForm = ({
             );
           })}
         </div>
+        <div className="mt-3">
+          <label className="mono-caption mb-2 block text-xs uppercase tracking-widest text-faint">
+            Other amount
+          </label>
+          <input
+            type="number"
+            min="0.01"
+            step="0.01"
+            inputMode="decimal"
+            value={customStake}
+            onChange={(e) => updateCustomStake(e.target.value)}
+            placeholder="Enter any HBAR amount"
+            aria-label="Custom stake amount in HBAR"
+            aria-invalid={invalidCustomStake}
+            className="h-12 w-full rounded-2xl border border-border bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
+          />
+          <div className="mt-1.5 text-xs text-slipped">
+            {invalidCustomStake ? 'Enter a positive HBAR amount.' : ''}
+          </div>
+        </div>
       </fieldset>
 
-      <div className="rounded-2xl border border-border bg-surface p-4">
+      <div className="rounded-2xl border border-border bg-surface p-4 card-raised">
         <Typography variant="body" level={4} className="text-muted">
           Your {stakeHbar} ℏ is held on Hedera testnet for{' '}
           {describeDuration(durationSeconds)}. Keep the commitment and it
@@ -124,7 +191,7 @@ export const StakeForm = ({
         variant="primary"
         size="lg"
         fullWidth
-        disabled={tooShort}
+        disabled={tooShort || invalidCustomStake}
         onClick={onStart}
       >
         Start session

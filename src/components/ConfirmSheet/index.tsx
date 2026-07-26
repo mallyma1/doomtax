@@ -56,7 +56,7 @@ export const ConfirmSheet = ({
         aria-modal="true"
         aria-labelledby="disarm-title"
         tabIndex={-1}
-        className="relative rounded-t-3xl border-t border-border bg-surface px-6 pb-9 pt-5 outline-none"
+        className="animate-sheet-up relative rounded-t-3xl border-t border-border bg-surface px-6 pb-9 pt-5 outline-none"
       >
         <div
           className="mx-auto mb-5 h-1 w-10 rounded-full bg-border"
@@ -83,7 +83,7 @@ export const ConfirmSheet = ({
           <button
             type="button"
             onClick={onCancel}
-            className="h-12 rounded-full text-sm font-semibold text-muted"
+            className="h-12 rounded-full text-sm font-semibold text-muted transition-colors hover:text-foreground"
           >
             Keep going
           </button>

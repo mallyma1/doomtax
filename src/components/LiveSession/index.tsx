@@ -37,8 +37,8 @@ export const LiveSession = ({
       : `of ${Math.round(totalSeconds / 60)} minutes`;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-between gap-6 py-2">
-      <div className="w-full rounded-2xl border border-border bg-surface px-4 py-3">
+    <div className="animate-fade-up flex h-full w-full flex-col items-center justify-between gap-6 py-2">
+      <div className="card-raised w-full rounded-2xl border border-border bg-surface px-4 py-3">
         <Typography variant="body" level={3} className="text-foreground">
           {intention}
         </Typography>
@@ -52,7 +52,7 @@ export const LiveSession = ({
 
       <div className="flex w-full items-center justify-center gap-3">
         <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1.5">
-          <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+          <span className="animate-dot-live size-1.5 rounded-full bg-accent" aria-hidden="true" />
           <span className="tabular text-sm font-semibold text-accent">
             {stakeHbar} ℏ at stake
           </span>
@@ -79,7 +79,7 @@ export const LiveSession = ({
         <button
           type="button"
           onClick={onRequestDisarm}
-          className="py-1 text-sm text-faint underline underline-offset-4"
+          className="py-1 text-sm text-faint underline underline-offset-4 transition-colors hover:text-muted"
         >
           Disarm this session
         </button>
