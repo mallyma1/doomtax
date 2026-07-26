@@ -125,13 +125,26 @@ written in `src/hedera/schedule.ts` but **not yet wired into the session flow** 
 overclaim, so it is listed here as what it is.
 
 ### 🧠 0G, Best AI Product ($6,000) ⚪
-**Focus Coach** runs on 0G Compute, TEE-sealed. Encrypted session history on 0G
-Storage, key held by you. `src/ai/coach.ts` · attestation pending · Agentic ID pending
+**Focus Coach** runs on 0G Compute through two server-side paths:
 
-**Not yet proven live.** The code path is complete and the wallet reaches
-Galileo testnet, but no 0G ledger has been provisioned for it (the wallet is
-under `addLedger()`'s 3 OG minimum), so `askCoach()` fails safe to `'kept'` and
-a real inference call has never fired. Tracked as #52.
+- **Broker path** — wallet + on-chain ledger, with response attestation
+  verification. This is the TEE-verified path.
+- **API-key path** — a Router base URL or provider-scoped endpoint plus a
+  prepaid key, simpler to operate, but **no per-response attestation**.
+
+Both are wired in `src/ai/coach.ts`; the API-key path is selected by
+`ZG_COMPUTE_API_KEY` (legacy `ZG_ROUTER_API_KEY` still works), otherwise the
+broker path runs. Set `ZG_COMPUTE_URL` to either a Router base URL such as
+`https://router-api.0g.ai/v1` or a provider-scoped endpoint from `pc.0g.ai`
+such as `https://compute-network-27.integratenetwork.work`, and choose the
+model with `ZG_COMPUTE_MODEL` (for example `claude-fable-5`).
+
+**Not yet proven live.** The code path is complete, but a live inference call
+still depends on funded 0G infrastructure. The app fails safe to `'kept'` when
+the coach is unavailable, and reports whether the coach actually answered so a
+fallback does not masquerade as a real verdict. The 0G endpoint choice is
+configuration, not a rewrite: the repo now supports funded mainnet 0G by env,
+while Hedera remains testnet-only. Tracked as #52.
 
 ### 🤳 World, Selfie Check Beta ($1,750) ⚪
 Liveness at claim, not login. Testing doc:

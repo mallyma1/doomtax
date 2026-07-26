@@ -1,5 +1,6 @@
 'use client';
 import { walletAuth } from '@/auth/wallet';
+import { WORLD_MINI_APP_URL } from '@/lib/world';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
 import { useSession } from 'next-auth/react';
@@ -16,9 +17,15 @@ export const AuthButton = () => {
   const hasAttemptedAuth = useRef(false);
 
   const onClick = useCallback(async () => {
-    if (!isInstalled || isPending) {
+    if (isPending) {
       return;
     }
+
+    if (!isInstalled) {
+      window.location.assign(WORLD_MINI_APP_URL);
+      return;
+    }
+
     setIsPending(true);
     try {
       await walletAuth();
@@ -49,23 +56,37 @@ export const AuthButton = () => {
   }
 
   return (
-    <LiveFeedback
-      label={{
-        failed: 'Failed to login',
-        pending: 'Logging in',
-        success: 'Logged in',
-      }}
-      state={isPending ? 'pending' : undefined}
-    >
-      <Button
-        onClick={onClick}
-        disabled={isPending}
-        size="lg"
-        variant="tertiary"
-        fullWidth
+    <div className="flex flex-col gap-2">
+      <LiveFeedback
+        label={{
+          failed: 'Failed to login',
+          pending: 'Logging in',
+          success: 'Logged in',
+        }}
+        state={isPending ? 'pending' : undefined}
       >
-        Connect World App
-      </Button>
-    </LiveFeedback>
+        <Button
+          onClick={onClick}
+          disabled={isPending}
+          size="lg"
+          variant="tertiary"
+          fullWidth
+        >
+          Connect World App
+        </Button>
+      </LiveFeedback>
+      {!isInstalled && (
+        <p className="text-center text-sm text-muted">
+          Not in World App?{' '}
+          <a
+            href={WORLD_MINI_APP_URL}
+            className="font-medium text-foreground underline underline-offset-4"
+          >
+            Open DoomTax in World App
+          </a>
+          .
+        </p>
+      )}
+    </div>
   );
 };
