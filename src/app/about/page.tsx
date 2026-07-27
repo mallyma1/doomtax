@@ -2,6 +2,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { Page } from '@/components/PageLayout';
 import { PoweredBy } from '@/components/PoweredBy';
 import { WORLD_MINI_APP_URL } from '@/lib/world';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const HOW_IT_WORKS = [
@@ -178,6 +179,54 @@ export default function AboutPage() {
               the app refuses to collect. That transparency is part of the
               product, not an extra.
             </p>
+          </section>
+
+          <section className="rounded-2xl border border-border bg-surface px-5 py-6">
+            <p className="mono-caption text-accent">GETTING IN</p>
+            <h2 className="mt-2 text-xl font-semibold text-foreground">
+              How to open DoomTax
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted max-w-[36ch]">
+              DoomTax runs as a mini app inside World App. Use the QR code
+              below to open it on your phone.
+            </p>
+            <div className="mt-5 flex justify-center">
+              <div className="rounded-2xl bg-white p-3">
+                <Image
+                  src="/qr-doomtax.png"
+                  alt="Scan to open DoomTax in World App"
+                  width={180}
+                  height={180}
+                />
+              </div>
+            </div>
+            <ol className="mt-5 space-y-3">
+              <li className="flex gap-3 text-sm text-muted">
+                <span className="mono-caption mt-0.5 shrink-0 text-faint">1.</span>
+                <span className="max-w-[36ch] leading-relaxed">
+                  Get World App — it&apos;s a free app, like any other.{' '}
+                  <a href="https://world.org/download" className="text-foreground underline underline-offset-4" target="_blank" rel="noopener noreferrer">world.org/download</a>
+                </span>
+              </li>
+              <li className="flex gap-3 text-sm text-muted">
+                <span className="mono-caption mt-0.5 shrink-0 text-faint">2.</span>
+                <span className="max-w-[36ch] leading-relaxed">Open World App and tap the QR scanner on the main tab, then point it at this code.</span>
+              </li>
+              <li className="flex gap-3 text-sm text-muted">
+                <span className="mono-caption mt-0.5 shrink-0 text-faint">3.</span>
+                <span className="max-w-[36ch] leading-relaxed">DoomTax opens inside World App. Tap Connect — it signs one message to say it&apos;s you. Nothing is charged, nothing moves. DoomTax sets up your session account automatically.</span>
+              </li>
+              <li className="flex gap-3 text-sm text-muted">
+                <span className="mono-caption mt-0.5 shrink-0 text-faint">4.</span>
+                <span className="max-w-[36ch] leading-relaxed">Runs on Hedera testnet — stakes carry no real-world money today.</span>
+              </li>
+            </ol>
+            <div className="mt-5 border-t border-border pt-4 text-center text-sm text-muted">
+              On your phone already?{' '}
+              <a href={WORLD_MINI_APP_URL} className="font-medium text-foreground underline underline-offset-4">
+                Open DoomTax in World App
+              </a>
+            </div>
           </section>
 
           <section className="rounded-3xl border border-accent/30 bg-accent/10 px-5 py-6">
