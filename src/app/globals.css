@@ -221,6 +221,17 @@ p {
 }
 
 /* Live session badge — pulsing dot */
+/* Glow utilities for partner activity pills */
+.pill-live {
+  box-shadow: 0 0 12px 2px var(--accent-glow);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.pill-settled {
+  box-shadow: 0 0 12px 2px var(--kept-glow);
+  border-color: rgba(74, 222, 128, 0.45);
+}
+
 @keyframes dot-live {
   0%,
   100% {

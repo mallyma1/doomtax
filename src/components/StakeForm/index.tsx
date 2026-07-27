@@ -1,10 +1,16 @@
 'use client';
 
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { UsdHint } from '@/components/UsdHint';
 
 const MAX_INTENTION = 140;
+
+const EXAMPLE_INTENTIONS = [
+  'Write 300 words of the report',
+  'Clear my inbox to zero',
+  'Finish and push one ticket',
+] as const;
 
 interface StakeFormProps {
   intention: string;
@@ -14,6 +20,7 @@ interface StakeFormProps {
   /** From lib/session, so demo mode and the API agree on the options. */
   stakeOptions: readonly number[];
   durationSeconds: number;
+  demoMode?: boolean;
   onBack: () => void;
   onStart: () => void;
 }
@@ -46,6 +53,7 @@ export const StakeForm = ({
   onStakeChange,
   stakeOptions,
   durationSeconds,
+  demoMode = false,
   onBack,
   onStart,
 }: StakeFormProps) => {
@@ -53,6 +61,7 @@ export const StakeForm = ({
   const [customStake, setCustomStake] = useState(
     stakeOptions.includes(stakeHbar) ? '' : String(stakeHbar),
   );
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const tooShort = intention.trim().length < 8;
   const parsedCustomStake = parseStake(customStake);
   const hasCustomStake = customStake.trim() !== '';
@@ -81,12 +90,34 @@ export const StakeForm = ({
   };
 
   return (
-    <div className="animate-fade-up flex w-full flex-col gap-7">
+    <div className="animate-fade-up flex w-full flex-col gap-6">
+      {/* Micro-stepper */}
+      <div className="flex items-center justify-center gap-3">
+        {(['intention', 'stake', 'go'] as const).map((step, i, arr) => (
+          <div key={step} className="flex items-center gap-3">
+            <span className={`mono-caption text-[10px] ${i === 0 ? 'text-accent' : 'text-faint'}`}>
+              {step}
+            </span>
+            {i < arr.length - 1 && (
+              <span className="text-faint text-xs">→</span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {demoMode && (
+        <div className="flex items-center justify-center gap-2">
+          <span className="mono-caption rounded-full border border-border px-2.5 py-1 text-faint">
+            DEMO · 30-SECOND SESSION
+          </span>
+        </div>
+      )}
+
       <div className="flex flex-col gap-4">
         <button
           type="button"
           onClick={onBack}
-          className="w-fit text-sm font-medium text-muted underline underline-offset-4"
+          className="-my-3 w-fit py-3 text-sm font-medium text-muted underline underline-offset-4 min-h-[44px]"
         >
           Back
         </button>
@@ -100,8 +131,26 @@ export const StakeForm = ({
         </Typography>
       </div>
 
+      {/* Example intention chips */}
+      <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {EXAMPLE_INTENTIONS.map((example) => (
+          <button
+            key={example}
+            type="button"
+            onClick={() => {
+              onIntentionChange(example);
+              textareaRef.current?.focus();
+            }}
+            className="shrink-0 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:border-muted hover:text-foreground"
+          >
+            {example}
+          </button>
+        ))}
+      </div>
+
       <div>
         <textarea
+          ref={textareaRef}
           value={intention}
           onChange={(e) =>
             onIntentionChange(e.target.value.slice(0, MAX_INTENTION))
@@ -122,6 +171,9 @@ export const StakeForm = ({
             {intention.length}/{MAX_INTENTION}
           </span>
         </div>
+        <p className="mt-1.5 text-xs text-faint max-w-[36ch]">
+          Good intentions are checkable: name the thing and when it counts as done.
+        </p>
       </div>
 
       <fieldset className="w-full">

@@ -169,3 +169,28 @@ and word-only on the trust spectrum.
 - World App: MiniKit login, World ID Selfie Check on kept verdict.
 - Session flow: idle → draft → running → claim → submit → verdict → appeal
   window, all client-side state with no dead ends.
+
+---
+
+## AI improvement reports (API-key integrations)
+
+**What was planned:** Let a user attach their own model API key (e.g. an
+OpenAI-compatible endpoint) so a personal agent can read their own session
+history — kept-rate trend visible only to them, never ranked — and produce
+a private "areas for improvement" report. The agent would identify patterns
+in kept vs slipped sessions and surface concrete suggestions without any of
+that analysis leaving the user's own account.
+
+**Why it did not ship:** Weekend scope. More importantly, any analysis must
+stay strictly per-user and private to honour the no-leaderboard,
+no-visible-kept-rate product rules. The right architecture (user-held API
+key, server-side proxy, no cross-user data) needs careful design and a
+dedicated privacy review before shipping.
+
+**What to build:** A settings screen where the user pastes their own
+OpenAI-compatible API key (stored only in their session/local storage, never
+on DoomTax servers); a lightweight server proxy that forwards only their own
+session history; a "trends" view showing their personal streak cadence and a
+text report from the model. Kept-rate aggregates shown only in absolute
+numbers, never ranked against others.
+

@@ -1,6 +1,7 @@
 'use client';
 
 import { ExplainSheet, ExplainTopic } from '@/components/ExplainSheet';
+import { useActivity } from '@/providers/ActivityContext';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -9,29 +10,50 @@ const PARTNERS: {
   detail: string;
   logo: string;
   topic: ExplainTopic;
+  activityKey: 'world' | 'hedera' | 'zeroG';
 }[] = [
   {
     name: 'Hedera',
     detail: 'settlement',
     logo: '/logos/hedera.svg',
     topic: 'hedera-settlement',
+    activityKey: 'hedera',
   },
   {
     name: '0G',
     detail: 'coach',
     logo: '/logos/0g.svg',
     topic: '0g-coach',
+    activityKey: 'zeroG',
   },
   {
     name: 'World',
     detail: 'mini app',
     logo: '/logos/world.svg',
     topic: 'world-minikit',
+    activityKey: 'world',
   },
 ];
 
+function getPillClass(key: string, activity: ReturnType<typeof useActivity>): string {
+  if (key === 'hedera') {
+    if (activity.hedera === 'active') return 'pill-live';
+    if (activity.hedera === 'settled') return 'pill-settled';
+  }
+  if (key === 'zeroG' && activity.zeroG === 'active') return 'pill-live';
+  if (key === 'world' && activity.world) return 'pill-live';
+  return '';
+}
+
+function getLogoClass(key: string, activity: ReturnType<typeof useActivity>): string {
+  if (key === 'hedera' && activity.hedera === 'active') return 'animate-dot-live';
+  if (key === 'zeroG' && activity.zeroG === 'active') return 'animate-dot-live';
+  return '';
+}
+
 export const PoweredBy = () => {
   const [explain, setExplain] = useState<ExplainTopic | null>(null);
+  const activity = useActivity();
 
   return (
     <div className="mx-auto mt-4 flex w-full max-w-xl flex-col items-center gap-3 text-center">
@@ -42,14 +64,14 @@ export const PoweredBy = () => {
             type="button"
             aria-label={`Learn about ${partner.name}`}
             onClick={() => setExplain(partner.topic)}
-            className="pill-interactive inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5"
+            className={`pill-interactive inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 transition-[box-shadow,border-color] duration-500 ${getPillClass(partner.activityKey, activity)}`}
           >
             <Image
               src={partner.logo}
               alt=""
               width={16}
               height={16}
-              className="size-4 opacity-80"
+              className={`size-4 opacity-80 ${getLogoClass(partner.activityKey, activity)}`}
             />
             <span className="text-sm font-medium text-foreground">
               {partner.name}

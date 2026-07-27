@@ -23,6 +23,7 @@ import {
   commitmentHash,
 } from '@/lib/session';
 import { Button } from '@worldcoin/mini-apps-ui-kit-react';
+import { useActivity } from '@/providers/ActivityContext';
 import { useEffect, useRef, useState } from 'react';
 
 export type SessionPhase =
@@ -121,6 +122,7 @@ export const SessionFlow = ({
   const [isSubmittingAppeal, setIsSubmittingAppeal] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [disarmOpen, setDisarmOpen] = useState(false);
+  const { setHedera, setZeroG } = useActivity();
 
   // Page Visibility integrity tracking: foreground time and interruptions.
   const foregroundTimeRef = useRef(0);
@@ -201,6 +203,8 @@ export const SessionFlow = ({
   const returnToIdle = () => {
     setIntention('');
     setStakeHbar(STAKE_OPTIONS_HBAR[0]);
+    setHedera('idle');
+    setZeroG('idle');
     setPhase('idle');
   };
 
@@ -243,6 +247,8 @@ export const SessionFlow = ({
     setPhase('submitting');
     setErrorMessage(null);
     setResponseStatus(null);
+    setZeroG('active');
+    setHedera('active');
 
     try {
       const hash = await commitmentHash(sessionId, intention);
@@ -272,6 +278,8 @@ export const SessionFlow = ({
       setAppealResponse(null);
       setAppealError(null);
       setNowMs(submittedAt);
+      setZeroG('idle');
+      setHedera(payload.settlement?.ok && payload.settlement?.moved ? 'settled' : 'idle');
 
       if (!response.ok || !payload.settlement.ok) {
         setErrorMessage(
@@ -405,6 +413,7 @@ export const SessionFlow = ({
         onStakeChange={setStakeHbar}
         stakeOptions={STAKE_OPTIONS_HBAR}
         durationSeconds={SESSION_DURATION_SECONDS}
+        demoMode={DEMO_MODE}
         onBack={returnToIdle}
         onStart={startSession}
       />
@@ -420,6 +429,7 @@ export const SessionFlow = ({
           totalSeconds={SESSION_DURATION_SECONDS}
           stakeHbar={stakeHbar}
           interruptions={interruptions}
+          demoMode={DEMO_MODE}
           onFinishEarly={() => setPhase('claim')}
           onRequestDisarm={() => setDisarmOpen(true)}
         />

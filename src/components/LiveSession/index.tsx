@@ -10,8 +10,16 @@ interface LiveSessionProps {
   totalSeconds: number;
   stakeHbar: number;
   interruptions: number;
+  demoMode?: boolean;
   onFinishEarly: () => void;
   onRequestDisarm: () => void;
+}
+
+function getMilestoneCopy(progress: number): string | null {
+  if (progress < 0.25) return 'Settle in.';
+  if (progress < 0.5) return null;
+  if (progress < 0.85) return 'Halfway — hold the line.';
+  return 'Final stretch.';
 }
 
 /**
@@ -27,6 +35,7 @@ export const LiveSession = ({
   totalSeconds,
   stakeHbar,
   interruptions,
+  demoMode = false,
   onFinishEarly,
   onRequestDisarm,
 }: LiveSessionProps) => {
@@ -36,6 +45,11 @@ export const LiveSession = ({
     totalSeconds < 60
       ? `of ${totalSeconds} seconds`
       : `of ${Math.round(totalSeconds / 60)} minutes`;
+  const milestoneCopy = getMilestoneCopy(progress);
+
+  // Glow intensity increases as time depletes
+  const glowStrength = Math.max(0, Math.min(1, progress));
+  const isFinalStretch = progress >= 0.85;
 
   return (
     <div className="animate-fade-up flex h-full w-full flex-col items-center justify-between gap-6 py-2">
@@ -43,13 +57,36 @@ export const LiveSession = ({
         <Typography variant="body" level={3} className="text-foreground">
           {intention}
         </Typography>
+        {demoMode && (
+          <div className="mt-2 flex items-center gap-2">
+            <span className="mono-caption rounded-full border border-border px-2.5 py-1 text-faint">
+              DEMO · 30-SECOND SESSION
+            </span>
+          </div>
+        )}
       </div>
 
-      <CountdownRing
-        remaining={secondsLeft}
-        progress={progress}
-        caption={caption}
-      />
+      <div
+        className="relative"
+        style={{
+          filter: `drop-shadow(0 0 ${8 + glowStrength * 16}px rgba(245,158,11,${0.15 + glowStrength * 0.25}))`,
+        }}
+      >
+        <CountdownRing
+          remaining={secondsLeft}
+          progress={progress}
+          caption={caption}
+        />
+      </div>
+
+      {milestoneCopy && (
+        <p
+          key={milestoneCopy}
+          className={`animate-fade-up mono-caption text-center text-faint ${isFinalStretch ? 'text-accent' : ''}`}
+        >
+          {milestoneCopy}
+        </p>
+      )}
 
       <div className="flex w-full flex-col items-center gap-1">
         <div className="flex items-center gap-3">
@@ -59,7 +96,10 @@ export const LiveSession = ({
               {stakeHbar} ℏ at stake
             </span>
           </span>
-          <span className="mono-caption text-xs text-faint">
+          <span
+            key={interruptions}
+            className={`mono-caption text-xs text-faint ${interruptions > 0 ? 'animate-pop-in' : ''}`}
+          >
             {interruptions === 0
               ? 'no interruptions'
               : `${interruptions} ${
@@ -70,7 +110,7 @@ export const LiveSession = ({
         <UsdHint hbar={stakeHbar} />
       </div>
 
-      <div className="flex w-full flex-col items-center gap-3">
+      <div className="flex w-full flex-col items-center gap-3 mt-8 pb-2">
         <Button variant="primary" size="lg" fullWidth onClick={onFinishEarly}>
           Finish early
         </Button>
@@ -83,7 +123,7 @@ export const LiveSession = ({
         <button
           type="button"
           onClick={onRequestDisarm}
-          className="py-1 text-sm text-faint underline underline-offset-4 transition-colors hover:text-muted"
+          className="-my-3 py-3 text-sm text-faint underline underline-offset-4 transition-colors hover:text-muted min-h-[44px]"
         >
           Disarm this session
         </button>
