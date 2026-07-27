@@ -160,6 +160,28 @@ and word-only on the trust spectrum.
 
 ---
 
+## OCR attachment verification
+
+**What shipped:** A local-only file picker in ArtifactForm. The user can
+attach a photo; a SHA-256 hash is computed in the browser using
+`crypto.subtle.digest`, truncated and shown on screen, and the image stays
+on the device. Nothing is uploaded; the hash is never sent to the server.
+The coach still judges the text artifact only.
+
+**What was planned:** The full pipeline — image attached client-side → hash
+committed alongside the intention's commitment hash (same salted SHA-256
+pattern, never the image) → OCR/vision extraction on 0G Compute so the raw
+image never reaches DoomTax servers → extracted text appended to the coach's
+evidence → verdict references the attachment hash so anyone can later prove
+the judged evidence matches the file the user still holds. Hash only on HCS,
+never the image or the extracted text.
+
+**Why deferred:** 0G vision-model availability and weekend scope. The honest
+disclosure ("OCR reading on 0G is coming — today the coach judges your text
+only") ships in the UI so the user knows exactly where they stand.
+
+---
+
 ## What is working and demoable
 
 - Hedera testnet: stake transfer → pending escrow → settlement on verdict →

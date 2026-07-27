@@ -1,9 +1,18 @@
 'use client';
 
+import { sha256Hex } from '@/lib/session';
 import { Button, Spinner, Typography } from '@worldcoin/mini-apps-ui-kit-react';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useRef, useState } from 'react';
 
 const MAX_ARTIFACT = 600;
+
+interface AttachmentState {
+  name: string;
+  size: number;
+  previewUrl: string;
+  hashHex: string;
+}
 
 interface ArtifactFormProps {
   intention: string;
@@ -17,6 +26,16 @@ function formatClock(totalSeconds: number): string {
   const m = Math.floor(totalSeconds / 60);
   const s = totalSeconds % 60;
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function truncateHash(hex: string): string {
+  return `${hex.slice(0, 6)}…${hex.slice(-4)}`;
 }
 
 /**
@@ -36,6 +55,26 @@ export const ArtifactForm = ({
   onSubmit,
 }: ArtifactFormProps) => {
   const [draft, setDraft] = useState('');
+  const [attachment, setAttachment] = useState<AttachmentState | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFile = async (file: File) => {
+    const previewUrl = URL.createObjectURL(file);
+    const buffer = await file.arrayBuffer();
+    const hashHex = await sha256Hex(buffer);
+    if (attachment?.previewUrl) {
+      URL.revokeObjectURL(attachment.previewUrl);
+    }
+    setAttachment({ name: file.name, size: file.size, previewUrl, hashHex });
+  };
+
+  const removeAttachment = () => {
+    if (attachment?.previewUrl) {
+      URL.revokeObjectURL(attachment.previewUrl);
+    }
+    setAttachment(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   if (submitting) {
     return (
@@ -83,30 +122,89 @@ export const ArtifactForm = ({
           aria-label="Your artifact for this session"
           className="w-full resize-none rounded-2xl border border-border bg-surface p-4 text-base leading-relaxed text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
         />
-        <div className="mt-1.5 text-right text-xs text-faint">
+        <div className="mt-1.5 text-end text-xs text-faint">
           {draft.length}/{MAX_ARTIFACT}
         </div>
       </div>
 
+      {/* Attachment */}
+      <div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="sr-only"
+          aria-label="Attach a photo of your work"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) handleFile(file);
+          }}
+        />
+        {attachment ? (
+          <div className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-3">
+            <Image
+              src={attachment.previewUrl}
+              alt="Attachment preview"
+              width={80}
+              height={80}
+              className="h-20 w-20 shrink-0 rounded-xl object-cover"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm text-foreground">{attachment.name}</p>
+              <p className="text-xs text-faint">{formatBytes(attachment.size)}</p>
+              <p
+                className="mono-caption mt-1 text-xs text-faint"
+                title={attachment.hashHex}
+              >
+                {truncateHash(attachment.hashHex)}
+              </p>
+            </div>
+            <button
+              type="button"
+              aria-label="Remove attachment"
+              onClick={removeAttachment}
+              className="shrink-0 p-2 text-faint hover:text-foreground"
+            >
+              ×
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-border px-4 py-4 text-sm text-muted transition-colors hover:border-muted hover:text-foreground"
+          >
+            <span aria-hidden="true">📎</span>
+            Attach a photo of your work — optional
+          </button>
+        )}
+        <p className="mt-2 text-xs leading-relaxed text-faint max-w-[36ch]">
+          Stays on your device. A fingerprint (hash) is computed locally so a
+          future version can verify it on-chain. OCR reading on 0G is coming —
+          today the coach judges your text only.
+        </p>
+      </div>
+
       <div className="card-raised rounded-2xl border border-border bg-surface p-4">
-        <span className="mono-caption text-xs uppercase tracking-widest text-faint">
+        <span className="mono-caption text-xs text-faint">
           What your coach receives
         </span>
         <ul className="mt-2.5 flex flex-col gap-1.5 text-sm text-muted">
           <li className="flex gap-2">
-            <span className="text-accent" aria-hidden="true">
-              +
-            </span>
+            <span className="text-accent" aria-hidden="true">+</span>
             Your intention and the text above
           </li>
           <li className="flex gap-2">
-            <span className="text-accent" aria-hidden="true">
-              +
-            </span>
+            <span className="text-accent" aria-hidden="true">+</span>
             <span className="tabular">
               {held} in the foreground, {interruptions}{' '}
               {interruptions === 1 ? 'interruption' : 'interruptions'}
             </span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-faint" aria-hidden="true">−</span>
+            Your attachment — it never leaves this phone (yet)
           </li>
         </ul>
         <p className="mt-3 border-t border-border pt-3 text-xs leading-relaxed text-faint">

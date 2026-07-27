@@ -5,6 +5,14 @@ export function hbarToTinybar(hbar: number): number {
   return Math.round(hbar * TINYBAR_PER_HBAR);
 }
 
+/** Compute a hex-encoded SHA-256 of any ArrayBuffer. */
+export async function sha256Hex(data: ArrayBuffer): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 /**
  * The commitment hash is what lets HCS carry proof that an intention was
  * fixed at session start without the intention text itself ever reaching a
@@ -20,10 +28,7 @@ export async function commitmentHash(
   intention: string,
 ): Promise<string> {
   const encoded = new TextEncoder().encode(`${sessionId}:${intention}`);
-  const digest = await crypto.subtle.digest('SHA-256', encoded);
-  return Array.from(new Uint8Array(digest))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+  return sha256Hex(encoded.buffer as ArrayBuffer);
 }
 
 /**
