@@ -1,30 +1,73 @@
-const PARTNERS = [
-  { name: 'Hedera', detail: 'settlement' },
-  { name: '0G', detail: 'coach' },
-  { name: 'World', detail: 'mini app' },
-] as const;
+'use client';
+
+import Image from 'next/image';
+import { useState } from 'react';
+
+export type ExplainTopic =
+  | 'hedera-settlement'
+  | 'hcs-receipt'
+  | '0g-coach'
+  | 'world-minikit'
+  | 'streak-token';
+
+const PARTNERS: {
+  name: string;
+  detail: string;
+  logo: string;
+  topic: ExplainTopic;
+}[] = [
+  {
+    name: 'Hedera',
+    detail: 'settlement',
+    logo: '/logos/hedera.svg',
+    topic: 'hedera-settlement',
+  },
+  {
+    name: '0G',
+    detail: 'coach',
+    logo: '/logos/0g.svg',
+    topic: '0g-coach',
+  },
+  {
+    name: 'World',
+    detail: 'mini app',
+    logo: '/logos/world.svg',
+    topic: 'world-minikit',
+  },
+];
 
 export const PoweredBy = () => {
+  const [explain, setExplain] = useState<ExplainTopic | null>(null);
+
   return (
     <div className="mx-auto mt-4 flex w-full max-w-xl flex-col items-center gap-3 text-center">
       <div className="flex flex-wrap items-center justify-center gap-2">
         {PARTNERS.map((partner) => (
-          <span
+          <button
             key={partner.name}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5"
+            type="button"
+            aria-label={`Learn about ${partner.name}`}
+            onClick={() => setExplain(partner.topic)}
+            className="pill-interactive inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5"
           >
-            <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+            <Image
+              src={partner.logo}
+              alt=""
+              width={16}
+              height={16}
+              className="size-4 opacity-80"
+            />
             <span className="text-sm font-medium text-foreground">
               {partner.name}
             </span>
             <span className="text-xs text-faint">{partner.detail}</span>
-          </span>
+          </button>
         ))}
       </div>
-      <p className="max-w-[28rem] text-xs leading-relaxed text-faint">
-        Powered by Hedera for settlement, 0G for the coach, and World for the
-        Mini App experience.
-      </p>
+      {/* ExplainSheet rendered here — Phase D wires the full sheet */}
+      {explain !== null && (
+        <p className="text-xs text-faint">{explain}</p>
+      )}
     </div>
   );
 };
