@@ -2,6 +2,7 @@
 
 import { sha256Hex } from '@/lib/session';
 import { Button, Spinner, Typography } from '@worldcoin/mini-apps-ui-kit-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 
@@ -57,6 +58,7 @@ export const ArtifactForm = ({
   const [draft, setDraft] = useState('');
   const [attachment, setAttachment] = useState<AttachmentState | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('ArtifactForm');
 
   const handleFile = async (file: File) => {
     const previewUrl = URL.createObjectURL(file);
@@ -82,11 +84,10 @@ export const ArtifactForm = ({
         <Spinner />
         <div>
           <Typography variant="heading" level={3} className="text-foreground">
-            Your coach is reading
+            {t('coachReading')}
           </Typography>
           <Typography variant="body" level={3} className="mt-1 text-muted">
-            Running privately on 0G, then settling on Hedera. This takes a
-            moment.
+            {t('coachReadingBody')}
           </Typography>
         </div>
       </div>
@@ -100,10 +101,10 @@ export const ArtifactForm = ({
     <div className="animate-fade-up flex w-full flex-col gap-6">
       <div>
         <Typography variant="heading" level={2} className="text-foreground">
-          Show your work
+          {t('heading')}
         </Typography>
         <Typography variant="body" level={3} className="mt-1 text-muted">
-          You committed to this:
+          {t('youCommitted')}
         </Typography>
         <div className="card-raised mt-3 rounded-2xl border border-border bg-surface px-4 py-3">
           <Typography variant="body" level={3} className="text-foreground">
@@ -118,8 +119,8 @@ export const ArtifactForm = ({
           onChange={(e) => setDraft(e.target.value.slice(0, MAX_ARTIFACT))}
           rows={6}
           autoFocus
-          placeholder="Paste what you produced, or describe what you finished and where it lives."
-          aria-label="Your artifact for this session"
+          placeholder={t('placeholderArtifact')}
+          aria-label={t('artifactLabel')}
           className="w-full resize-none rounded-2xl border border-border bg-surface p-4 text-base leading-relaxed text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
         />
         <div className="mt-1.5 text-end text-xs text-faint">
@@ -135,7 +136,7 @@ export const ArtifactForm = ({
           accept="image/*"
           capture="environment"
           className="sr-only"
-          aria-label="Attach a photo of your work"
+          aria-label={t('attachAriaLabel')}
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) handleFile(file);
@@ -145,7 +146,7 @@ export const ArtifactForm = ({
           <div className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-3">
             <Image
               src={attachment.previewUrl}
-              alt="Attachment preview"
+              alt={t('attachmentPreviewAlt')}
               width={80}
               height={80}
               className="h-20 w-20 shrink-0 rounded-xl object-cover"
@@ -162,7 +163,7 @@ export const ArtifactForm = ({
             </div>
             <button
               type="button"
-              aria-label="Remove attachment"
+              aria-label={t('removeAttachment')}
               onClick={removeAttachment}
               className="shrink-0 p-2 text-faint hover:text-foreground"
             >
@@ -176,40 +177,36 @@ export const ArtifactForm = ({
             className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-border px-4 py-4 text-sm text-muted transition-colors hover:border-muted hover:text-foreground"
           >
             <span aria-hidden="true">📎</span>
-            Attach a photo of your work — optional
+            {t('attachButton')}
           </button>
         )}
         <p className="mt-2 text-xs leading-relaxed text-faint max-w-[36ch]">
-          Stays on your device. A fingerprint (hash) is computed locally so a
-          future version can verify it on-chain. OCR reading on 0G is coming —
-          today the coach judges your text only.
+          {t('attachCaption')}
         </p>
       </div>
 
       <div className="card-raised rounded-2xl border border-border bg-surface p-4">
         <span className="mono-caption text-xs text-faint">
-          What your coach receives
+          {t('coachReads')}
         </span>
         <ul className="mt-2.5 flex flex-col gap-1.5 text-sm text-muted">
           <li className="flex gap-2">
             <span className="text-accent" aria-hidden="true">+</span>
-            Your intention and the text above
+            {t('coachReceivesIntention')}
           </li>
           <li className="flex gap-2">
             <span className="text-accent" aria-hidden="true">+</span>
             <span className="tabular">
-              {held} in the foreground, {interruptions}{' '}
-              {interruptions === 1 ? 'interruption' : 'interruptions'}
+              {t('coachReceivesForeground', { held, count: interruptions })}
             </span>
           </li>
           <li className="flex gap-2">
             <span className="text-faint" aria-hidden="true">−</span>
-            Your attachment — it never leaves this phone (yet)
+            {t('coachNeverReceivesAttachment')}
           </li>
         </ul>
         <p className="mt-3 border-t border-border pt-3 text-xs leading-relaxed text-faint">
-          Never your screen, your browsing, your keystrokes, or anything from
-          other apps.
+          {t('coachPrivacy')}
         </p>
       </div>
 
@@ -220,7 +217,7 @@ export const ArtifactForm = ({
         disabled={tooShort}
         onClick={() => onSubmit(draft)}
       >
-        Submit for review
+        {t('submit')}
       </Button>
     </div>
   );

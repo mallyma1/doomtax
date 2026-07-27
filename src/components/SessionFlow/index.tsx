@@ -24,6 +24,7 @@ import {
 } from '@/lib/session';
 import { Button } from '@worldcoin/mini-apps-ui-kit-react';
 import { useActivity } from '@/providers/ActivityContext';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
 export type SessionPhase =
@@ -105,6 +106,7 @@ export const SessionFlow = ({
 }: {
   selfieAction?: string | null;
 }) => {
+  const t = useTranslations('SessionFlow');
   const [phase, setPhase] = useState<SessionPhase>('idle');
   const [intention, setIntention] = useState('');
   const [stakeHbar, setStakeHbar] = useState<number>(STAKE_OPTIONS_HBAR[0]);
@@ -268,7 +270,7 @@ export const SessionFlow = ({
 
       const payload = await response.json();
       if (!isSettleResponse(payload)) {
-        throw new Error('Unexpected settlement response shape.');
+        throw new Error(t('unexpectedSettlement'));
       }
 
       const submittedAt = Date.now();
@@ -285,7 +287,7 @@ export const SessionFlow = ({
         setErrorMessage(
           !payload.settlement.ok
             ? payload.settlement.error
-            : `Settlement failed with status ${response.status}.`,
+            : t('settlementFailedStatus', { status: response.status }),
         );
         setPhase('error');
         return;
@@ -296,7 +298,7 @@ export const SessionFlow = ({
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : 'Failed to submit settlement. Check your connection.',
+          : t('settlementSubmitFailed'),
       );
       setPhase('error');
     }
@@ -304,7 +306,7 @@ export const SessionFlow = ({
 
   const submitAppeal = async (reason: string) => {
     if (!sessionId || !result || completedAt === null) {
-      setAppealError('Appeal state is missing. Start a new session.');
+      setAppealError(t('appealStateMissing'));
       return;
     }
 
@@ -325,18 +327,18 @@ export const SessionFlow = ({
 
       const payload = await response.json();
       if (!isAppealResponse(payload)) {
-        throw new Error('Unexpected appeal response shape.');
+        throw new Error(t('unexpectedAppeal'));
       }
 
       setAppealResponse(payload);
       if (!response.ok || !payload.ok) {
-        setAppealError(payload.ok ? 'Appeal request failed.' : payload.error);
+        setAppealError(payload.ok ? t('appealRequestFailed') : payload.error);
       }
     } catch (error) {
       setAppealError(
         error instanceof Error
           ? error.message
-          : 'Failed to submit appeal. Check your connection.',
+          : t('appealSubmitFailed'),
       );
     } finally {
       setIsSubmittingAppeal(false);

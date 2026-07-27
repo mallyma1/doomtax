@@ -1,16 +1,14 @@
 'use client';
 
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { UsdHint } from '@/components/UsdHint';
 
 const MAX_INTENTION = 140;
 
-const EXAMPLE_INTENTIONS = [
-  'Write 300 words of the report',
-  'Clear my inbox to zero',
-  'Finish and push one ticket',
-] as const;
+const EXAMPLE_KEYS = ['exampleChip1', 'exampleChip2', 'exampleChip3'] as const;
+const STEP_KEYS = ['stepIntention', 'stepStake', 'stepGo'] as const;
 
 interface StakeFormProps {
   intention: string;
@@ -33,10 +31,12 @@ function parseStake(value: string): number | null {
   return parsed;
 }
 
-function describeDuration(seconds: number): string {
-  if (seconds < 60) return `${seconds} seconds`;
-  const minutes = Math.round(seconds / 60);
-  return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
+function describeDuration(
+  seconds: number,
+  tc: (key: 'secondsCount' | 'minutesCount', values: { count: number }) => string,
+): string {
+  if (seconds < 60) return tc('secondsCount', { count: seconds });
+  return tc('minutesCount', { count: Math.round(seconds / 60) });
 }
 
 /**
@@ -58,6 +58,8 @@ export const StakeForm = ({
   onStart,
 }: StakeFormProps) => {
   const [touched, setTouched] = useState(false);
+  const t = useTranslations('StakeForm');
+  const tc = useTranslations('Common');
   const [customStake, setCustomStake] = useState(
     stakeOptions.includes(stakeHbar) ? '' : String(stakeHbar),
   );
@@ -93,10 +95,10 @@ export const StakeForm = ({
     <div className="animate-fade-up flex w-full flex-col gap-6">
       {/* Micro-stepper */}
       <div className="flex items-center justify-center gap-3">
-        {(['intention', 'stake', 'go'] as const).map((step, i, arr) => (
+        {STEP_KEYS.map((step, i, arr) => (
           <div key={step} className="flex items-center gap-3">
             <span className={`mono-caption text-[10px] ${i === 0 ? 'text-accent' : 'text-faint'}`}>
-              {step}
+              {t(step)}
             </span>
             {i < arr.length - 1 && (
               <span className="text-faint text-xs">→</span>
@@ -108,7 +110,7 @@ export const StakeForm = ({
       {demoMode && (
         <div className="flex items-center justify-center gap-2">
           <span className="mono-caption rounded-full border border-border px-2.5 py-1 text-faint">
-            DEMO · 30-SECOND SESSION
+            {t('demoLabel')}
           </span>
         </div>
       )}
@@ -119,31 +121,29 @@ export const StakeForm = ({
           onClick={onBack}
           className="-my-3 w-fit py-3 text-sm font-medium text-muted underline underline-offset-4 min-h-[44px]"
         >
-          Back
+          {tc('back')}
         </button>
         <Typography variant="heading" level={2} className="text-foreground">
-          Make a commitment.
+          {t('commitment')}
         </Typography>
         <Typography variant="body" level={3} className="mt-1.5 text-muted">
-          Write it like a promise to yourself. Your AI coach reads these exact
-          words when judging your proof — be specific enough that the verdict
-          is clear.
+          {t('description')}
         </Typography>
       </div>
 
       {/* Example intention chips */}
       <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {EXAMPLE_INTENTIONS.map((example) => (
+        {EXAMPLE_KEYS.map((exampleKey) => (
           <button
-            key={example}
+            key={exampleKey}
             type="button"
             onClick={() => {
-              onIntentionChange(example);
+              onIntentionChange(t(exampleKey));
               textareaRef.current?.focus();
             }}
             className="shrink-0 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:border-muted hover:text-foreground"
           >
-            {example}
+            {t(exampleKey)}
           </button>
         ))}
       </div>
@@ -158,27 +158,27 @@ export const StakeForm = ({
           onBlur={() => setTouched(true)}
           rows={3}
           autoFocus
-          placeholder="Finish the settlement agent and get one payout working end to end"
-          aria-label="Your intention for this session"
+          placeholder={t('placeholderIntention')}
+          aria-label={t('intentionLabel')}
           aria-invalid={touched && tooShort}
           className="w-full resize-none rounded-2xl border border-border bg-surface p-4 text-base leading-relaxed text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
         />
         <div className="mt-1.5 flex items-center justify-between">
           <span className="text-xs text-slipped">
-            {touched && tooShort ? 'Say a little more about the work.' : ''}
+            {touched && tooShort ? t('tooShort') : ''}
           </span>
           <span className="text-xs text-faint">
             {intention.length}/{MAX_INTENTION}
           </span>
         </div>
         <p className="mt-1.5 text-xs text-faint max-w-[36ch]">
-          Good intentions are checkable: name the thing and when it counts as done.
+          {t('qualityHint')}
         </p>
       </div>
 
       <fieldset className="w-full">
         <legend className="mono-caption mb-2.5 text-xs uppercase tracking-widest text-faint">
-          Stake
+          {t('stakeLegend')}
         </legend>
         <div className="grid auto-cols-fr grid-flow-col gap-2">
           {stakeOptions.map((option) => {
@@ -213,7 +213,7 @@ export const StakeForm = ({
         </div>
         <div className="mt-3">
           <label className="mono-caption mb-2 block text-xs uppercase tracking-widest text-faint">
-            Other amount
+            {t('customAmountLabel')}
           </label>
           <input
             type="number"
@@ -222,13 +222,13 @@ export const StakeForm = ({
             inputMode="decimal"
             value={customStake}
             onChange={(e) => updateCustomStake(e.target.value)}
-            placeholder="Enter any HBAR amount"
-            aria-label="Custom stake amount in HBAR"
+            placeholder={t('customAmountPlaceholder')}
+            aria-label={t('customAmountAriaLabel')}
             aria-invalid={invalidCustomStake}
             className="h-12 w-full rounded-2xl border border-border bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
           />
           <div className="mt-1.5 text-xs text-slipped">
-            {invalidCustomStake ? 'Enter a positive HBAR amount.' : ''}
+            {invalidCustomStake ? t('customAmountError') : ''}
           </div>
           {parsedCustomStake !== null && (
             <UsdHint hbar={parsedCustomStake} className="mt-1 block" />
@@ -238,10 +238,10 @@ export const StakeForm = ({
 
       <div className="rounded-2xl border border-border bg-surface p-4 card-raised">
         <Typography variant="body" level={4} className="text-muted">
-          Your {stakeHbar} ℏ is held on Hedera testnet for{' '}
-          {describeDuration(durationSeconds)}. Keep the commitment and it
-          returns in full. Slip and it goes to the shared cause, never to us.
-          You can disarm the session at any point before it settles.
+          {t('sessionInfo', {
+            stake: stakeHbar,
+            duration: describeDuration(durationSeconds, tc),
+          })}
         </Typography>
       </div>
 
@@ -252,7 +252,7 @@ export const StakeForm = ({
         disabled={tooShort || invalidCustomStake}
         onClick={onStart}
       >
-        Start session
+        {t('startButton')}
       </Button>
     </div>
   );

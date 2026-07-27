@@ -1,38 +1,36 @@
 {
-  "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
-
+  "_comment": "UK English strings, and the canonical key set. Every other locale is overlaid on this one, so a missing key degrades to English. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
   "Header": {
     "wordmark": "DoomTax",
     "testnet": "testnet",
     "about": "About",
     "backToSession": "Back to session"
   },
-
   "Common": {
     "close": "Close",
     "back": "Back",
     "done": "Done",
+    "cancel": "Cancel",
     "loading": "Loading",
     "openInWorldApp": "Open DoomTax in World App",
     "onYourPhone": "On your phone already?",
-    "viewOnHashScan": "View transaction on HashScan"
+    "viewOnHashScan": "View transaction on HashScan",
+    "qrAlt": "Scan to open DoomTax in World App",
+    "secondsCount": "{count, plural, =1 {# second} other {# seconds}}",
+    "minutesCount": "{count, plural, =1 {# minute} other {# minutes}}"
   },
-
   "AuthButton": {
     "connect": "Connect World App",
     "loginPending": "Logging in",
     "loginFailed": "Failed to login",
     "loginSuccess": "Logged in",
     "getStarted": "GET STARTED",
-    "step1": "Get World App — it's a free app, like any other.",
+    "step1": "Get World App — it is a free app, like any other.",
     "step1LinkLabel": "world.org/download",
     "step2": "Open World App and tap the QR scanner on the main tab, then point it at this code.",
-    "step3": "DoomTax opens inside World App. Tap Connect — it signs one message to say it's you. Nothing is charged, nothing moves. DoomTax sets up your session account automatically — nothing else to connect.",
-    "step4": "Runs on Hedera testnet — stakes carry no real-world money today.",
-    "onPhoneAlready": "On your phone already?",
-    "openInWorldApp": "Open DoomTax in World App"
+    "step3": "DoomTax opens inside World App. Tap Connect — it signs one message to say it is you. Nothing is charged, nothing moves. DoomTax sets up your session account automatically — nothing else to connect.",
+    "step4": "Runs on Hedera testnet — stakes carry no real-world money today."
   },
-
   "StakeForm": {
     "commitment": "Make a commitment.",
     "description": "Write it like a promise to yourself. Your AI coach reads these exact words when judging your proof — be specific enough that the verdict is clear.",
@@ -43,8 +41,9 @@
     "stakeLegend": "Stake",
     "customAmountLabel": "Other amount",
     "customAmountPlaceholder": "Enter any HBAR amount",
+    "customAmountAriaLabel": "Custom stake amount in HBAR",
     "customAmountError": "Enter a positive HBAR amount.",
-    "sessionInfo": "Your {stakeHbar} ℏ is held on Hedera testnet for {duration}. Keep the commitment and it returns in full. Slip and it goes to the shared cause, never to us. You can disarm the session at any point before it settles.",
+    "sessionInfo": "Your {stake} ℏ is held on Hedera testnet for {duration}. Keep the commitment and it returns in full. Slip and it goes to the shared cause, never to us. You can disarm the session at any point before it settles.",
     "startButton": "Start session",
     "demoLabel": "DEMO · 30-SECOND SESSION",
     "realSessionNote": "Real sessions run 25 minutes.",
@@ -55,9 +54,8 @@
     "stepStake": "stake",
     "stepGo": "go"
   },
-
   "LiveSession": {
-    "atStake": "{stakeHbar} ℏ at stake",
+    "atStake": "{stake} ℏ at stake",
     "noInterruptions": "no interruptions",
     "interruptions": "{count, plural, =1 {# interruption} other {# interruptions}}",
     "finishEarly": "Finish early",
@@ -65,9 +63,10 @@
     "milestoneSettle": "Settle in.",
     "milestoneHalfway": "Halfway — hold the line.",
     "milestoneFinal": "Final stretch.",
+    "captionSeconds": "of {count, plural, =1 {# second} other {# seconds}}",
+    "captionMinutes": "of {count, plural, =1 {# minute} other {# minutes}}",
     "demoLabel": "DEMO · 30-SECOND SESSION"
   },
-
   "ArtifactForm": {
     "heading": "Show your work",
     "youCommitted": "You committed to this:",
@@ -75,84 +74,217 @@
     "artifactLabel": "Your artifact for this session",
     "coachReads": "What your coach receives",
     "coachReceivesIntention": "Your intention and the text above",
-    "coachReceivesForeground": "{held} in the foreground, {interruptions}",
+    "coachReceivesForeground": "{held} in the foreground, {count, plural, =1 {# interruption} other {# interruptions}}",
     "coachNeverReceivesAttachment": "Your attachment — it never leaves this phone (yet)",
     "coachPrivacy": "Never your screen, your browsing, your keystrokes, or anything from other apps.",
     "submit": "Submit for review",
     "coachReading": "Your coach is reading",
     "coachReadingBody": "Running privately on 0G, then settling on Hedera. This takes a moment.",
     "attachButton": "Attach a photo of your work — optional",
+    "attachAriaLabel": "Attach a photo of your work",
     "attachCaption": "Stays on your device. A fingerprint (hash) is computed locally so a future version can verify it on-chain. OCR reading on 0G is coming — today the coach judges your text only.",
+    "attachmentPreviewAlt": "Attachment preview",
     "removeAttachment": "Remove attachment"
   },
-
   "Verdict": {
+    "errorTitle": "Settlement not confirmed",
+    "couldHaveMoved": "The transfer may still have gone through. Check <link>HashScan testnet</link> before taking any next step.",
+    "titleDisarmed": "Session disarmed",
+    "titleSlipped": "You slipped",
+    "titleKept": "You kept it",
+    "bodyDisarmed": "You ended this before it settled. Nothing moved, and your {stake} ℏ stays yours.",
+    "bodySlipped": "Your {stake} ℏ moved to the pending account, not straight to the shared cause. That is what makes this reversible.",
+    "bodyKept": "Your {stake} ℏ stays with you.",
     "settledOnHedera": "Settled on Hedera testnet",
     "viewOnHashScan": "View on HashScan",
     "noTransfer": "no transfer",
     "publicReceipt": "Public receipt",
+    "publicReceiptNotRecorded": "not recorded: {error}",
     "publicReceiptDetail": "Carries a commitment hash and the verdict only. Never your intention or your artifact.",
     "appealWindow": "Appeal window",
+    "appealClosesIn": "Closes in {remaining}{at}. Nothing reaches the shared cause until it does, and an appeal resolves toward you.",
+    "appealClosesAt": ", at {time}",
+    "appealPlaceholder": "Why should this resolve in your favour?",
+    "appealReasonLabel": "Reason for your appeal",
+    "appealSubmit": "Appeal this verdict",
+    "appealSubmitting": "Submitting appeal",
+    "appealRecorded": "Appeal recorded",
     "appealExpired": "The appeal window has closed.",
     "whatSettlesLabel": "What settles on Hedera",
     "whatLedgerLabel": "What goes on the public ledger",
     "done": "Done"
   },
-
   "ConfirmSheet": {
     "title": "Disarm this session?",
-    "body": "Your {stakeHbar} ℏ returns to you in full and nothing is forfeited. The session ends now and is not sent to your coach. Use this when the plan genuinely changed, not as a habit.",
+    "body": "Your {amount} returns to you in full and nothing is forfeited. The session ends now and is not sent to your coach. Use this when the plan genuinely changed, not as a habit.",
     "confirm": "Disarm and return my stake",
     "cancel": "Keep going"
   },
-
   "CirclePanel": {
-    "demoCircleLabel": "Demo circle",
+    "heading": "Circle",
+    "periodThisWeek": "This week",
+    "description": "A circle gives your slips somewhere good to go. You back one cause together and only see the total you have funded as a group.",
+    "circleLabel": "Circle",
+    "members": "{count, plural, =1 {# member} other {# members}}",
     "causeLabel": "Shared cause",
-    "causalAccount": "Current demo account:",
-    "impactTotal": "{total} HBAR",
-    "impactDetail": "{count} forfeits funded this cause. No leaderboard, no individual totals, and never a callout of who slipped.",
-    "pendingForfeit": "If this session stands, {hbar} HBAR joins your circle's total after the appeal window. The good still counts, but your name does not go with it.",
+    "causeAccount": "Current demo account: {account}",
+    "impactDetail": "{count, plural, =1 {# forfeit has} other {# forfeits have}} funded this cause. No leaderboard, no individual totals, and never a callout of who slipped.",
+    "pendingForfeit": "If this session stands, {amount} joins your circle's total after the appeal window. The good still counts, but your name does not go with it.",
     "private": "Your circle stays private. We show what you have funded together, not a list of members — and never who slipped."
   },
-
   "PoweredBy": {
     "hederaDetail": "settlement",
     "zeroGDetail": "coach",
     "worldDetail": "mini app",
-    "hederaLabel": "Learn about Hedera",
-    "zeroGLabel": "Learn about 0G",
-    "worldLabel": "Learn about World"
+    "learnAbout": "Learn about {partner}"
   },
-
   "ExplainSheet": {
     "close": "Close",
     "hedera-settlement": {
       "eyebrow": "Settlement",
-      "title": "What settles on Hedera"
+      "title": "What settles on Hedera",
+      "paragraphs": [
+        "When a session verdict is slipped, DoomTax performs an operator-signed transfer on Hedera testnet using the Hedera SDK — no smart contract, no Solidity, SDK only.",
+        "Your stake moves to a pending account first. It sweeps to the shared cause only after the appeal window closes, which is what makes reversals genuinely possible rather than rhetorical.",
+        "When a session is kept, your stake never moves at all. No transfer is made, so there is no transaction to show on HashScan.",
+        "Stakes are testnet HBAR — no real-world money today."
+      ],
+      "privateLabel": "What never moves",
+      "privateItems": [
+        "Any HBAR on a kept session",
+        "Funds during the appeal window",
+        "Anything after a successful amnesty"
+      ],
+      "publicItems": []
     },
     "hcs-receipt": {
       "eyebrow": "Public receipt",
-      "title": "What goes on the public ledger"
+      "title": "What goes on the public ledger",
+      "paragraphs": [
+        "After settlement, DoomTax writes a single record to a Hedera Consensus Service (HCS) topic. HCS is a public, permanent, append-only ledger — every record is visible to anyone, forever.",
+        "Because it is permanent and public, the record carries only the minimum necessary to be useful as a verifiable receipt."
+      ],
+      "publicLabel": "What the record carries",
+      "publicItems": [
+        "Pseudonymous session ID",
+        "Commitment hash (a one-way fingerprint of your intention — not the text itself)",
+        "Verdict boolean (kept or slipped)",
+        "Amount in tinybars",
+        "Timestamp"
+      ],
+      "privateLabel": "What is never on HCS",
+      "privateItems": [
+        "Your intention text",
+        "Your artifact or any evidence",
+        "Coaching messages",
+        "Circle membership",
+        "Anything linking the session to a person"
+      ]
     },
     "0g-coach": {
       "eyebrow": "0G Compute",
-      "title": "How the coach decides"
+      "title": "How the coach decides",
+      "paragraphs": [
+        "The verdict runs privately on 0G Compute. The model receives exactly the information below and nothing else.",
+        "Ambiguity always resolves toward you. Contested session, failed inference, timeout, missing evidence: refund. A wrong kept costs nothing; a wrong slipped costs trust."
+      ],
+      "publicLabel": "What the model sees",
+      "publicItems": [
+        "The intention you stated at session start",
+        "The artifact text you submitted at the end",
+        "Foreground time (from the Page Visibility API)",
+        "Interruption count"
+      ],
+      "privateLabel": "What the model never sees",
+      "privateItems": [
+        "Your screen or window contents",
+        "Your browsing history",
+        "Your keystrokes",
+        "Location or third-party app data"
+      ]
     },
     "world-minikit": {
       "eyebrow": "World App",
-      "title": "What signing with World App means"
+      "title": "What signing with World App means",
+      "paragraphs": [
+        "Tapping Connect in World App signs a single message on World Chain. This signs in to DoomTax — it costs nothing and moves nothing.",
+        "World App can only sign World Chain transactions. It cannot sign Hedera transactions, so DoomTax provisions and holds an operator-custodied Hedera testnet account for your sessions. You approved this at sign-in, and it is recorded.",
+        "You do not need a Hedera wallet. Nothing else to connect."
+      ],
+      "privateLabel": "What the signature does not do",
+      "privateItems": [
+        "Does not charge you",
+        "Does not move any funds",
+        "Does not give DoomTax access to your World App balance"
+      ],
+      "publicItems": []
     },
     "streak-token": {
       "eyebrow": "Streak token",
-      "title": "The streak token"
+      "title": "The streak token",
+      "paragraphs": [
+        "When a session verdict is kept, DoomTax mints one token to your session account on Hedera testnet using the Hedera Token Service (HTS).",
+        "It is a record of a kept commitment, on-chain and yours. No monetary value — it is a receipt, not a reward."
+      ],
+      "linkLabel": "View token on HashScan",
+      "publicItems": [],
+      "privateItems": []
     }
   },
-
   "About": {
     "pageTitle": "About DoomTax",
     "heroTitle": "A kinder way to turn intention into follow-through",
     "heroBody": "DoomTax is a focus tool grounded in commitment-device research from behavioural economics. You name one task, put a small stake behind it, and get an honest verdict at the end.",
+    "whyTitle": "Why this method works",
+    "whyBody": "The mechanism is called a commitment device — a voluntary constraint you place on your future self. Ariel Procaccia and colleagues have shown that pre-commitment with financial stakes significantly improves follow-through compared to intention alone. Ariely and Wertenbroch's deadline research found the same pattern: self-imposed consequences work, and they work better when the person chose them. The stake here is small by design. The research suggests that the act of committing matters more than the size of what is on the line.",
+    "benefits": [
+      "Less doomscrolling and fewer “where did the last hour go?” sessions.",
+      "A cleaner start because you choose one intention instead of ten competing tabs.",
+      "A clearer finish — the session ends with an actual answer, not a vague sense of whether the time was well spent."
+    ],
+    "differentTitle": "How DoomTax feels different",
+    "differentBody": "Most focus tools help you plan or block distractions. DoomTax is for after that — when you know what you want to do and the gap between intending and actually doing it is what needs closing.",
+    "comparisons": [
+      {
+        "title": "Timers and to-do apps",
+        "body": "Great for structure, but they still rely on willpower at the exact moment you are most tempted to drift."
+      },
+      {
+        "title": "Blockers and lockout tools",
+        "body": "Useful if you want hard walls. DoomTax takes a lighter approach: it asks for a real commitment without policing your whole device."
+      },
+      {
+        "title": "Accountability apps",
+        "body": "Many make your struggle visible to someone else. DoomTax keeps the session personal and private, while still making the outcome matter."
+      }
+    ],
+    "howTitle": "How a session works",
+    "stepLabel": "Step {number}",
+    "steps": [
+      {
+        "title": "Name the session",
+        "body": "Say what you actually want to do. The verdict is judged against that sentence, not against a vague idea of productivity."
+      },
+      {
+        "title": "Put a small stake on it",
+        "body": "A stake makes the commitment concrete. Research on commitment devices shows that even a small financial consequence meaningfully increases follow-through — the amount matters less than the act of choosing it."
+      },
+      {
+        "title": "Finish, then show your proof",
+        "body": "When the session ends, you share what you got done. That can be a short note, summary, or artifact from the work itself."
+      },
+      {
+        "title": "Keep it or let it go",
+        "body": "If you kept your word, your stake comes back. If you slipped, the forfeit goes to a shared cause — never to us."
+      }
+    ],
+    "gentleTitle": "Gentle by design",
+    "gentleBody": "DoomTax is not here to shame you. If the evidence is unclear, the call should fall your way. You can use amnesty before settlement, and there is an appeal window when a slipped session feels wrong. Wins should feel energizing. Losses should stay quiet.",
+    "privacyTitle": "What we see — and what we do not",
+    "privacyBody": "We only use the intention you wrote, the artifact you submit at the end, and simple integrity signals from this page like focus time and interruptions. We do not see your screen, your browsing, your keystrokes, or what you do in other apps.",
+    "openSourceTitle": "Open source, on purpose",
+    "openSourceBody": "DoomTax is open source because trust matters here. You should be able to inspect how the flow works, what gets sent where, and what the app refuses to collect. That transparency is part of the product, not an extra.",
+    "gettingInEyebrow": "GETTING IN",
     "gettingInTitle": "How to open DoomTax",
     "gettingInBody": "DoomTax runs as a mini app inside World App. Use the QR code below to open it on your phone.",
     "readyTitle": "Ready to try it?",
@@ -160,8 +292,32 @@
     "startSession": "Start a session",
     "openInWorldApp": "Open in World App"
   },
-
   "LanguageSwitcher": {
-    "label": "Language"
+    "label": "Language",
+    "changeLanguage": "Change language",
+    "selectLanguage": "Select language",
+    "closePicker": "Close language picker",
+    "current": "current"
+  },
+  "SelfieCheck": {
+    "feedbackPending": "Waiting for World App",
+    "feedbackFailed": "Not confirmed",
+    "feedbackSuccess": "Confirmed",
+    "verifiedTitle": "Confirmed it was you",
+    "verifiedBody": "World ID matched a live face on your device. No image was sent here — only a zero-knowledge proof, and it is tied to this session alone.",
+    "skippedTitle": "Check skipped",
+    "skippedBody": "Nothing changed. Your settlement and your streak stand exactly as they are — this check never affects either.",
+    "idleTitle": "Confirm it was you",
+    "idleBody": "Optional. A quick face match inside World App marks this claim as made by a present human. Skipping it costs you nothing.",
+    "confirmButton": "Confirm with World ID"
+  },
+  "SessionFlow": {
+    "unexpectedSettlement": "Unexpected settlement response shape.",
+    "settlementFailedStatus": "Settlement failed with status {status}.",
+    "settlementSubmitFailed": "Failed to submit settlement. Check your connection.",
+    "appealStateMissing": "Appeal state is missing. Start a new session.",
+    "unexpectedAppeal": "Unexpected appeal response shape.",
+    "appealRequestFailed": "Appeal request failed.",
+    "appealSubmitFailed": "Failed to submit appeal. Check your connection."
   }
 }

@@ -5,6 +5,7 @@ import type { AppealResponse, ReviewState } from '@/lib/appeal';
 import { ExplainSheet, ExplainTopic } from '@/components/ExplainSheet';
 import { UsdHint } from '@/components/UsdHint';
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface VerdictProps {
@@ -60,6 +61,7 @@ export const Verdict = ({
 }: VerdictProps) => {
   const [reason, setReason] = useState('');
   const [explain, setExplain] = useState<ExplainTopic | null>(null);
+  const t = useTranslations('Verdict');
 
   // Settlement could not be confirmed. This is not a verdict, and must never
   // be dressed up as one.
@@ -79,7 +81,7 @@ export const Verdict = ({
             level={2}
             className="mt-6 text-foreground"
           >
-            Settlement not confirmed
+            {t('errorTitle')}
           </Typography>
           <Typography
             variant="body"
@@ -90,21 +92,23 @@ export const Verdict = ({
           </Typography>
           {couldHaveMoved && (
             <p className="mt-4 max-w-[34ch] text-xs leading-relaxed text-faint">
-              The transfer may still have gone through. Check{' '}
-              <a
-                className="text-accent underline"
-                href="https://hashscan.io/testnet"
-                target="_blank"
-                rel="noreferrer"
-              >
-                HashScan testnet
-              </a>{' '}
-              before taking any next step.
+              {t.rich('couldHaveMoved', {
+                link: (chunks) => (
+                  <a
+                    className="text-accent underline"
+                    href="https://hashscan.io/testnet"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {chunks}
+                  </a>
+                ),
+              })}
             </p>
           )}
         </div>
         <Button variant="primary" size="lg" fullWidth onClick={onDone}>
-          Done
+          {t('done')}
         </Button>
       </div>
     );
@@ -115,16 +119,16 @@ export const Verdict = ({
   const tone: 'kept' | 'slipped' = slipped ? 'slipped' : 'kept';
 
   const title = disarmed
-    ? 'Session disarmed'
+    ? t('titleDisarmed')
     : slipped
-      ? 'You slipped'
-      : 'You kept it';
+      ? t('titleSlipped')
+      : t('titleKept');
 
   const body = disarmed
-    ? `You ended this before it settled. Nothing moved, and your ${stakeHbar} ℏ stays yours.`
+    ? t('bodyDisarmed', { stake: stakeHbar })
     : slipped
-      ? `Your ${stakeHbar} ℏ moved to the pending account, not straight to the shared cause. That is what makes this reversible.`
-      : `Your ${stakeHbar} ℏ stays with you.`;
+      ? t('bodySlipped', { stake: stakeHbar })
+      : t('bodyKept', { stake: stakeHbar });
 
   const settlement = result?.settlement;
   const moved = settlement?.ok && settlement.moved;
@@ -176,11 +180,11 @@ export const Verdict = ({
           <div className="card-raised mt-5 w-full rounded-2xl border border-border bg-surface px-4 py-3.5 text-left">
             <div className="flex items-center justify-between gap-2">
               <Typography variant="body" level={4} className="text-muted">
-                Settled on Hedera testnet
+                {t('settledOnHedera')}
               </Typography>
               <button
                 type="button"
-                aria-label="What settles on Hedera"
+                aria-label={t('whatSettlesLabel')}
                 onClick={() => setExplain('hedera-settlement')}
                 className="flex size-[44px] shrink-0 items-center justify-center rounded-full text-faint hover:text-foreground"
               >
@@ -196,13 +200,13 @@ export const Verdict = ({
                     rel="noreferrer"
                     className="mono-caption block truncate text-xs text-accent underline"
                   >
-                    View on HashScan
+                    {t('viewOnHashScan')}
                   </a>
                 ) : (
                   <span className="mono-caption block text-xs text-faint">
                     {settlement?.ok && !settlement.moved
                       ? settlement.reason
-                      : 'no transfer'}
+                      : t('noTransfer')}
                   </span>
                 )}
               </div>
@@ -225,11 +229,11 @@ export const Verdict = ({
           <div className="card-raised mt-2 w-full rounded-2xl border border-border bg-surface px-4 py-3 text-left">
             <div className="flex items-center justify-between">
               <span className="mono-caption text-xs text-faint">
-                Public receipt
+                {t('publicReceipt')}
               </span>
               <button
                 type="button"
-                aria-label="What goes on the public ledger"
+                aria-label={t('whatLedgerLabel')}
                 onClick={() => setExplain('hcs-receipt')}
                 className="flex size-[44px] shrink-0 items-center justify-center rounded-full text-faint hover:text-foreground"
               >
@@ -239,11 +243,10 @@ export const Verdict = ({
             <p className="mono-caption mt-1 break-all text-xs text-muted">
               {hcs.ok
                 ? `HCS ${hcs.transactionId}`
-                : `not recorded: ${hcs.error}`}
+                : t('publicReceiptNotRecorded', { error: hcs.error })}
             </p>
             <p className="mt-2 text-xs leading-relaxed text-faint">
-              Carries a commitment hash and the verdict only. Never your
-              intention or your artifact.
+              {t('publicReceiptDetail')}
             </p>
           </div>
         )}
@@ -251,25 +254,29 @@ export const Verdict = ({
         {slipped && reviewState === 'appeal_open' && (
           <div className="card-raised mt-3 w-full rounded-2xl border border-border bg-surface p-4 text-left">
             <span className="mono-caption text-xs uppercase tracking-widest text-faint">
-              Appeal window
+              {t('appealWindow')}
             </span>
             <p className="mt-1.5 text-sm leading-relaxed text-muted">
-              Closes in{' '}
-              <span className="tabular text-foreground">
-                {formatRemaining(appealRemainingMs)}
-              </span>
-              {appealWindowEndsAt !== null
-                ? `, at ${formatTime(appealWindowEndsAt)}`
-                : ''}
-              . Nothing reaches the shared cause until it does, and an appeal
-              resolves toward you.
+              {t.rich('appealClosesIn', {
+                remaining: () => (
+                  <span className="tabular text-foreground">
+                    {formatRemaining(appealRemainingMs)}
+                  </span>
+                ),
+                at:
+                  appealWindowEndsAt !== null
+                    ? t('appealClosesAt', {
+                        time: formatTime(appealWindowEndsAt),
+                      })
+                    : '',
+              })}
             </p>
             <textarea
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               rows={3}
-              placeholder="Why should this resolve in your favour?"
-              aria-label="Reason for your appeal"
+              placeholder={t('appealPlaceholder')}
+              aria-label={t('appealReasonLabel')}
               className="mt-3 w-full resize-none rounded-xl border border-border bg-background p-3 text-sm text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface"
             />
             <button
@@ -282,7 +289,7 @@ export const Verdict = ({
               }}
               className="mt-2 h-12 w-full rounded-full border text-sm font-semibold transition-all hover:opacity-80 active:scale-[0.98] disabled:opacity-40"
             >
-              {isSubmittingAppeal ? 'Submitting appeal' : 'Appeal this verdict'}
+              {isSubmittingAppeal ? t('appealSubmitting') : t('appealSubmit')}
             </button>
             {appealError && (
               <p className="mt-2 text-xs text-slipped">{appealError}</p>
@@ -296,7 +303,7 @@ export const Verdict = ({
             style={{ borderColor: 'var(--kept)' }}
           >
             <span className="mono-caption text-xs uppercase tracking-widest text-kept">
-              Appeal recorded
+              {t('appealRecorded')}
             </span>
             <p className="mt-1 text-sm text-muted">{appealResponse.message}</p>
           </div>
@@ -304,14 +311,14 @@ export const Verdict = ({
 
         {reviewState === 'appeal_expired' && (
           <p className="mt-3 text-xs leading-relaxed text-faint">
-            The appeal window has closed.
+            {t('appealExpired')}
           </p>
         )}
       </div>
 
       <div className="relative pt-5">
         <Button variant="primary" size="lg" fullWidth onClick={onDone}>
-          Done
+          {t('done')}
         </Button>
       </div>
 

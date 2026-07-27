@@ -4,24 +4,11 @@ import { WORLD_MINI_APP_URL } from '@/lib/world';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const ONBOARDING_STEPS = [
-  {
-    text: "Get World App — it's a free app, like any other.",
-    link: { href: 'https://world.org/download', label: 'world.org/download' },
-  },
-  {
-    text: 'Open World App and tap the QR scanner on the main tab, then point it at this code.',
-  },
-  {
-    text: 'DoomTax opens inside World App. Tap Connect — it signs one message to say it\'s you. Nothing is charged, nothing moves. DoomTax sets up your session account automatically — nothing else to connect.',
-  },
-  {
-    text: 'Runs on Hedera testnet — stakes carry no real-world money today.',
-  },
-] as const;
+const ONBOARDING_STEP_KEYS = ['step1', 'step2', 'step3', 'step4'] as const;
 
 /**
  * Prompts wallet authentication via MiniKit + Next Auth.
@@ -32,6 +19,8 @@ export const AuthButton = () => {
   const { isInstalled } = useMiniKit();
   const { status } = useSession();
   const hasAttemptedAuth = useRef(false);
+  const t = useTranslations('AuthButton');
+  const tc = useTranslations('Common');
 
   const onClick = useCallback(async () => {
     if (isPending) {
@@ -78,9 +67,9 @@ export const AuthButton = () => {
       <div className="w-full max-w-[36ch]">
         <LiveFeedback
           label={{
-            failed: 'Failed to login',
-            pending: 'Logging in',
-            success: 'Logged in',
+            failed: t('loginFailed'),
+            pending: t('loginPending'),
+            success: t('loginSuccess'),
           }}
           state={isPending ? 'pending' : undefined}
         >
@@ -91,7 +80,7 @@ export const AuthButton = () => {
             variant="tertiary"
             fullWidth
           >
-            Connect World App
+            {t('connect')}
           </Button>
         </LiveFeedback>
       </div>
@@ -101,12 +90,12 @@ export const AuthButton = () => {
   // Not in World App — show QR-first onboarding card
   return (
     <div className="card-raised w-full max-w-xl animate-fade-up rounded-2xl border border-border bg-surface p-5">
-      <p className="mono-caption text-accent">GET STARTED</p>
+      <p className="mono-caption text-accent">{t('getStarted')}</p>
       <div className="mt-4 flex justify-center">
         <div className="rounded-2xl bg-white p-3">
           <Image
             src="/qr-doomtax.png"
-            alt="Scan to open DoomTax in World App"
+            alt={tc('qrAlt')}
             width={180}
             height={180}
             priority
@@ -114,23 +103,23 @@ export const AuthButton = () => {
         </div>
       </div>
       <ol className="mt-5 space-y-3">
-        {ONBOARDING_STEPS.map((step, i) => (
-          <li key={i} className="flex gap-3 text-sm text-muted">
+        {ONBOARDING_STEP_KEYS.map((key, i) => (
+          <li key={key} className="flex gap-3 text-sm text-muted">
             <span className="mono-caption mt-0.5 shrink-0 text-faint">
               {i + 1}.
             </span>
             <span className="max-w-[36ch] leading-relaxed">
-              {step.text}
-              {'link' in step && step.link && (
+              {t(key)}
+              {key === 'step1' && (
                 <>
                   {' '}
                   <a
-                    href={step.link.href}
+                    href="https://world.org/download"
                     className="text-foreground underline underline-offset-4"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {step.link.label}
+                    {t('step1LinkLabel')}
                   </a>
                 </>
               )}
@@ -139,12 +128,12 @@ export const AuthButton = () => {
         ))}
       </ol>
       <div className="mt-5 border-t border-border pt-4 text-center text-sm text-muted">
-        On your phone already?{' '}
+        {tc('onYourPhone')}{' '}
         <a
           href={WORLD_MINI_APP_URL}
           className="font-medium text-foreground underline underline-offset-4"
         >
-          Open DoomTax in World App
+          {tc('openInWorldApp')}
         </a>
       </div>
     </div>

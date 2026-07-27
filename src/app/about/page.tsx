@@ -2,50 +2,26 @@ import { AppHeader } from '@/components/AppHeader';
 import { Page } from '@/components/PageLayout';
 import { PoweredBy } from '@/components/PoweredBy';
 import { WORLD_MINI_APP_URL } from '@/lib/world';
+import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const HOW_IT_WORKS = [
-  {
-    title: 'Name the session',
-    body: 'Say what you actually want to do. The verdict is judged against that sentence, not against a vague idea of productivity.',
-  },
-  {
-    title: 'Put a small stake on it',
-    body: 'A stake makes the commitment concrete. Research on commitment devices shows that even a small financial consequence meaningfully increases follow-through — the amount matters less than the act of choosing it.',
-  },
-  {
-    title: 'Finish, then show your proof',
-    body: 'When the session ends, you share what you got done. That can be a short note, summary, or artifact from the work itself.',
-  },
-  {
-    title: 'Keep it or let it go',
-    body: 'If you kept your word, your stake comes back. If you slipped, the forfeit goes to a shared cause — never to us.',
-  },
-] as const;
+interface TitledItem {
+  title: string;
+  body: string;
+}
 
-const BENEFITS = [
-  'Less doomscrolling and fewer “where did the last hour go?” sessions.',
-  'A cleaner start because you choose one intention instead of ten competing tabs.',
-  'A clearer finish — the session ends with an actual answer, not a vague sense of whether the time was well spent.',
-] as const;
+const ONBOARDING_STEP_KEYS = ['step1', 'step2', 'step3', 'step4'] as const;
 
-const COMPARISONS = [
-  {
-    title: 'Timers and to-do apps',
-    body: 'Great for structure, but they still rely on willpower at the exact moment you are most tempted to drift.',
-  },
-  {
-    title: 'Blockers and lockout tools',
-    body: 'Useful if you want hard walls. DoomTax takes a lighter approach: it asks for a real commitment without policing your whole device.',
-  },
-  {
-    title: 'Accountability apps',
-    body: 'Many make your struggle visible to someone else. DoomTax keeps the session personal and private, while still making the outcome matter.',
-  },
-] as const;
+export default async function AboutPage() {
+  const t = await getTranslations('About');
+  const tc = await getTranslations('Common');
+  const ta = await getTranslations('AuthButton');
 
-export default function AboutPage() {
+  const benefits = t.raw('benefits') as string[];
+  const comparisons = t.raw('comparisons') as TitledItem[];
+  const steps = t.raw('steps') as TitledItem[];
+
   return (
     <Page>
       <Page.Header>
@@ -55,35 +31,25 @@ export default function AboutPage() {
         <div className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 pb-8">
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <p className="mono-caption text-xs uppercase tracking-[0.18em] text-accent">
-              About DoomTax
+              {t('pageTitle')}
             </p>
             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">
-              A kinder way to turn intention into follow-through
+              {t('heroTitle')}
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              DoomTax is a focus tool grounded in commitment-device research
-              from behavioural economics. You name one task, put a small stake
-              behind it, and get an honest verdict at the end.
+              {t('heroBody')}
             </p>
           </section>
 
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <h2 className="text-xl font-semibold text-foreground">
-              Why this method works
+              {t('whyTitle')}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              The mechanism is called a commitment device — a voluntary
-              constraint you place on your future self. Ariel Procaccia and
-              colleagues have shown that pre-commitment with financial stakes
-              significantly improves follow-through compared to intention alone.
-              Ariely and Wertenbroch&apos;s deadline research found the same
-              pattern: self-imposed consequences work, and they work better when
-              the person chose them. The stake here is small by design. The
-              research suggests that the act of committing matters more than
-              the size of what&apos;s on the line.
+              {t('whyBody')}
             </p>
             <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
-              {BENEFITS.map((benefit) => (
+              {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-2">
                   <span
                     className="mt-2 size-1.5 rounded-full bg-accent"
@@ -97,15 +63,13 @@ export default function AboutPage() {
 
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <h2 className="text-xl font-semibold text-foreground">
-              How DoomTax feels different
+              {t('differentTitle')}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              Most focus tools help you plan or block distractions. DoomTax is
-              for after that — when you know what you want to do and the gap
-              between intending and actually doing it is what needs closing.
+              {t('differentBody')}
             </p>
             <div className="mt-4 grid gap-3">
-              {COMPARISONS.map((item) => (
+              {comparisons.map((item) => (
                 <div
                   key={item.title}
                   className="rounded-2xl border border-border bg-background px-4 py-4"
@@ -123,16 +87,16 @@ export default function AboutPage() {
 
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <h2 className="text-xl font-semibold text-foreground">
-              How a session works
+              {t('howTitle')}
             </h2>
             <div className="mt-4 grid gap-3">
-              {HOW_IT_WORKS.map((step, index) => (
+              {steps.map((step, index) => (
                 <div
                   key={step.title}
                   className="rounded-2xl border border-border bg-background px-4 py-4"
                 >
                   <p className="mono-caption text-xs uppercase tracking-[0.16em] text-faint">
-                    Step {index + 1}
+                    {t('stepLabel', { number: index + 1 })}
                   </p>
                   <h3 className="mt-2 text-base font-semibold text-foreground">
                     {step.title}
@@ -147,109 +111,101 @@ export default function AboutPage() {
 
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <h2 className="text-xl font-semibold text-foreground">
-              Gentle by design
+              {t('gentleTitle')}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              DoomTax is not here to shame you. If the evidence is unclear, the
-              call should fall your way. You can use amnesty before settlement,
-              and there is an appeal window when a slipped session feels wrong.
-              Wins should feel energizing. Losses should stay quiet.
+              {t('gentleBody')}
             </p>
           </section>
 
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <h2 className="text-xl font-semibold text-foreground">
-              What we see — and what we do not
+              {t('privacyTitle')}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              We only use the intention you wrote, the artifact you submit at
-              the end, and simple integrity signals from this page like focus
-              time and interruptions. We do not see your screen, your browsing,
-              your keystrokes, or what you do in other apps.
+              {t('privacyBody')}
             </p>
           </section>
 
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <h2 className="text-xl font-semibold text-foreground">
-              Open source, on purpose
+              {t('openSourceTitle')}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              DoomTax is open source because trust matters here. You should be
-              able to inspect how the flow works, what gets sent where, and what
-              the app refuses to collect. That transparency is part of the
-              product, not an extra.
+              {t('openSourceBody')}
             </p>
           </section>
 
           <section className="rounded-2xl border border-border bg-surface px-5 py-6">
-            <p className="mono-caption text-accent">GETTING IN</p>
+            <p className="mono-caption text-accent">{t('gettingInEyebrow')}</p>
             <h2 className="mt-2 text-xl font-semibold text-foreground">
-              How to open DoomTax
+              {t('gettingInTitle')}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-muted max-w-[36ch]">
-              DoomTax runs as a mini app inside World App. Use the QR code
-              below to open it on your phone.
+              {t('gettingInBody')}
             </p>
             <div className="mt-5 flex justify-center">
               <div className="rounded-2xl bg-white p-3">
                 <Image
                   src="/qr-doomtax.png"
-                  alt="Scan to open DoomTax in World App"
+                  alt={tc('qrAlt')}
                   width={180}
                   height={180}
                 />
               </div>
             </div>
             <ol className="mt-5 space-y-3">
-              <li className="flex gap-3 text-sm text-muted">
-                <span className="mono-caption mt-0.5 shrink-0 text-faint">1.</span>
-                <span className="max-w-[36ch] leading-relaxed">
-                  Get World App — it&apos;s a free app, like any other.{' '}
-                  <a href="https://world.org/download" className="text-foreground underline underline-offset-4" target="_blank" rel="noopener noreferrer">world.org/download</a>
-                </span>
-              </li>
-              <li className="flex gap-3 text-sm text-muted">
-                <span className="mono-caption mt-0.5 shrink-0 text-faint">2.</span>
-                <span className="max-w-[36ch] leading-relaxed">Open World App and tap the QR scanner on the main tab, then point it at this code.</span>
-              </li>
-              <li className="flex gap-3 text-sm text-muted">
-                <span className="mono-caption mt-0.5 shrink-0 text-faint">3.</span>
-                <span className="max-w-[36ch] leading-relaxed">DoomTax opens inside World App. Tap Connect — it signs one message to say it&apos;s you. Nothing is charged, nothing moves. DoomTax sets up your session account automatically.</span>
-              </li>
-              <li className="flex gap-3 text-sm text-muted">
-                <span className="mono-caption mt-0.5 shrink-0 text-faint">4.</span>
-                <span className="max-w-[36ch] leading-relaxed">Runs on Hedera testnet — stakes carry no real-world money today.</span>
-              </li>
+              {ONBOARDING_STEP_KEYS.map((key, index) => (
+                <li key={key} className="flex gap-3 text-sm text-muted">
+                  <span className="mono-caption mt-0.5 shrink-0 text-faint">
+                    {index + 1}.
+                  </span>
+                  <span className="max-w-[36ch] leading-relaxed">
+                    {ta(key)}
+                    {key === 'step1' && (
+                      <>
+                        {' '}
+                        <a
+                          href="https://world.org/download"
+                          className="text-foreground underline underline-offset-4"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {ta('step1LinkLabel')}
+                        </a>
+                      </>
+                    )}
+                  </span>
+                </li>
+              ))}
             </ol>
             <div className="mt-5 border-t border-border pt-4 text-center text-sm text-muted">
-              On your phone already?{' '}
+              {tc('onYourPhone')}{' '}
               <a href={WORLD_MINI_APP_URL} className="font-medium text-foreground underline underline-offset-4">
-                Open DoomTax in World App
+                {tc('openInWorldApp')}
               </a>
             </div>
           </section>
 
           <section className="rounded-3xl border border-accent/30 bg-accent/10 px-5 py-6">
             <h2 className="text-xl font-semibold text-foreground">
-              Ready to try it?
+              {t('readyTitle')}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              Start with a small stake. The research is clear that the size
-              matters less than making the commitment real — pick something you
-              genuinely intend to finish in the next session.
+              {t('readyBody')}
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/"
                 className="inline-flex h-12 items-center justify-center rounded-full bg-accent px-5 text-sm font-semibold text-black"
               >
-                Start a session
+                {t('startSession')}
               </Link>
               <a
                 href={WORLD_MINI_APP_URL}
                 className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-surface px-5 text-sm font-semibold text-foreground"
               >
-                Open in World App
+                {t('openInWorldApp')}
               </a>
             </div>
           </section>

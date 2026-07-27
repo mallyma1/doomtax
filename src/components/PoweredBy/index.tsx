@@ -3,32 +3,33 @@
 import { ExplainSheet, ExplainTopic } from '@/components/ExplainSheet';
 import { useActivity } from '@/providers/ActivityContext';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 const PARTNERS: {
   name: string;
-  detail: string;
+  detailKey: 'hederaDetail' | 'zeroGDetail' | 'worldDetail';
   logo: string;
   topic: ExplainTopic;
   activityKey: 'world' | 'hedera' | 'zeroG';
 }[] = [
   {
     name: 'Hedera',
-    detail: 'settlement',
+    detailKey: 'hederaDetail',
     logo: '/logos/hedera.svg',
     topic: 'hedera-settlement',
     activityKey: 'hedera',
   },
   {
     name: '0G',
-    detail: 'coach',
+    detailKey: 'zeroGDetail',
     logo: '/logos/0g.svg',
     topic: '0g-coach',
     activityKey: 'zeroG',
   },
   {
     name: 'World',
-    detail: 'mini app',
+    detailKey: 'worldDetail',
     logo: '/logos/world.svg',
     topic: 'world-minikit',
     activityKey: 'world',
@@ -54,6 +55,7 @@ function getLogoClass(key: string, activity: ReturnType<typeof useActivity>): st
 export const PoweredBy = () => {
   const [explain, setExplain] = useState<ExplainTopic | null>(null);
   const activity = useActivity();
+  const t = useTranslations('PoweredBy');
 
   return (
     <div className="mx-auto mt-4 flex w-full max-w-xl flex-col items-center gap-3 text-center">
@@ -62,7 +64,7 @@ export const PoweredBy = () => {
           <button
             key={partner.name}
             type="button"
-            aria-label={`Learn about ${partner.name}`}
+            aria-label={t('learnAbout', { partner: partner.name })}
             onClick={() => setExplain(partner.topic)}
             className={`pill-interactive inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 transition-[box-shadow,border-color] duration-500 ${getPillClass(partner.activityKey, activity)}`}
           >
@@ -76,7 +78,7 @@ export const PoweredBy = () => {
             <span className="text-sm font-medium text-foreground">
               {partner.name}
             </span>
-            <span className="text-xs text-faint">{partner.detail}</span>
+            <span className="text-xs text-faint">{t(partner.detailKey)}</span>
           </button>
         ))}
       </div>

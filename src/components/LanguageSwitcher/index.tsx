@@ -3,13 +3,14 @@
 import { LOCALES, type LocaleCode } from '@/i18n/config';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export const LanguageSwitcher = () => {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const currentLocale = useLocale() as LocaleCode;
+  const t = useTranslations('LanguageSwitcher');
 
   useEffect(() => {
     if (!open) return;
@@ -36,7 +37,7 @@ export const LanguageSwitcher = () => {
     <>
       <button
         type="button"
-        aria-label="Change language"
+        aria-label={t('changeLanguage')}
         onClick={() => setOpen(true)}
         className="-my-3 flex min-h-[44px] items-center py-3 text-sm text-muted transition-colors hover:text-foreground"
       >
@@ -47,7 +48,7 @@ export const LanguageSwitcher = () => {
         <div className="fixed inset-0 z-50 flex flex-col justify-end">
           <button
             type="button"
-            aria-label="Close language picker"
+            aria-label={t('closePicker')}
             onClick={() => setOpen(false)}
             className="absolute inset-0 bg-black/70"
           />
@@ -55,12 +56,12 @@ export const LanguageSwitcher = () => {
             ref={panelRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Select language"
+            aria-label={t('selectLanguage')}
             tabIndex={-1}
             className="animate-sheet-up relative max-h-[75dvh] overflow-y-auto rounded-t-3xl border-t border-border bg-surface px-6 pb-[max(2.25rem,env(safe-area-inset-bottom))] pt-5 outline-none"
           >
             <div className="mx-auto mb-5 h-1 w-9 rounded-full bg-border" aria-hidden="true" />
-            <p className="mono-caption text-accent">Language</p>
+            <p className="mono-caption text-accent">{t('label')}</p>
             <ul className="mt-4 space-y-1">
               {LOCALES.map((locale) => (
                 <li key={locale.code}>
@@ -74,7 +75,7 @@ export const LanguageSwitcher = () => {
                       {locale.endonym}
                     </span>
                     {locale.code === currentLocale && (
-                      <span className="text-accent" aria-label="current">✓</span>
+                      <span className="text-accent" aria-label={t('current')}>✓</span>
                     )}
                   </button>
                 </li>

@@ -2,6 +2,7 @@
 
 import { UsdHint } from '@/components/UsdHint';
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 
 interface ConfirmSheetProps {
@@ -24,6 +25,8 @@ export const ConfirmSheet = ({
   onCancel,
 }: ConfirmSheetProps) => {
   const panelRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations('ConfirmSheet');
+  const tc = useTranslations('Common');
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -46,7 +49,7 @@ export const ConfirmSheet = ({
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <button
         type="button"
-        aria-label="Cancel"
+        aria-label={tc('cancel')}
         onClick={onCancel}
         className="absolute inset-0 bg-black/70"
       />
@@ -69,26 +72,28 @@ export const ConfirmSheet = ({
           id="disarm-title"
           className="text-foreground"
         >
-          Disarm this session?
+          {t('title')}
         </Typography>
         <Typography variant="body" level={3} className="mt-2.5 text-muted">
-          Your {stakeHbar} ℏ{' '}
-          <UsdHint hbar={stakeHbar} className="inline" />{' '}
-          returns to you in full and nothing is forfeited.
-          The session ends now and is not sent to your coach. Use this when the
-          plan genuinely changed, not as a habit.
+          {t.rich('body', {
+            amount: () => (
+              <>
+                {stakeHbar} ℏ <UsdHint hbar={stakeHbar} className="inline" />
+              </>
+            ),
+          })}
         </Typography>
 
         <div className="mt-6 flex flex-col gap-2">
           <Button variant="primary" size="lg" fullWidth onClick={onConfirm}>
-            Disarm and return my stake
+            {t('confirm')}
           </Button>
           <button
             type="button"
             onClick={onCancel}
             className="h-12 rounded-full text-sm font-semibold text-muted transition-colors hover:text-foreground"
           >
-            Keep going
+            {t('cancel')}
           </button>
         </div>
       </div>

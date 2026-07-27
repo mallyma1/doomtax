@@ -3,6 +3,7 @@
 import { CountdownRing } from '@/components/CountdownRing';
 import { UsdHint } from '@/components/UsdHint';
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
+import { useTranslations } from 'next-intl';
 
 interface LiveSessionProps {
   intention: string;
@@ -15,11 +16,16 @@ interface LiveSessionProps {
   onRequestDisarm: () => void;
 }
 
-function getMilestoneCopy(progress: number): string | null {
-  if (progress < 0.25) return 'Settle in.';
+type MilestoneKey =
+  | 'milestoneSettle'
+  | 'milestoneHalfway'
+  | 'milestoneFinal';
+
+function getMilestoneKey(progress: number): MilestoneKey | null {
+  if (progress < 0.25) return 'milestoneSettle';
   if (progress < 0.5) return null;
-  if (progress < 0.85) return 'Halfway — hold the line.';
-  return 'Final stretch.';
+  if (progress < 0.85) return 'milestoneHalfway';
+  return 'milestoneFinal';
 }
 
 /**
@@ -39,13 +45,14 @@ export const LiveSession = ({
   onFinishEarly,
   onRequestDisarm,
 }: LiveSessionProps) => {
+  const t = useTranslations('LiveSession');
   const elapsed = Math.max(0, totalSeconds - secondsLeft);
   const progress = totalSeconds > 0 ? Math.min(1, elapsed / totalSeconds) : 0;
   const caption =
     totalSeconds < 60
-      ? `of ${totalSeconds} seconds`
-      : `of ${Math.round(totalSeconds / 60)} minutes`;
-  const milestoneCopy = getMilestoneCopy(progress);
+      ? t('captionSeconds', { count: totalSeconds })
+      : t('captionMinutes', { count: Math.round(totalSeconds / 60) });
+  const milestoneKey = getMilestoneKey(progress);
 
   // Glow intensity increases as time depletes
   const glowStrength = Math.max(0, Math.min(1, progress));
@@ -60,7 +67,7 @@ export const LiveSession = ({
         {demoMode && (
           <div className="mt-2 flex items-center gap-2">
             <span className="mono-caption rounded-full border border-border px-2.5 py-1 text-faint">
-              DEMO · 30-SECOND SESSION
+              {t('demoLabel')}
             </span>
           </div>
         )}
@@ -79,12 +86,12 @@ export const LiveSession = ({
         />
       </div>
 
-      {milestoneCopy && (
+      {milestoneKey && (
         <p
-          key={milestoneCopy}
+          key={milestoneKey}
           className={`animate-fade-up mono-caption text-center text-faint ${isFinalStretch ? 'text-accent' : ''}`}
         >
-          {milestoneCopy}
+          {t(milestoneKey)}
         </p>
       )}
 
@@ -93,7 +100,7 @@ export const LiveSession = ({
           <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1.5">
             <span className="animate-dot-live size-1.5 rounded-full bg-accent" aria-hidden="true" />
             <span className="hbar-amount text-sm font-semibold text-accent">
-              {stakeHbar} ℏ at stake
+              {t('atStake', { stake: stakeHbar })}
             </span>
           </span>
           <span
@@ -101,10 +108,8 @@ export const LiveSession = ({
             className={`mono-caption text-xs text-faint ${interruptions > 0 ? 'animate-pop-in' : ''}`}
           >
             {interruptions === 0
-              ? 'no interruptions'
-              : `${interruptions} ${
-                  interruptions === 1 ? 'interruption' : 'interruptions'
-                }`}
+              ? t('noInterruptions')
+              : t('interruptions', { count: interruptions })}
           </span>
         </div>
         <UsdHint hbar={stakeHbar} />
@@ -112,7 +117,7 @@ export const LiveSession = ({
 
       <div className="flex w-full flex-col items-center gap-3 mt-8 pb-2">
         <Button variant="primary" size="lg" fullWidth onClick={onFinishEarly}>
-          Finish early
+          {t('finishEarly')}
         </Button>
 
         {/*
@@ -125,7 +130,7 @@ export const LiveSession = ({
           onClick={onRequestDisarm}
           className="-my-3 py-3 text-sm text-faint underline underline-offset-4 transition-colors hover:text-muted min-h-[44px]"
         >
-          Disarm this session
+          {t('disarm')}
         </button>
       </div>
     </div>

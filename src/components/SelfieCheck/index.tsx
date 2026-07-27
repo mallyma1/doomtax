@@ -2,6 +2,7 @@
 
 import { IDKit, selfieCheckLegacy, type RpContext } from '@worldcoin/idkit';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 /**
@@ -18,11 +19,11 @@ import { useState } from 'react';
  * resolved would imply a consequence that does not exist.
  */
 
-const FEEDBACK_LABELS = {
-  pending: 'Waiting for World App',
-  failed: 'Not confirmed',
-  success: 'Confirmed',
-};
+const FEEDBACK_LABEL_KEYS = {
+  pending: 'feedbackPending',
+  failed: 'feedbackFailed',
+  success: 'feedbackSuccess',
+} as const;
 
 type CheckState = 'idle' | 'pending' | 'verified' | 'skipped';
 
@@ -34,6 +35,7 @@ export const SelfieCheck = ({
   action: string;
 }) => {
   const [state, setState] = useState<CheckState>('idle');
+  const t = useTranslations('SelfieCheck');
 
   /**
    * Records the outcome regardless of what happened. A decline is posted with
@@ -122,11 +124,8 @@ export const SelfieCheck = ({
   if (state === 'verified') {
     return (
       <div className="rounded-lg border border-green-200 bg-green-50 p-3 space-y-1">
-        <p className="text-sm font-medium text-green-950">Confirmed it was you</p>
-        <p className="text-sm text-green-900">
-          World ID matched a live face on your device. No image was sent here — only a
-          zero-knowledge proof, and it is tied to this session alone.
-        </p>
+        <p className="text-sm font-medium text-green-950">{t('verifiedTitle')}</p>
+        <p className="text-sm text-green-900">{t('verifiedBody')}</p>
       </div>
     );
   }
@@ -134,24 +133,22 @@ export const SelfieCheck = ({
   if (state === 'skipped') {
     return (
       <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 space-y-1">
-        <p className="text-sm font-medium text-gray-900">Check skipped</p>
-        <p className="text-sm text-gray-700">
-          Nothing changed. Your settlement and your streak stand exactly as they are —
-          this check never affects either.
-        </p>
+        <p className="text-sm font-medium text-gray-900">{t('skippedTitle')}</p>
+        <p className="text-sm text-gray-700">{t('skippedBody')}</p>
       </div>
     );
   }
 
   return (
     <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 space-y-2">
-      <p className="text-sm font-medium text-gray-900">Confirm it was you</p>
-      <p className="text-sm text-gray-700">
-        Optional. A quick face match inside World App marks this claim as made by a
-        present human. Skipping it costs you nothing.
-      </p>
+      <p className="text-sm font-medium text-gray-900">{t('idleTitle')}</p>
+      <p className="text-sm text-gray-700">{t('idleBody')}</p>
       <LiveFeedback
-        label={FEEDBACK_LABELS}
+        label={{
+          pending: t(FEEDBACK_LABEL_KEYS.pending),
+          failed: t(FEEDBACK_LABEL_KEYS.failed),
+          success: t(FEEDBACK_LABEL_KEYS.success),
+        }}
         state={state === 'pending' ? 'pending' : undefined}
         className="w-full"
       >
@@ -162,7 +159,7 @@ export const SelfieCheck = ({
           variant="tertiary"
           className="w-full"
         >
-          Confirm with World ID
+          {t('confirmButton')}
         </Button>
       </LiveFeedback>
     </div>
