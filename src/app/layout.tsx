@@ -1,9 +1,12 @@
 import { auth } from '@/auth';
+import { RTL_LOCALES } from '@/i18n/config';
 import ClientProviders from '@/providers';
 import '@worldcoin/mini-apps-ui-kit-react/styles.css';
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata, Viewport } from 'next';
+import { getLocale, getMessages } from 'next-intl/server';
+import { NextIntlClientProvider } from 'next-intl';
 import './globals.css';
 
 /**
@@ -62,19 +65,24 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const isRtl = RTL_LOCALES.includes(locale as 'ar' | 'ur');
   const worldAppId =
     process.env.NEXT_PUBLIC_APP_ID?.trim() ||
     process.env.WORLD_APP_ID?.trim() ||
     null;
   return (
-    <html lang="en">
+    <html lang={locale} dir={isRtl ? 'rtl' : 'ltr'}>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} `}
         style={KIT_DARK_RAMP}
       >
-        <ClientProviders session={session} worldAppId={worldAppId}>
-          {children}
-        </ClientProviders>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <ClientProviders session={session} worldAppId={worldAppId}>
+            {children}
+          </ClientProviders>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

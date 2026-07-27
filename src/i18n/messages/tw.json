@@ -1,0 +1,167 @@
+{
+  "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
+
+  "Header": {
+    "wordmark": "DoomTax",
+    "testnet": "nhyehyɛe hwɛ",
+    "about": "Fa ho",
+    "backToSession": "San kɔ agorɔ no"
+  },
+
+  "Common": {
+    "close": "Toto",
+    "back": "San",
+    "done": "Wie",
+    "loading": "Ɛrelooad",
+    "openInWorldApp": "Bue DoomTax wɔ World App mu",
+    "onYourPhone": "Ɛwɔ wo phone no so dada?",
+    "viewOnHashScan": "Hwɛ transaction no wɔ HashScan"
+  },
+
+  "AuthButton": {
+    "connect": "Fa World App bom",
+    "loginPending": "Ɛrekɔ mu",
+    "loginFailed": "Kɔ mu antumi",
+    "loginSuccess": "Akɔ mu",
+    "getStarted": "HYƐ ASEƐ",
+    "step1": "Gye World App — app a ɛhia sika biara nni ho, sɛ adeɛ foforɔ biara.",
+    "step1LinkLabel": "world.org/download",
+    "step2": "Bue World App na keka QR scanner a ɛwɔ main tab no so, na fa to code yi so.",
+    "step3": "DoomTax bue wɔ World App mu. Keka Connect — ɛsaina ɔfeɛ koro bi sɛ ɛyɛ wo. Wonnhyɛ charge biara, biribiara nsenkyerɛ. DoomTax hyɛ wo session account no ase atomatiki — biribi foforɔ nni hɔ a wohia afa bom.",
+    "step4": "Ɛyɛ adwuma wɔ Hedera nhyehyɛe hwɛ so — bɔhyɛdeɛ no wɔ sika titiriw biara nni ho nnɛ.",
+    "onPhoneAlready": "Ɛwɔ wo phone no so dada?",
+    "openInWorldApp": "Bue DoomTax wɔ World App mu"
+  },
+
+  "StakeForm": {
+    "commitment": "Hyɛ bɔhyɛ.",
+    "description": "Kyerɛw no sɛ bɔhyɛ a wohyɛ wo ho. Wo AI kokyerɛkyerɛni taa kyerɛw nsɛm yi ara bere a ɔhwɛ wo adansɛɛ — yɛ nokwafo dɛ nkɔ so sɛ atɔ hɔ no bɛyɛ hann.",
+    "placeholderIntention": "Wie settlement agent no na yɛ payment koro ano afi akyi akɔ anim",
+    "intentionLabel": "Wo dwennimdie ma session yi",
+    "tooShort": "Ka kakra bio fa adwuma no ho.",
+    "qualityHint": "Dwennimdie pa yɛ adwene a wohu: din adwuma no na da bɛn a ɛyɛ wie.",
+    "stakeLegend": "Bɔhyɛdeɛ",
+    "customAmountLabel": "Sika foforɔ",
+    "customAmountPlaceholder": "Hyɛ HBAR dodow biara",
+    "customAmountError": "Hyɛ HBAR dodow a ɛwɔ.",
+    "sessionInfo": "Wo {stakeHbar} ℏ no kura wɔ Hedera nhyehyɛe hwɛ mu ma {duration}. Siesie bɔhyɛ no na ɛsane bio nyinaa. Sɛ wontiesie a, ɛkɔ ɔkwan a yɛdi ho no so, ɛmma yɛn da. Wobɛtumi atu session no asie bere biara ansa-na esiesie.",
+    "startButton": "Hyɛ session aseɛ",
+    "demoLabel": "DEMO · SECOND 30 SESSION",
+    "realSessionNote": "Session titiriw bɛtim sɛ minit 25.",
+    "exampleChip1": "Kyerɛw nsɛm 300 a ɛfa report no ho",
+    "exampleChip2": "Yi inbox no hɔ kɔ zero",
+    "exampleChip3": "Wie na push ticket koro",
+    "stepIntention": "dwennimdie",
+    "stepStake": "bɔhyɛdeɛ",
+    "stepGo": "kɔ"
+  },
+
+  "LiveSession": {
+    "atStake": "{stakeHbar} ℏ sɛ bɔhyɛdeɛ",
+    "noInterruptions": "tukwaa biara nni hɔ",
+    "interruptions": "{count, plural, =1 {# tukwaa} other {# tukwaa}}",
+    "finishEarly": "Wie ntɛm",
+    "disarm": "Tu session yi aseɛ",
+    "milestoneSettle": "Gyina so.",
+    "milestoneHalfway": "Famu — tena so.",
+    "milestoneFinal": "Awieɛ no kwan.",
+    "demoLabel": "DEMO · SECOND 30 SESSION"
+  },
+
+  "ArtifactForm": {
+    "heading": "Kyerɛ wo adwuma",
+    "youCommitted": "Wohyɛɛ bɔhyɛ fa yi ho:",
+    "placeholderArtifact": "Paste adwuma a wosiiiɛ, anaasɛ kyerɛw nea wowiee ne baabi a ɛwɔ.",
+    "artifactLabel": "Wo adwuma ma session yi",
+    "coachReads": "Nea wo kokyerɛkyerɛni gye",
+    "coachReceivesIntention": "Wo dwennimdie ne nsɛm a ɛwɔ soro",
+    "coachReceivesForeground": "{held} anim, {interruptions}",
+    "coachNeverReceivesAttachment": "Wo attachment — ɛmfi phone yi mu da (nnɛ)",
+    "coachPrivacy": "Ɛnyɛ wo screen, wo browsing, wo keyboard, anaasɛ biribiara a ɛfiri app foforɔ mu da.",
+    "submit": "Fa kɔ review",
+    "coachReading": "Wo kokyerɛkyerɛni rekenkan",
+    "coachReadingBody": "Ɛyɛ adwuma wɔ 0G so, na siesie wɔ Hedera so. Ɛbɛtumi akɔ kakra.",
+    "attachButton": "Fa wo adwuma foto bom — sɛ wo pɛ",
+    "attachCaption": "Ɛtena wo device no so. Wɔyɛ fingerprint (hash) wɔ hɔ ara sɛ version a ɛba akyiri bɛtumi ayɛ verify wɔ chain so. OCR wɔ 0G so ba — nnɛ kokyerɛkyerɛni hwɛ wo text nko ara.",
+    "removeAttachment": "Yi attachment no"
+  },
+
+  "Verdict": {
+    "settledOnHedera": "Asiesie wɔ Hedera nhyehyɛe hwɛ so",
+    "viewOnHashScan": "Hwɛ wɔ HashScan",
+    "noTransfer": "transfer biara nni",
+    "publicReceipt": "Receipt a obiara hu",
+    "publicReceiptDetail": "Ɛwɔ bɔhyɛ hash ne atɔhɔ no nko. Wo dwennimdie anaasɛ adwuma no nni hɔ da.",
+    "appealWindow": "Appeal bere",
+    "appealExpired": "Appeal bere no ato mu.",
+    "whatSettlesLabel": "Nea ɛsiesie wɔ Hedera",
+    "whatLedgerLabel": "Nea ɛkɔ public ledger no mu",
+    "done": "Wie"
+  },
+
+  "ConfirmSheet": {
+    "title": "Tu session yi aseɛ?",
+    "body": "Wo {stakeHbar} ℏ no san bɛba wo nkyɛn nyinaa na biribiara nkɔ. Session no wie nnɛ ara na wɔammɛma wo kokyerɛkyerɛni nhunu. Fa yi di dwuma bere a ɔkwan foforɔ di, na ɛnyɛ asɛnka.",
+    "confirm": "Tu aseɛ na fa bɔhyɛdeɛ no bɛma me",
+    "cancel": "Kɔ so"
+  },
+
+  "CirclePanel": {
+    "demoCircleLabel": "Demo sɛntanmu",
+    "causeLabel": "Ɔkwan koro",
+    "causalAccount": "Demo account a ɛwɔ nnɛ:",
+    "impactTotal": "{total} HBAR",
+    "impactDetail": "{count} a wonntiesie no aboa ɔkwan yi. Leaderboard nni, obiara dodow nni, na wonkyerɛ da hwan ntiesie.",
+    "pendingForfeit": "Sɛ session yi gyina a, {hbar} HBAR bɛkɔ wo sɛntanmu dodow mu appeal bere akyi. Adeɛpa no di ho, na wo din nkɔ ne ho.",
+    "private": "Wo sɛntanmu tena hɔ a ɛyɛ akyinnyegyeɛ. Yɛkyerɛ nea mudi ho baabiara, na ɛnyɛ member list — na wonkyerɛ da hwan ntiesie."
+  },
+
+  "PoweredBy": {
+    "hederaDetail": "siesie",
+    "zeroGDetail": "kokyerɛkyerɛni",
+    "worldDetail": "app ketewa",
+    "hederaLabel": "Sua fa Hedera ho",
+    "zeroGLabel": "Sua fa 0G ho",
+    "worldLabel": "Sua fa World ho"
+  },
+
+  "ExplainSheet": {
+    "close": "Toto",
+    "hedera-settlement": {
+      "eyebrow": "Siesie",
+      "title": "Nea ɛsiesie wɔ Hedera"
+    },
+    "hcs-receipt": {
+      "eyebrow": "Receipt a obiara hu",
+      "title": "Nea ɛkɔ public ledger no mu"
+    },
+    "0g-coach": {
+      "eyebrow": "0G Compute",
+      "title": "Ɛdeɛn na kokyerɛkyerɛni di to atɔ ho"
+    },
+    "world-minikit": {
+      "eyebrow": "World App",
+      "title": "Nea World App so nsɛnkyerɛnne kyerɛ"
+    },
+    "streak-token": {
+      "eyebrow": "Streak token",
+      "title": "Streak token no"
+    }
+  },
+
+  "About": {
+    "pageTitle": "Fa DoomTax ho",
+    "heroTitle": "Ɔkwan pa a ɛfa so de dwennimdie akɔ adwuma",
+    "heroBody": "DoomTax yɛ adwuma ahyɛdeɛ a ɛgyina bɔhyɛ-adeɛ nhwehwɛmu a ɛfiri suansua ɔsesɛm so. Wo din adwuma koro, fa bɔhyɛdeɛ ketewa si akyi, na gye atɔhɔ trenea wɔ awieɛ.",
+    "gettingInTitle": "Ɛdeɛn na wubue DoomTax",
+    "gettingInBody": "DoomTax yɛ app ketewa wɔ World App mu. Fa QR code a ɛwɔ aseɛ bue wɔ wo phone so.",
+    "readyTitle": "Wodi ready sɛ wuhwɛ?",
+    "readyBody": "Hyɛ aseɛ wɔ bɔhyɛdeɛ ketewa bi. Nhwehwɛmu kyerɛ sɛ ɛtaa sen bɔhyɛ no yɛ nokwareɛ — yi biribi a wopɛ wie wɔ session a ɛba akyiri.",
+    "startSession": "Hyɛ session aseɛ",
+    "openInWorldApp": "Bue wɔ World App mu"
+  },
+
+  "LanguageSwitcher": {
+    "label": "Kasa"
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
+
+  "Header": {
+    "wordmark": "DoomTax",
+    "testnet": "测试网",
+    "about": "关于",
+    "backToSession": "返回会话"
+  },
+
+  "Common": {
+    "close": "关闭",
+    "back": "返回",
+    "done": "完成",
+    "loading": "加载中",
+    "openInWorldApp": "在 World App 中打开 DoomTax",
+    "onYourPhone": "已在手机上了？",
+    "viewOnHashScan": "在 HashScan 上查看交易"
+  },
+
+  "AuthButton": {
+    "connect": "连接 World App",
+    "loginPending": "登录中",
+    "loginFailed": "登录失败",
+    "loginSuccess": "已登录",
+    "getStarted": "开始",
+    "step1": "获取 World App —— 这是一款免费应用，和其他应用一样。",
+    "step1LinkLabel": "world.org/download",
+    "step2": "打开 World App，点击主界面的 QR 扫描器，然后对准此二维码。",
+    "step3": "DoomTax 在 World App 内打开。点击连接 —— 签署一条消息以确认身份。不收取任何费用，没有任何资金移动。DoomTax 会自动设置你的会话账户 —— 无需再连接其他任何内容。",
+    "step4": "运行在 Hedera 测试网上 —— 今日的承诺押金不涉及真实资金。",
+    "onPhoneAlready": "已在手机上了？",
+    "openInWorldApp": "在 World App 中打开 DoomTax"
+  },
+
+  "StakeForm": {
+    "commitment": "做出承诺。",
+    "description": "像对自己的承诺一样写下它。你的 AI 教练在评判你的证明时会逐字阅读这些内容 —— 请写得足够具体，让裁决清晰明了。",
+    "placeholderIntention": "完成结算代理并让一笔付款从头到尾正常运行",
+    "intentionLabel": "本次会话的意图",
+    "tooShort": "请再多说一点关于工作的内容。",
+    "qualityHint": "好的意图是可验证的：写明任务名称以及何时算完成。",
+    "stakeLegend": "押金",
+    "customAmountLabel": "其他金额",
+    "customAmountPlaceholder": "输入任意 HBAR 金额",
+    "customAmountError": "请输入正数 HBAR 金额。",
+    "sessionInfo": "你的 {stakeHbar} ℏ 将在 Hedera 测试网上保留 {duration}。完成承诺后全额返还。若未完成，将归入共同事业，永不归我们所有。你可以在结算前随时解除会话。",
+    "startButton": "开始会话",
+    "demoLabel": "演示 · 30 秒会话",
+    "realSessionNote": "正式会话时长为 25 分钟。",
+    "exampleChip1": "为报告写 300 字",
+    "exampleChip2": "将收件箱清空至零",
+    "exampleChip3": "完成并推送一个工单",
+    "stepIntention": "意图",
+    "stepStake": "押金",
+    "stepGo": "开始"
+  },
+
+  "LiveSession": {
+    "atStake": "{stakeHbar} ℏ 作为押金",
+    "noInterruptions": "无中断",
+    "interruptions": "{count, plural, other {# 次中断}}",
+    "finishEarly": "提前完成",
+    "disarm": "解除此会话",
+    "milestoneSettle": "进入状态。",
+    "milestoneHalfway": "过半了 —— 坚持住。",
+    "milestoneFinal": "最后冲刺。",
+    "demoLabel": "演示 · 30 秒会话"
+  },
+
+  "ArtifactForm": {
+    "heading": "展示你的成果",
+    "youCommitted": "你承诺了这件事：",
+    "placeholderArtifact": "粘贴你的成果，或描述你完成了什么以及在哪里。",
+    "artifactLabel": "本次会话的成果",
+    "coachReads": "你的教练收到的内容",
+    "coachReceivesIntention": "你的意图和上方的文字",
+    "coachReceivesForeground": "{held} 在前台，{interruptions}",
+    "coachNeverReceivesAttachment": "你的附件 —— 它永远不会离开此手机（目前如此）",
+    "coachPrivacy": "绝不包括你的屏幕、浏览记录、按键内容或其他应用的任何内容。",
+    "submit": "提交审核",
+    "coachReading": "你的教练正在阅读",
+    "coachReadingBody": "在 0G 上私密处理，然后在 Hedera 上结算。这需要片刻。",
+    "attachButton": "附上你的成果照片 —— 可选",
+    "attachCaption": "保留在你的设备上。本地计算指纹（哈希），供未来版本在链上验证。0G 上的 OCR 识别即将推出 —— 今天教练仅评判你的文字。",
+    "removeAttachment": "删除附件"
+  },
+
+  "Verdict": {
+    "settledOnHedera": "已在 Hedera 测试网上结算",
+    "viewOnHashScan": "在 HashScan 上查看",
+    "noTransfer": "无转账",
+    "publicReceipt": "公开收据",
+    "publicReceiptDetail": "仅包含承诺哈希和裁决结果。绝不包含你的意图或成果。",
+    "appealWindow": "申诉窗口",
+    "appealExpired": "申诉窗口已关闭。",
+    "whatSettlesLabel": "在 Hedera 上结算的内容",
+    "whatLedgerLabel": "进入公开账本的内容",
+    "done": "完成"
+  },
+
+  "ConfirmSheet": {
+    "title": "解除此会话？",
+    "body": "你的 {stakeHbar} ℏ 将全额返还，没有任何损失。会话现在结束，不会发送给你的教练。仅在计划确实改变时使用，而不是作为习惯。",
+    "confirm": "解除并返还我的押金",
+    "cancel": "继续"
+  },
+
+  "CirclePanel": {
+    "demoCircleLabel": "演示圈子",
+    "causeLabel": "共同事业",
+    "causalAccount": "当前演示账户：",
+    "impactTotal": "{total} HBAR",
+    "impactDetail": "{count} 次未完成资助了此事业。无排行榜，无个人总额，也绝不点名谁未完成。",
+    "pendingForfeit": "如果此会话成立，{hbar} HBAR 将在申诉窗口后加入你圈子的总额。善意仍然有效，但你的名字不会随之显示。",
+    "private": "你的圈子保持私密。我们展示大家共同资助的总额，而不是成员列表 —— 也绝不透露谁未完成。"
+  },
+
+  "PoweredBy": {
+    "hederaDetail": "结算",
+    "zeroGDetail": "教练",
+    "worldDetail": "迷你应用",
+    "hederaLabel": "了解 Hedera",
+    "zeroGLabel": "了解 0G",
+    "worldLabel": "了解 World"
+  },
+
+  "ExplainSheet": {
+    "close": "关闭",
+    "hedera-settlement": {
+      "eyebrow": "结算",
+      "title": "在 Hedera 上结算的内容"
+    },
+    "hcs-receipt": {
+      "eyebrow": "公开收据",
+      "title": "进入公开账本的内容"
+    },
+    "0g-coach": {
+      "eyebrow": "0G Compute",
+      "title": "教练如何做出判断"
+    },
+    "world-minikit": {
+      "eyebrow": "World App",
+      "title": "通过 World App 签署意味着什么"
+    },
+    "streak-token": {
+      "eyebrow": "连击代币",
+      "title": "连击代币"
+    }
+  },
+
+  "About": {
+    "pageTitle": "关于 DoomTax",
+    "heroTitle": "将意图转化为行动的温和方式",
+    "heroBody": "DoomTax 是一款专注工具，基于行为经济学中的承诺机制研究。你指定一项任务，放入小额押金，最后获得一个诚实的裁决。",
+    "gettingInTitle": "如何打开 DoomTax",
+    "gettingInBody": "DoomTax 作为迷你应用运行在 World App 内部。使用下方的二维码在手机上打开它。",
+    "readyTitle": "准备好尝试了吗？",
+    "readyBody": "从小额押金开始。研究表明：金额大小不如让承诺真实存在重要 —— 选择一件你真正打算在下次会话中完成的事情。",
+    "startSession": "开始会话",
+    "openInWorldApp": "在 World App 中打开"
+  },
+
+  "LanguageSwitcher": {
+    "label": "语言"
+  }
+}

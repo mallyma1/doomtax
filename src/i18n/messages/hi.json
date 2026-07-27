@@ -1,0 +1,167 @@
+{
+  "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
+
+  "Header": {
+    "wordmark": "DoomTax",
+    "testnet": "परीक्षण नेटवर्क",
+    "about": "परिचय",
+    "backToSession": "सत्र पर वापस जाएं"
+  },
+
+  "Common": {
+    "close": "बंद करें",
+    "back": "वापस",
+    "done": "हो गया",
+    "loading": "लोड हो रहा है",
+    "openInWorldApp": "World App में DoomTax खोलें",
+    "onYourPhone": "क्या यह आपके फ़ोन पर पहले से है?",
+    "viewOnHashScan": "HashScan पर लेनदेन देखें"
+  },
+
+  "AuthButton": {
+    "connect": "World App कनेक्ट करें",
+    "loginPending": "लॉग इन हो रहा है",
+    "loginFailed": "लॉग इन विफल",
+    "loginSuccess": "लॉग इन सफल",
+    "getStarted": "शुरू करें",
+    "step1": "World App प्राप्त करें — यह किसी भी अन्य की तरह एक मुफ्त ऐप है।",
+    "step1LinkLabel": "world.org/download",
+    "step2": "World App खोलें और मुख्य टैब पर QR स्कैनर पर टैप करें, फिर इस कोड पर इंगित करें।",
+    "step3": "DoomTax, World App के अंदर खुलता है। कनेक्ट पर टैप करें — यह आपकी पहचान बताने के लिए एक संदेश पर हस्ताक्षर करता है। कुछ भी चार्ज नहीं होता, कुछ भी नहीं हिलता। DoomTax आपका सत्र खाता स्वचालित रूप से सेट करता है — कनेक्ट करने के लिए और कुछ नहीं।",
+    "step4": "Hedera परीक्षण नेटवर्क पर चलता है — प्रतिबद्धताओं में आज कोई वास्तविक पैसा नहीं है।",
+    "onPhoneAlready": "क्या यह आपके फ़ोन पर पहले से है?",
+    "openInWorldApp": "World App में DoomTax खोलें"
+  },
+
+  "StakeForm": {
+    "commitment": "एक प्रतिबद्धता करें।",
+    "description": "इसे स्वयं से एक वादे की तरह लिखें। आपका AI कोच आपके प्रमाण का मूल्यांकन करते समय इन्हीं शब्दों को पढ़ता है — इतना विशिष्ट रहें कि निर्णय स्पष्ट हो।",
+    "placeholderIntention": "सेटलमेंट एजेंट पूरा करें और एक भुगतान शुरू से अंत तक काम करवाएं",
+    "intentionLabel": "इस सत्र के लिए आपका इरादा",
+    "tooShort": "काम के बारे में थोड़ा और बताएं।",
+    "qualityHint": "अच्छे इरादे जांचे जा सकते हैं: काम का नाम बताएं और कब पूरा माना जाएगा।",
+    "stakeLegend": "जमानत",
+    "customAmountLabel": "अन्य राशि",
+    "customAmountPlaceholder": "कोई भी HBAR राशि दर्ज करें",
+    "customAmountError": "एक सकारात्मक HBAR राशि दर्ज करें।",
+    "sessionInfo": "आपका {stakeHbar} ℏ {duration} के लिए Hedera परीक्षण नेटवर्क पर रखा जाता है। प्रतिबद्धता पूरी करें और यह पूरा वापस आता है। चूक जाएं तो यह साझा कारण में जाता है, हमारे पास कभी नहीं। आप निपटान से पहले किसी भी समय सत्र को निष्क्रिय कर सकते हैं।",
+    "startButton": "सत्र शुरू करें",
+    "demoLabel": "डेमो · 30-सेकंड सत्र",
+    "realSessionNote": "वास्तविक सत्र 25 मिनट चलते हैं।",
+    "exampleChip1": "रिपोर्ट के 300 शब्द लिखें",
+    "exampleChip2": "इनबॉक्स को शून्य तक साफ़ करें",
+    "exampleChip3": "एक टिकट पूरा करें और पुश करें",
+    "stepIntention": "इरादा",
+    "stepStake": "जमानत",
+    "stepGo": "जाएं"
+  },
+
+  "LiveSession": {
+    "atStake": "{stakeHbar} ℏ जमानत में",
+    "noInterruptions": "कोई व्यवधान नहीं",
+    "interruptions": "{count, plural, =1 {# व्यवधान} other {# व्यवधान}}",
+    "finishEarly": "जल्दी समाप्त करें",
+    "disarm": "इस सत्र को निष्क्रिय करें",
+    "milestoneSettle": "बैठ जाएं।",
+    "milestoneHalfway": "आधा हो गया — रुके रहें।",
+    "milestoneFinal": "अंतिम खिंचाव।",
+    "demoLabel": "डेमो · 30-सेकंड सत्र"
+  },
+
+  "ArtifactForm": {
+    "heading": "अपना काम दिखाएं",
+    "youCommitted": "आपने इसके लिए प्रतिबद्धता की:",
+    "placeholderArtifact": "जो आपने बनाया उसे पेस्ट करें, या बताएं कि आपने क्या पूरा किया और वह कहां है।",
+    "artifactLabel": "इस सत्र के लिए आपका कार्य",
+    "coachReads": "आपका कोच क्या प्राप्त करता है",
+    "coachReceivesIntention": "आपका इरादा और ऊपर का टेक्स्ट",
+    "coachReceivesForeground": "{held} अग्रभूमि में, {interruptions}",
+    "coachNeverReceivesAttachment": "आपका अनुलग्नक — यह इस फ़ोन से कभी नहीं जाता (अभी के लिए)",
+    "coachPrivacy": "कभी भी आपकी स्क्रीन, ब्राउज़िंग, कीस्ट्रोक या अन्य ऐप्स से कुछ भी नहीं।",
+    "submit": "समीक्षा के लिए सबमिट करें",
+    "coachReading": "आपका कोच पढ़ रहा है",
+    "coachReadingBody": "0G पर निजी तौर पर चल रहा है, फिर Hedera पर निपटारा। इसमें एक पल लगता है।",
+    "attachButton": "अपने काम की फोटो संलग्न करें — वैकल्पिक",
+    "attachCaption": "आपके डिवाइस पर रहती है। एक फ़िंगरप्रिंट (हैश) स्थानीय रूप से गणना की जाती है ताकि एक भावी संस्करण इसे ऑन-चेन सत्यापित कर सके। 0G पर OCR पढ़ना आ रहा है — आज कोच केवल आपके टेक्स्ट का मूल्यांकन करता है।",
+    "removeAttachment": "अनुलग्नक हटाएं"
+  },
+
+  "Verdict": {
+    "settledOnHedera": "Hedera परीक्षण नेटवर्क पर निपटाया गया",
+    "viewOnHashScan": "HashScan पर देखें",
+    "noTransfer": "कोई हस्तांतरण नहीं",
+    "publicReceipt": "सार्वजनिक रसीद",
+    "publicReceiptDetail": "केवल एक प्रतिबद्धता हैश और निर्णय शामिल है। कभी भी आपका इरादा या आपका कार्य नहीं।",
+    "appealWindow": "अपील विंडो",
+    "appealExpired": "अपील विंडो बंद हो गई है।",
+    "whatSettlesLabel": "Hedera पर क्या निपटाया जाता है",
+    "whatLedgerLabel": "सार्वजनिक खाता-बही में क्या जाता है",
+    "done": "हो गया"
+  },
+
+  "ConfirmSheet": {
+    "title": "इस सत्र को निष्क्रिय करें?",
+    "body": "आपका {stakeHbar} ℏ आपको पूरा वापस आता है और कुछ भी जब्त नहीं होता। सत्र अभी समाप्त होता है और आपके कोच को नहीं भेजा जाता। इसका उपयोग तब करें जब योजना वास्तव में बदल गई हो, आदत के रूप में नहीं।",
+    "confirm": "निष्क्रिय करें और मेरी जमानत वापस करें",
+    "cancel": "जारी रखें"
+  },
+
+  "CirclePanel": {
+    "demoCircleLabel": "डेमो सर्कल",
+    "causeLabel": "साझा कारण",
+    "causalAccount": "वर्तमान डेमो खाता:",
+    "impactTotal": "{total} HBAR",
+    "impactDetail": "{count} चूक ने इस कारण को वित्त पोषित किया। कोई लीडरबोर्ड नहीं, कोई व्यक्तिगत कुल नहीं, और कभी भी यह नहीं बताया जाता कि किसने चूक की।",
+    "pendingForfeit": "यदि यह सत्र बना रहता है, तो {hbar} HBAR अपील विंडो के बाद आपके सर्कल के कुल में शामिल हो जाता है। अच्छाई फिर भी मायने रखती है, लेकिन आपका नाम उसके साथ नहीं जाता।",
+    "private": "आपका सर्कल निजी रहता है। हम दिखाते हैं कि आपने मिलकर क्या वित्त पोषित किया, सदस्यों की सूची नहीं — और कभी नहीं कि किसने चूक की।"
+  },
+
+  "PoweredBy": {
+    "hederaDetail": "निपटान",
+    "zeroGDetail": "कोच",
+    "worldDetail": "मिनी ऐप",
+    "hederaLabel": "Hedera के बारे में जानें",
+    "zeroGLabel": "0G के बारे में जानें",
+    "worldLabel": "World के बारे में जानें"
+  },
+
+  "ExplainSheet": {
+    "close": "बंद करें",
+    "hedera-settlement": {
+      "eyebrow": "निपटान",
+      "title": "Hedera पर क्या निपटाया जाता है"
+    },
+    "hcs-receipt": {
+      "eyebrow": "सार्वजनिक रसीद",
+      "title": "सार्वजनिक खाता-बही में क्या जाता है"
+    },
+    "0g-coach": {
+      "eyebrow": "0G Compute",
+      "title": "कोच कैसे तय करता है"
+    },
+    "world-minikit": {
+      "eyebrow": "World App",
+      "title": "World App से हस्ताक्षर का क्या मतलब है"
+    },
+    "streak-token": {
+      "eyebrow": "स्ट्रीक टोकन",
+      "title": "स्ट्रीक टोकन"
+    }
+  },
+
+  "About": {
+    "pageTitle": "DoomTax के बारे में",
+    "heroTitle": "इरादे को अनुसरण में बदलने का एक दयालु तरीका",
+    "heroBody": "DoomTax व्यवहार अर्थशास्त्र के प्रतिबद्धता-उपकरण अनुसंधान पर आधारित एक फ़ोकस उपकरण है। आप एक कार्य का नाम लेते हैं, उसके पीछे एक छोटी जमानत रखते हैं, और अंत में एक ईमानदार निर्णय पाते हैं।",
+    "gettingInTitle": "DoomTax कैसे खोलें",
+    "gettingInBody": "DoomTax, World App के अंदर एक मिनी ऐप के रूप में चलता है। इसे अपने फ़ोन पर खोलने के लिए नीचे दिए गए QR कोड का उपयोग करें।",
+    "readyTitle": "इसे आज़माने के लिए तैयार हैं?",
+    "readyBody": "एक छोटी जमानत से शुरू करें। शोध स्पष्ट है कि आकार से ज़्यादा प्रतिबद्धता को वास्तविक बनाना मायने रखता है — कुछ ऐसा चुनें जिसे आप अगले सत्र में वास्तव में समाप्त करने का इरादा रखते हैं।",
+    "startSession": "एक सत्र शुरू करें",
+    "openInWorldApp": "World App में खोलें"
+  },
+
+  "LanguageSwitcher": {
+    "label": "भाषा"
+  }
+}

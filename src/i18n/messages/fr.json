@@ -1,0 +1,167 @@
+{
+  "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
+
+  "Header": {
+    "wordmark": "DoomTax",
+    "testnet": "réseau de test",
+    "about": "À propos",
+    "backToSession": "Retour à la session"
+  },
+
+  "Common": {
+    "close": "Fermer",
+    "back": "Retour",
+    "done": "Terminé",
+    "loading": "Chargement",
+    "openInWorldApp": "Ouvrir DoomTax dans World App",
+    "onYourPhone": "Déjà sur votre téléphone ?",
+    "viewOnHashScan": "Voir la transaction sur HashScan"
+  },
+
+  "AuthButton": {
+    "connect": "Connecter World App",
+    "loginPending": "Connexion en cours",
+    "loginFailed": "Échec de la connexion",
+    "loginSuccess": "Connecté",
+    "getStarted": "COMMENCER",
+    "step1": "Obtenez World App — c'est une application gratuite, comme une autre.",
+    "step1LinkLabel": "world.org/download",
+    "step2": "Ouvrez World App et appuyez sur le scanner QR dans l'onglet principal, puis pointez-le vers ce code.",
+    "step3": "DoomTax s'ouvre dans World App. Appuyez sur Connecter — cela signe un message pour confirmer votre identité. Rien n'est facturé, rien ne bouge. DoomTax configure automatiquement votre compte de session — rien d'autre à connecter.",
+    "step4": "Fonctionne sur le réseau de test Hedera — les engagements ne représentent pas d'argent réel aujourd'hui.",
+    "onPhoneAlready": "Déjà sur votre téléphone ?",
+    "openInWorldApp": "Ouvrir DoomTax dans World App"
+  },
+
+  "StakeForm": {
+    "commitment": "Prenez un engagement.",
+    "description": "Rédigez-le comme une promesse à vous-même. Votre coach IA lit ces mots exacts lors du jugement de votre preuve — soyez suffisamment précis pour que le verdict soit clair.",
+    "placeholderIntention": "Terminer l'agent de règlement et faire fonctionner un paiement de bout en bout",
+    "intentionLabel": "Votre intention pour cette session",
+    "tooShort": "Dites-en un peu plus sur le travail.",
+    "qualityHint": "Les bonnes intentions sont vérifiables : nommez la tâche et quand elle est considérée comme accomplie.",
+    "stakeLegend": "Engagement",
+    "customAmountLabel": "Autre montant",
+    "customAmountPlaceholder": "Saisissez n'importe quel montant HBAR",
+    "customAmountError": "Saisissez un montant HBAR positif.",
+    "sessionInfo": "Votre {stakeHbar} ℏ est retenu sur le réseau de test Hedera pendant {duration}. Tenez l'engagement et il vous revient intégralement. Si vous ne le tenez pas, il va à la cause commune, jamais à nous. Vous pouvez désarmer la session à tout moment avant le règlement.",
+    "startButton": "Démarrer la session",
+    "demoLabel": "DÉMO · SESSION DE 30 SECONDES",
+    "realSessionNote": "Les vraies sessions durent 25 minutes.",
+    "exampleChip1": "Écrire 300 mots du rapport",
+    "exampleChip2": "Vider ma boîte de réception à zéro",
+    "exampleChip3": "Terminer et pousser un ticket",
+    "stepIntention": "intention",
+    "stepStake": "engagement",
+    "stepGo": "go"
+  },
+
+  "LiveSession": {
+    "atStake": "{stakeHbar} ℏ en jeu",
+    "noInterruptions": "aucune interruption",
+    "interruptions": "{count, plural, =1 {# interruption} other {# interruptions}}",
+    "finishEarly": "Terminer tôt",
+    "disarm": "Désarmer cette session",
+    "milestoneSettle": "Installez-vous.",
+    "milestoneHalfway": "À mi-chemin — tenez bon.",
+    "milestoneFinal": "Dernière ligne droite.",
+    "demoLabel": "DÉMO · SESSION DE 30 SECONDES"
+  },
+
+  "ArtifactForm": {
+    "heading": "Montrez votre travail",
+    "youCommitted": "Vous vous êtes engagé à ceci :",
+    "placeholderArtifact": "Collez ce que vous avez produit, ou décrivez ce que vous avez terminé et où cela se trouve.",
+    "artifactLabel": "Votre artefact pour cette session",
+    "coachReads": "Ce que reçoit votre coach",
+    "coachReceivesIntention": "Votre intention et le texte ci-dessus",
+    "coachReceivesForeground": "{held} au premier plan, {interruptions}",
+    "coachNeverReceivesAttachment": "Votre pièce jointe — elle ne quitte jamais ce téléphone (encore)",
+    "coachPrivacy": "Jamais votre écran, votre navigation, vos frappes au clavier, ni quoi que ce soit d'autres applications.",
+    "submit": "Soumettre pour examen",
+    "coachReading": "Votre coach lit",
+    "coachReadingBody": "Traitement en privé sur 0G, puis règlement sur Hedera. Cela prend un moment.",
+    "attachButton": "Joindre une photo de votre travail — optionnel",
+    "attachCaption": "Reste sur votre appareil. Une empreinte (hash) est calculée localement pour qu'une future version puisse la vérifier sur la chaîne. La lecture OCR sur 0G arrive — aujourd'hui le coach juge uniquement votre texte.",
+    "removeAttachment": "Supprimer la pièce jointe"
+  },
+
+  "Verdict": {
+    "settledOnHedera": "Réglé sur le réseau de test Hedera",
+    "viewOnHashScan": "Voir sur HashScan",
+    "noTransfer": "aucun transfert",
+    "publicReceipt": "Reçu public",
+    "publicReceiptDetail": "Contient uniquement un hash d'engagement et le verdict. Jamais votre intention ni votre artefact.",
+    "appealWindow": "Fenêtre d'appel",
+    "appealExpired": "La fenêtre d'appel est fermée.",
+    "whatSettlesLabel": "Ce qui se règle sur Hedera",
+    "whatLedgerLabel": "Ce qui va dans le registre public",
+    "done": "Terminé"
+  },
+
+  "ConfirmSheet": {
+    "title": "Désarmer cette session ?",
+    "body": "Votre {stakeHbar} ℏ vous revient intégralement et rien n'est perdu. La session se termine maintenant et n'est pas envoyée à votre coach. Utilisez ceci lorsque le plan a vraiment changé, pas comme une habitude.",
+    "confirm": "Désarmer et récupérer mon engagement",
+    "cancel": "Continuer"
+  },
+
+  "CirclePanel": {
+    "demoCircleLabel": "Cercle de démonstration",
+    "causeLabel": "Cause commune",
+    "causalAccount": "Compte de démonstration actuel :",
+    "impactTotal": "{total} HBAR",
+    "impactDetail": "{count} forfaits ont financé cette cause. Pas de classement, pas de totaux individuels, et jamais de mention de qui a failli.",
+    "pendingForfeit": "Si cette session est maintenue, {hbar} HBAR rejoint le total de votre cercle après la fenêtre d'appel. Le bien compte, mais votre nom ne l'accompagne pas.",
+    "private": "Votre cercle reste privé. Nous montrons ce que vous avez financé ensemble, pas une liste de membres — et jamais qui a failli."
+  },
+
+  "PoweredBy": {
+    "hederaDetail": "règlement",
+    "zeroGDetail": "coach",
+    "worldDetail": "mini app",
+    "hederaLabel": "En savoir plus sur Hedera",
+    "zeroGLabel": "En savoir plus sur 0G",
+    "worldLabel": "En savoir plus sur World"
+  },
+
+  "ExplainSheet": {
+    "close": "Fermer",
+    "hedera-settlement": {
+      "eyebrow": "Règlement",
+      "title": "Ce qui se règle sur Hedera"
+    },
+    "hcs-receipt": {
+      "eyebrow": "Reçu public",
+      "title": "Ce qui va dans le registre public"
+    },
+    "0g-coach": {
+      "eyebrow": "0G Compute",
+      "title": "Comment le coach décide"
+    },
+    "world-minikit": {
+      "eyebrow": "World App",
+      "title": "Ce que signer avec World App signifie"
+    },
+    "streak-token": {
+      "eyebrow": "Token de série",
+      "title": "Le token de série"
+    }
+  },
+
+  "About": {
+    "pageTitle": "À propos de DoomTax",
+    "heroTitle": "Une façon plus douce de transformer l'intention en action",
+    "heroBody": "DoomTax est un outil de concentration fondé sur la recherche en dispositifs d'engagement issus de l'économie comportementale. Nommez une tâche, placez un petit engagement et recevez un verdict honnête à la fin.",
+    "gettingInTitle": "Comment ouvrir DoomTax",
+    "gettingInBody": "DoomTax fonctionne comme une mini app dans World App. Utilisez le QR code ci-dessous pour l'ouvrir sur votre téléphone.",
+    "readyTitle": "Prêt à essayer ?",
+    "readyBody": "Commencez avec un petit engagement. La recherche est claire : la taille compte moins que rendre l'engagement réel — choisissez quelque chose que vous avez vraiment l'intention de terminer lors de la prochaine session.",
+    "startSession": "Démarrer une session",
+    "openInWorldApp": "Ouvrir dans World App"
+  },
+
+  "LanguageSwitcher": {
+    "label": "Langue"
+  }
+}

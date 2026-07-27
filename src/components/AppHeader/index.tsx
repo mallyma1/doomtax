@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 /**
  * The single header row used by every screen.
@@ -25,6 +26,7 @@ export const AppHeader = ({
         <span className="mono-caption rounded-full border border-border px-2 py-0.5 text-[10px] text-faint">
           testnet
         </span>
+        <LanguageSwitcher />
         <Link
           href={variant === 'about' ? '/' : '/about'}
           className="-my-3 py-3 text-sm text-muted transition-colors hover:text-foreground"

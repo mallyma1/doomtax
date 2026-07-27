@@ -1,0 +1,167 @@
+{
+  "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
+
+  "Header": {
+    "wordmark": "DoomTax",
+    "testnet": "شبكة الاختبار",
+    "about": "حول",
+    "backToSession": "العودة إلى الجلسة"
+  },
+
+  "Common": {
+    "close": "إغلاق",
+    "back": "رجوع",
+    "done": "تم",
+    "loading": "جاري التحميل",
+    "openInWorldApp": "فتح DoomTax في World App",
+    "onYourPhone": "هل هو بالفعل على هاتفك؟",
+    "viewOnHashScan": "عرض المعاملة على HashScan"
+  },
+
+  "AuthButton": {
+    "connect": "ربط World App",
+    "loginPending": "جارٍ تسجيل الدخول",
+    "loginFailed": "فشل تسجيل الدخول",
+    "loginSuccess": "تم تسجيل الدخول",
+    "getStarted": "ابدأ الآن",
+    "step1": "احصل على World App — إنه تطبيق مجاني مثل أي تطبيق آخر.",
+    "step1LinkLabel": "world.org/download",
+    "step2": "افتح World App واضغط على ماسح QR في التبويب الرئيسي، ثم وجّهه نحو هذا الرمز.",
+    "step3": "يفتح DoomTax داخل World App. اضغط على ربط — يُوقَّع رسالة واحدة لتأكيد هويتك. لا يُخصم شيء ولا يتحرك شيء. يُعدّ DoomTax حساب جلستك تلقائياً — لا شيء آخر يحتاج إلى ربط.",
+    "step4": "يعمل على شبكة اختبار Hedera — التعهدات لا تتضمن أموالاً حقيقية اليوم.",
+    "onPhoneAlready": "هل هو بالفعل على هاتفك؟",
+    "openInWorldApp": "فتح DoomTax في World App"
+  },
+
+  "StakeForm": {
+    "commitment": "قطع التزاماً على نفسك.",
+    "description": "اكتبه كوعد لنفسك. يقرأ مدرّبك الذكي هذه الكلمات بالتحديد عند الحكم على إثباتك — كن محدداً بما يكفي لأن يكون الحكم واضحاً.",
+    "placeholderIntention": "إنهاء وكيل التسوية وتشغيل دفعة واحدة من البداية إلى النهاية",
+    "intentionLabel": "نيّتك لهذه الجلسة",
+    "tooShort": "قل المزيد قليلاً عن العمل.",
+    "qualityHint": "النوايا الجيدة قابلة للتحقق: سمّ المهمة ومتى تُعدّ منجزة.",
+    "stakeLegend": "التعهد",
+    "customAmountLabel": "مبلغ آخر",
+    "customAmountPlaceholder": "أدخل أي مبلغ بـ HBAR",
+    "customAmountError": "أدخل مبلغاً موجباً بـ HBAR.",
+    "sessionInfo": "يُحتجز {stakeHbar} ℏ الخاص بك على شبكة اختبار Hedera لمدة {duration}. أوفِ بالتزامك ويعود إليك كاملاً. إن لم تفِ به، يذهب إلى القضية المشتركة، ولا يأتي إلينا أبداً. يمكنك إلغاء تسليح الجلسة في أي وقت قبل التسوية.",
+    "startButton": "بدء الجلسة",
+    "demoLabel": "عرض توضيحي · جلسة 30 ثانية",
+    "realSessionNote": "الجلسات الحقيقية تستمر 25 دقيقة.",
+    "exampleChip1": "كتابة 300 كلمة من التقرير",
+    "exampleChip2": "تفريغ صندوق البريد الوارد إلى صفر",
+    "exampleChip3": "إنهاء ورفع تذكرة واحدة",
+    "stepIntention": "النية",
+    "stepStake": "التعهد",
+    "stepGo": "ابدأ"
+  },
+
+  "LiveSession": {
+    "atStake": "{stakeHbar} ℏ كتعهد",
+    "noInterruptions": "لا انقطاعات",
+    "interruptions": "{count, plural, =1 {# انقطاع} other {# انقطاعات}}",
+    "finishEarly": "الانتهاء مبكراً",
+    "disarm": "إلغاء تسليح هذه الجلسة",
+    "milestoneSettle": "استقر.",
+    "milestoneHalfway": "منتصف الطريق — حافظ على المسار.",
+    "milestoneFinal": "المرحلة الأخيرة.",
+    "demoLabel": "عرض توضيحي · جلسة 30 ثانية"
+  },
+
+  "ArtifactForm": {
+    "heading": "أظهر عملك",
+    "youCommitted": "التزمت بهذا:",
+    "placeholderArtifact": "الصق ما أنتجته، أو صف ما أنهيته وأين يوجد.",
+    "artifactLabel": "قطعة عملك لهذه الجلسة",
+    "coachReads": "ما يتلقاه مدرّبك",
+    "coachReceivesIntention": "نيّتك والنص أعلاه",
+    "coachReceivesForeground": "{held} في المقدمة، {interruptions}",
+    "coachNeverReceivesAttachment": "مرفقك — لا يغادر هذا الهاتف أبداً (في الوقت الحالي)",
+    "coachPrivacy": "لا يصل المدرّب أبداً إلى شاشتك أو تصفّحك أو ضغطاتك على لوحة المفاتيح أو أي شيء من تطبيقات أخرى.",
+    "submit": "إرسال للمراجعة",
+    "coachReading": "مدرّبك يقرأ",
+    "coachReadingBody": "يعمل بشكل خاص على 0G ثم يُسوَّى على Hedera. يستغرق هذا لحظة.",
+    "attachButton": "إرفاق صورة لعملك — اختياري",
+    "attachCaption": "تبقى على جهازك. يُحسب بصمة (hash) محلياً حتى تتمكن نسخة مستقبلية من التحقق منها على السلسلة. قراءة OCR على 0G قادمة — اليوم يحكم المدرّب على نصك فقط.",
+    "removeAttachment": "إزالة المرفق"
+  },
+
+  "Verdict": {
+    "settledOnHedera": "تمت التسوية على شبكة اختبار Hedera",
+    "viewOnHashScan": "عرض على HashScan",
+    "noTransfer": "لا تحويل",
+    "publicReceipt": "إيصال عام",
+    "publicReceiptDetail": "يحتوي فقط على بصمة التزام والحكم. لا يتضمن نيّتك أو قطعة عملك أبداً.",
+    "appealWindow": "نافذة الاستئناف",
+    "appealExpired": "نافذة الاستئناف مغلقة.",
+    "whatSettlesLabel": "ما يُسوَّى على Hedera",
+    "whatLedgerLabel": "ما يدخل السجل العام",
+    "done": "تم"
+  },
+
+  "ConfirmSheet": {
+    "title": "إلغاء تسليح هذه الجلسة؟",
+    "body": "يعود {stakeHbar} ℏ الخاص بك إليك كاملاً ولا يُصادر شيء. تنتهي الجلسة الآن ولا تُرسل إلى مدرّبك. استخدم هذا عندما تغيّرت الخطة فعلاً، ليس كعادة.",
+    "confirm": "إلغاء التسليح وإعادة تعهدي",
+    "cancel": "مواصلة"
+  },
+
+  "CirclePanel": {
+    "demoCircleLabel": "دائرة توضيحية",
+    "causeLabel": "القضية المشتركة",
+    "causalAccount": "حساب العرض التوضيحي الحالي:",
+    "impactTotal": "{total} HBAR",
+    "impactDetail": "{count} خسارة موّلت هذه القضية. لا ترتيب، لا مجاميع فردية، ولا يُكشف عمن لم يفِ بالتزامه.",
+    "pendingForfeit": "إذا استمرت هذه الجلسة، سينضم {hbar} HBAR إلى مجموع دائرتك بعد نافذة الاستئناف. الخير يُحتسب لكن اسمك لا يُذكر معه.",
+    "private": "تبقى دائرتك خاصة. نُظهر ما موّلتموه معاً، لا قائمة بالأعضاء — ولا نكشف أبداً عمن لم يفِ بالتزامه."
+  },
+
+  "PoweredBy": {
+    "hederaDetail": "تسوية",
+    "zeroGDetail": "مدرّب",
+    "worldDetail": "تطبيق مصغر",
+    "hederaLabel": "تعرّف على Hedera",
+    "zeroGLabel": "تعرّف على 0G",
+    "worldLabel": "تعرّف على World"
+  },
+
+  "ExplainSheet": {
+    "close": "إغلاق",
+    "hedera-settlement": {
+      "eyebrow": "تسوية",
+      "title": "ما يُسوَّى على Hedera"
+    },
+    "hcs-receipt": {
+      "eyebrow": "إيصال عام",
+      "title": "ما يدخل السجل العام"
+    },
+    "0g-coach": {
+      "eyebrow": "0G Compute",
+      "title": "كيف يقرر المدرّب"
+    },
+    "world-minikit": {
+      "eyebrow": "World App",
+      "title": "ما معنى التوقيع عبر World App"
+    },
+    "streak-token": {
+      "eyebrow": "رمز السلسلة",
+      "title": "رمز السلسلة"
+    }
+  },
+
+  "About": {
+    "pageTitle": "حول DoomTax",
+    "heroTitle": "طريقة ألطف لتحويل النية إلى إنجاز",
+    "heroBody": "DoomTax أداة تركيز مبنية على أبحاث آليات الالتزام في الاقتصاد السلوكي. تسمّي مهمة واحدة، تضع التزاماً صغيراً خلفها، وتتلقى حكماً صادقاً في النهاية.",
+    "gettingInTitle": "كيفية فتح DoomTax",
+    "gettingInBody": "يعمل DoomTax كتطبيق مصغر داخل World App. استخدم رمز QR أدناه لفتحه على هاتفك.",
+    "readyTitle": "مستعد للتجربة؟",
+    "readyBody": "ابدأ بالتزام صغير. البحث صريح: الحجم أقل أهمية من جعل الالتزام حقيقياً — اختر شيئاً تنوي فعلاً إنهاءه في الجلسة القادمة.",
+    "startSession": "بدء جلسة",
+    "openInWorldApp": "فتح في World App"
+  },
+
+  "LanguageSwitcher": {
+    "label": "اللغة"
+  }
+}

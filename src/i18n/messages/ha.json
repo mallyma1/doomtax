@@ -1,0 +1,167 @@
+{
+  "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
+
+  "Header": {
+    "wordmark": "DoomTax",
+    "testnet": "hanyar gwaji",
+    "about": "Game da",
+    "backToSession": "Koma zaman"
+  },
+
+  "Common": {
+    "close": "Rufe",
+    "back": "Koma",
+    "done": "An gama",
+    "loading": "Ana lodi",
+    "openInWorldApp": "Buɗe DoomTax a World App",
+    "onYourPhone": "Yana wayarka tuni?",
+    "viewOnHashScan": "Duba ma'amali a HashScan"
+  },
+
+  "AuthButton": {
+    "connect": "Haɗa World App",
+    "loginPending": "Ana shiga",
+    "loginFailed": "Shiga ya kasa",
+    "loginSuccess": "An shiga",
+    "getStarted": "FARA",
+    "step1": "Sami World App — app ne kyauta kamar kowanne.",
+    "step1LinkLabel": "world.org/download",
+    "step2": "Buɗe World App ka taɓa mai binciken QR a babban shafi, ka nuna shi ga wannan lamba.",
+    "step3": "DoomTax yana buɗewa a cikin World App. Taɓa Haɗa — yana sanya hannu a saƙo ɗaya don tabbatar kai ne. Babu wani abu da ake cajin, babu wani abu da ke motsi. DoomTax yana saita asusun zamaninka ta atomatik — babu wani abu da za a haɗa.",
+    "step4": "Yana aiki a hanyar gwaji ta Hedera — alkawurra ba su da kuɗin gaske yau.",
+    "onPhoneAlready": "Yana wayarka tuni?",
+    "openInWorldApp": "Buɗe DoomTax a World App"
+  },
+
+  "StakeForm": {
+    "commitment": "Yi alkawari.",
+    "description": "Rubuta shi kamar alkawarin da kake yi wa kanka. Kocin AI ɗinka yana karanta waɗannan kalmomi daidai lokacin da yake yanke hukunci akan shaida — ka kasance takamaiman don hukuncin ya bayyana.",
+    "placeholderIntention": "Kammala wakili na tsarawa kuma ka sami biyan kuɗi ɗaya yana aiki daga farko zuwa ƙarshe",
+    "intentionLabel": "Niyyarka ga wannan zaman",
+    "tooShort": "Faɗi ƙara game da aikin.",
+    "qualityHint": "Niyyoyi masu kyau ana iya tabbatar da su: sanya sunan aiki da lokacin da ake ɗaukarsa a matsayin an gama.",
+    "stakeLegend": "Lamuni",
+    "customAmountLabel": "Wani adadi",
+    "customAmountPlaceholder": "Shigar da kowane adadin HBAR",
+    "customAmountError": "Shigar da adadin HBAR mai kyau.",
+    "sessionInfo": "Lamunin {stakeHbar} ℏ ɗinka yana a hanyar gwaji ta Hedera na {duration}. Cika alkawarin kuma zai dawo cikakke. Rashin cika zai tafi ga manufar tare, ba zuwa gare mu ba. Kana iya kashe zaman a kowane lokaci kafin tsarawa.",
+    "startButton": "Fara zaman",
+    "demoLabel": "DEMO · ZAMAN DAKIKA 30",
+    "realSessionNote": "Zaman na gaske mintuna 25.",
+    "exampleChip1": "Rubuta kalmomi 300 na rahoto",
+    "exampleChip2": "Share akwatin wasika zuwa sifili",
+    "exampleChip3": "Kammala kuma tura tikitin ɗaya",
+    "stepIntention": "niyya",
+    "stepStake": "lamuni",
+    "stepGo": "fara"
+  },
+
+  "LiveSession": {
+    "atStake": "{stakeHbar} ℏ a matsayin lamuni",
+    "noInterruptions": "babu tsayawa",
+    "interruptions": "{count, plural, =1 {# tsayawa} other {# tsayawa}}",
+    "finishEarly": "Kammala da wuri",
+    "disarm": "Kashe wannan zaman",
+    "milestoneSettle": "Daidaita.",
+    "milestoneHalfway": "Tsakiya — riƙe layin.",
+    "milestoneFinal": "Ɓangaren ƙarshe.",
+    "demoLabel": "DEMO · ZAMAN DAKIKA 30"
+  },
+
+  "ArtifactForm": {
+    "heading": "Nuna aikin ka",
+    "youCommitted": "Ka yi alkawari game da wannan:",
+    "placeholderArtifact": "Liƙa abin da ka samar, ko kwatanta abin da ka gama da inda yake.",
+    "artifactLabel": "Abin ka na wannan zaman",
+    "coachReads": "Abin da kocin ka ke karba",
+    "coachReceivesIntention": "Niyyarka da rubutun da ke sama",
+    "coachReceivesForeground": "{held} a gaba, {interruptions}",
+    "coachNeverReceivesAttachment": "Haɗin ka — baya taba barin wannan waya (har yanzu)",
+    "coachPrivacy": "Ba tabar allo ba, tarihin bincike ba, maɓallan keyboard ba, ko kowane abu daga sauran apps ba.",
+    "submit": "Miƙa don dubawa",
+    "coachReading": "Kocin ka yana karanta",
+    "coachReadingBody": "Yana aiki a sirrance a 0G, sannan yana tsarawa a Hedera. Wannan yana ɗaukar ɗan lokaci.",
+    "attachButton": "Haɗa hoton aikin ka — zaɓi ne",
+    "attachCaption": "Yana zaune a na'ura ka. Ana ƙididdige sawun yatsa (hash) a gida don sigar gaba ta iya tabbatar da shi a sarkar. Ana zuwa da karantawar OCR a 0G — yau koci yana yanke hukunci akan rubutun ka kawai.",
+    "removeAttachment": "Cire haɗin"
+  },
+
+  "Verdict": {
+    "settledOnHedera": "An tsara a hanyar gwaji ta Hedera",
+    "viewOnHashScan": "Duba a HashScan",
+    "noTransfer": "babu canja wuri",
+    "publicReceipt": "Rasit na jama'a",
+    "publicReceiptDetail": "Yana ɗauke da hash na alkawari da hukunci kawai. Ba niyyarka ko abin ka ba.",
+    "appealWindow": "Taga ɗaukaka",
+    "appealExpired": "An rufe tagar ɗaukaka.",
+    "whatSettlesLabel": "Abin da ke tsarawa a Hedera",
+    "whatLedgerLabel": "Abin da ke tafiya a littafin jama'a",
+    "done": "An gama"
+  },
+
+  "ConfirmSheet": {
+    "title": "Kashe wannan zaman?",
+    "body": "Lamunin {stakeHbar} ℏ ɗinka yana dawo gare ka cikakke kuma babu wani abu da ake rasa. Zaman yana ƙarewa yanzu kuma ba a aika wa kocin ka ba. Yi amfani da wannan lokacin da shiri ya canza gaskiya, ba a matsayin al'ada ba.",
+    "confirm": "Kashe kuma ka mayar mani da lamunina",
+    "cancel": "Ci gaba"
+  },
+
+  "CirclePanel": {
+    "demoCircleLabel": "Da'irar demo",
+    "causeLabel": "Manufar tare",
+    "causalAccount": "Asusun demo na yanzu:",
+    "impactTotal": "{total} HBAR",
+    "impactDetail": "{count} hasarori sun ba da kuɗi ga wannan manufa. Babu matsayin, babu adadin mutum ɗaya, kuma ba a taɓa ambaton wanda ya kasa ba.",
+    "pendingForfeit": "Idan wannan zaman ya tsaya, {hbar} HBAR zai haɗu da jimlar da'irar ka bayan tagar ɗaukaka. Aikin mai kyau yana ƙidaya, amma sunanka ba ya tafiya tare da shi.",
+    "private": "Da'irar ka tana zama ta sirri. Muna nuna abin da kuka ɗaukar tare, ba jerin membobi ba — kuma ba taɓa wanda ya kasa ba."
+  },
+
+  "PoweredBy": {
+    "hederaDetail": "tsarawa",
+    "zeroGDetail": "koci",
+    "worldDetail": "ƙaramin app",
+    "hederaLabel": "Koyi game da Hedera",
+    "zeroGLabel": "Koyi game da 0G",
+    "worldLabel": "Koyi game da World"
+  },
+
+  "ExplainSheet": {
+    "close": "Rufe",
+    "hedera-settlement": {
+      "eyebrow": "Tsarawa",
+      "title": "Abin da ke tsarawa a Hedera"
+    },
+    "hcs-receipt": {
+      "eyebrow": "Rasit na jama'a",
+      "title": "Abin da ke tafiya a littafin jama'a"
+    },
+    "0g-coach": {
+      "eyebrow": "0G Compute",
+      "title": "Yadda koci ke yanke hukunci"
+    },
+    "world-minikit": {
+      "eyebrow": "World App",
+      "title": "Ma'anar sanya hannu da World App"
+    },
+    "streak-token": {
+      "eyebrow": "Token na jerin",
+      "title": "Token na jerin"
+    }
+  },
+
+  "About": {
+    "pageTitle": "Game da DoomTax",
+    "heroTitle": "Hanya mai laushi don canza niyya zuwa aiki",
+    "heroBody": "DoomTax kayan aiki ne na mai da hankali bisa binciken na'urar alkawari daga tattalin arzikin hali. Ka sanya sunan aiki ɗaya, ka sa ƙaramin lamuni a bayan sa, kuma ka sami hukunci na gaskiya a ƙarshe.",
+    "gettingInTitle": "Yadda ake buɗe DoomTax",
+    "gettingInBody": "DoomTax yana aiki a matsayin ƙaramin app a cikin World App. Yi amfani da lambar QR a ƙasa don buɗe ta a wayarka.",
+    "readyTitle": "Kana shirye ka gwada?",
+    "readyBody": "Fara da ƙaramin lamuni. Binciken yana bayyana cewa girman ya fi muhimmanci ƙasa da yin alkawarin na gaske — zaɓi wani abu da gaskiya kake nufin gama a zaman na gaba.",
+    "startSession": "Fara zaman",
+    "openInWorldApp": "Buɗe a World App"
+  },
+
+  "LanguageSwitcher": {
+    "label": "Harshe"
+  }
+}
