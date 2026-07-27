@@ -23,11 +23,24 @@ interface VerdictProps {
   onDone: () => void;
 }
 
+/**
+ * The appeal window defaults to 24 hours (lib/charity.ts) but APPEAL_WINDOW_MS
+ * can shorten it for a live demo. mm:ss reads fine at 60 seconds and as
+ * "1439:58" at 24 hours, which is not a countdown a judge can parse. Scale the
+ * unit to whichever range applies, same approach as scripts/sweep-charity.ts.
+ */
 const formatRemaining = (ms: number) => {
-  const total = Math.max(0, Math.ceil(ms / 1000));
-  const m = Math.floor(total / 60);
-  const s = total % 60;
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+  if (totalSeconds < 90) {
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+  const totalMinutes = Math.ceil(totalSeconds / 60);
+  if (totalMinutes < 90) return `${totalMinutes}m`;
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}h ${minutes}m`;
 };
 
 const formatTime = (timestamp: number) =>
