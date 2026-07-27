@@ -2,6 +2,7 @@
 
 import type { SettleResponse } from '@/components/SessionFlow';
 import type { AppealResponse, ReviewState } from '@/lib/appeal';
+import { ExplainSheet, ExplainTopic } from '@/components/ExplainSheet';
 import { UsdHint } from '@/components/UsdHint';
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
 import { useState } from 'react';
@@ -58,6 +59,7 @@ export const Verdict = ({
   onDone,
 }: VerdictProps) => {
   const [reason, setReason] = useState('');
+  const [explain, setExplain] = useState<ExplainTopic | null>(null);
 
   // Settlement could not be confirmed. This is not a verdict, and must never
   // be dressed up as one.
@@ -171,47 +173,69 @@ export const Verdict = ({
         </Typography>
 
         {result && (
-          <div className="card-raised mt-5 flex w-full items-center justify-between rounded-2xl border border-border bg-surface px-4 py-3.5 text-left">
-            <div className="min-w-0">
+          <div className="card-raised mt-5 w-full rounded-2xl border border-border bg-surface px-4 py-3.5 text-left">
+            <div className="flex items-center justify-between gap-2">
               <Typography variant="body" level={4} className="text-muted">
                 Settled on Hedera testnet
               </Typography>
-              {moved ? (
-                <a
-                  href={settlement.hashScanUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mono-caption block truncate text-xs text-accent underline"
-                >
-                  View on HashScan
-                </a>
-              ) : (
-                <span className="mono-caption block text-xs text-faint">
-                  {settlement?.ok && !settlement.moved
-                    ? settlement.reason
-                    : 'no transfer'}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-col items-end">
-              <span
-                className={`hbar-amount shrink-0 text-lg font-semibold ${
-                  slipped ? 'text-slipped' : 'text-kept'
-                }`}
+              <button
+                type="button"
+                aria-label="What settles on Hedera"
+                onClick={() => setExplain('hedera-settlement')}
+                className="flex size-[44px] shrink-0 items-center justify-center rounded-full text-faint hover:text-foreground"
               >
-                {slipped ? '−' : '+'}
-                {stakeHbar} ℏ
-              </span>
-              <UsdHint hbar={stakeHbar} />
+                ⓘ
+              </button>
+            </div>
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                {moved ? (
+                  <a
+                    href={settlement.hashScanUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mono-caption block truncate text-xs text-accent underline"
+                  >
+                    View on HashScan
+                  </a>
+                ) : (
+                  <span className="mono-caption block text-xs text-faint">
+                    {settlement?.ok && !settlement.moved
+                      ? settlement.reason
+                      : 'no transfer'}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col items-end">
+                <span
+                  className={`hbar-amount shrink-0 text-lg font-semibold ${
+                    slipped ? 'text-slipped' : 'text-kept'
+                  }`}
+                >
+                  {slipped ? '−' : '+'}
+                  {stakeHbar} ℏ
+                </span>
+                <UsdHint hbar={stakeHbar} />
+              </div>
             </div>
           </div>
         )}
 
         {hcs && (
           <div className="card-raised mt-2 w-full rounded-2xl border border-border bg-surface px-4 py-3 text-left">
-            <span className="mono-caption text-xs uppercase tracking-widest text-faint">
-              Public receipt
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="mono-caption text-xs text-faint">
+                Public receipt
+              </span>
+              <button
+                type="button"
+                aria-label="What goes on the public ledger"
+                onClick={() => setExplain('hcs-receipt')}
+                className="flex size-[44px] shrink-0 items-center justify-center rounded-full text-faint hover:text-foreground"
+              >
+                ⓘ
+              </button>
+            </div>
             <p className="mono-caption mt-1 break-all text-xs text-muted">
               {hcs.ok
                 ? `HCS ${hcs.transactionId}`
@@ -290,6 +314,18 @@ export const Verdict = ({
           Done
         </Button>
       </div>
+
+      {explain !== null && (
+        <ExplainSheet
+          topic={explain}
+          onClose={() => setExplain(null)}
+          hashScanUrl={
+            explain === 'hedera-settlement' && moved
+              ? settlement?.hashScanUrl
+              : undefined
+          }
+        />
+      )}
     </div>
   );
 };

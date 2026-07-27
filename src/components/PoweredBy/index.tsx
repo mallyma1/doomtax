@@ -1,14 +1,8 @@
 'use client';
 
+import { ExplainSheet, ExplainTopic } from '@/components/ExplainSheet';
 import Image from 'next/image';
 import { useState } from 'react';
-
-export type ExplainTopic =
-  | 'hedera-settlement'
-  | 'hcs-receipt'
-  | '0g-coach'
-  | 'world-minikit'
-  | 'streak-token';
 
 const PARTNERS: {
   name: string;
@@ -64,9 +58,9 @@ export const PoweredBy = () => {
           </button>
         ))}
       </div>
-      {/* ExplainSheet rendered here — Phase D wires the full sheet */}
+      {/* ExplainSheet */}
       {explain !== null && (
-        <p className="text-xs text-faint">{explain}</p>
+        <ExplainSheet topic={explain} onClose={() => setExplain(null)} />
       )}
     </div>
   );
