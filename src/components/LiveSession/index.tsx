@@ -1,6 +1,7 @@
 'use client';
 
 import { CountdownRing } from '@/components/CountdownRing';
+import { UsdHint } from '@/components/UsdHint';
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
 
 interface LiveSessionProps {
@@ -50,20 +51,23 @@ export const LiveSession = ({
         caption={caption}
       />
 
-      <div className="flex w-full items-center justify-center gap-3">
-        <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1.5">
-          <span className="animate-dot-live size-1.5 rounded-full bg-accent" aria-hidden="true" />
-          <span className="tabular text-sm font-semibold text-accent">
-            {stakeHbar} ℏ at stake
+      <div className="flex w-full flex-col items-center gap-1">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1.5">
+            <span className="animate-dot-live size-1.5 rounded-full bg-accent" aria-hidden="true" />
+            <span className="hbar-amount text-sm font-semibold text-accent">
+              {stakeHbar} ℏ at stake
+            </span>
           </span>
-        </span>
-        <span className="mono-caption text-xs text-faint">
-          {interruptions === 0
-            ? 'no interruptions'
-            : `${interruptions} ${
-                interruptions === 1 ? 'interruption' : 'interruptions'
-              }`}
-        </span>
+          <span className="mono-caption text-xs text-faint">
+            {interruptions === 0
+              ? 'no interruptions'
+              : `${interruptions} ${
+                  interruptions === 1 ? 'interruption' : 'interruptions'
+                }`}
+          </span>
+        </div>
+        <UsdHint hbar={stakeHbar} />
       </div>
 
       <div className="flex w-full flex-col items-center gap-3">

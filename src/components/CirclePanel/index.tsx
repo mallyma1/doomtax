@@ -4,6 +4,7 @@ import {
   deriveCircleImpact,
   formatTinybarAsHbar,
 } from '@/lib/circle';
+import { UsdHint } from '@/components/UsdHint';
 
 const IMPACT = deriveCircleImpact(DEMO_CIRCLE, DEMO_CIRCLE_ACTIVITY, 'This week');
 
@@ -41,6 +42,7 @@ export const CirclePanel = ({
         <p className="text-2xl font-semibold text-foreground">
           {formatTinybarAsHbar(IMPACT.totalTinybars)} HBAR
         </p>
+        <UsdHint hbar={Number(formatTinybarAsHbar(IMPACT.totalTinybars))} />
         <p className="text-sm text-muted">
           {IMPACT.sessionCount} forfeits funded this cause. No leaderboard, no
           individual totals, and never a callout of who slipped.
@@ -49,8 +51,9 @@ export const CirclePanel = ({
 
       {pendingForfeitHbar !== null ? (
         <p className="text-sm text-muted">
-          If this session stands, {pendingForfeitHbar} HBAR joins your circle’s
-          total after the appeal window. The good still counts, but your name
+          If this session stands, {pendingForfeitHbar} HBAR{' '}
+          <UsdHint hbar={pendingForfeitHbar} className="inline" />{' '}
+          joins your circle’s total after the appeal window. The good still counts, but your name
           does not go with it.
         </p>
       ) : (

@@ -1,5 +1,6 @@
 'use client';
 
+import { UsdHint } from '@/components/UsdHint';
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
 import { useEffect, useRef } from 'react';
 
@@ -71,7 +72,9 @@ export const ConfirmSheet = ({
           Disarm this session?
         </Typography>
         <Typography variant="body" level={3} className="mt-2.5 text-muted">
-          Your {stakeHbar} ℏ returns to you in full and nothing is forfeited.
+          Your {stakeHbar} ℏ{' '}
+          <UsdHint hbar={stakeHbar} className="inline" />{' '}
+          returns to you in full and nothing is forfeited.
           The session ends now and is not sent to your coach. Use this when the
           plan genuinely changed, not as a habit.
         </Typography>

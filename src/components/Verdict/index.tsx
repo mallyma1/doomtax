@@ -2,6 +2,7 @@
 
 import type { SettleResponse } from '@/components/SessionFlow';
 import type { AppealResponse, ReviewState } from '@/lib/appeal';
+import { UsdHint } from '@/components/UsdHint';
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
 import { useState } from 'react';
 
@@ -192,14 +193,17 @@ export const Verdict = ({
                 </span>
               )}
             </div>
-            <span
-              className={`tabular shrink-0 text-lg font-semibold ${
-                slipped ? 'text-slipped' : 'text-kept'
-              }`}
-            >
-              {slipped ? '−' : '+'}
-              {stakeHbar} ℏ
-            </span>
+            <div className="flex flex-col items-end">
+              <span
+                className={`hbar-amount shrink-0 text-lg font-semibold ${
+                  slipped ? 'text-slipped' : 'text-kept'
+                }`}
+              >
+                {slipped ? '−' : '+'}
+                {stakeHbar} ℏ
+              </span>
+              <UsdHint hbar={stakeHbar} />
+            </div>
           </div>
         )}
 

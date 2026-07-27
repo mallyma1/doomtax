@@ -2,6 +2,7 @@
 
 import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
 import { useEffect, useState } from 'react';
+import { UsdHint } from '@/components/UsdHint';
 
 const MAX_INTENTION = 140;
 
@@ -146,13 +147,14 @@ export const StakeForm = ({
                     : undefined
                 }
                 className={[
-                  'h-12 rounded-2xl border text-sm font-semibold transition-all duration-150 active:scale-[0.96]',
+                  'flex h-14 flex-col items-center justify-center gap-0.5 rounded-2xl border text-sm font-semibold transition-all duration-150 active:scale-[0.96]',
                   selected
                     ? 'scale-[1.03]'
                     : 'border-border bg-surface text-muted hover:scale-[1.03] hover:border-muted hover:text-foreground',
                 ].join(' ')}
               >
-                {option} ℏ
+                <span>{option} ℏ</span>
+                <UsdHint hbar={option} className="block text-[10px]" />
               </button>
             );
           })}
@@ -176,6 +178,9 @@ export const StakeForm = ({
           <div className="mt-1.5 text-xs text-slipped">
             {invalidCustomStake ? 'Enter a positive HBAR amount.' : ''}
           </div>
+          {parsedCustomStake !== null && (
+            <UsdHint hbar={parsedCustomStake} className="mt-1 block" />
+          )}
         </div>
       </fieldset>
 
