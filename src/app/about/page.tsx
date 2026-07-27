@@ -1,3 +1,4 @@
+import { AppHeader } from '@/components/AppHeader';
 import { Page } from '@/components/PageLayout';
 import { PoweredBy } from '@/components/PoweredBy';
 import { WORLD_MINI_APP_URL } from '@/lib/world';
@@ -46,15 +47,11 @@ const COMPARISONS = [
 export default function AboutPage() {
   return (
     <Page>
+      <Page.Header>
+        <AppHeader variant="about" />
+      </Page.Header>
       <Page.Main className="flex flex-col">
         <div className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 pb-8">
-          <Link
-            href="/"
-            className="w-fit text-sm font-medium text-muted underline underline-offset-4"
-          >
-            Back to session
-          </Link>
-
           <section className="rounded-3xl border border-border bg-surface px-5 py-6">
             <p className="mono-caption text-xs uppercase tracking-[0.18em] text-accent">
               About DoomTax

@@ -18,7 +18,7 @@ const Header = (props: { children: ReactNode; className?: string }) => {
   return (
     <header
       className={twMerge(
-        'bg-white flex flex-col justify-center px-6 pt-6 pb-3 z-10',
+        'sticky top-0 z-10 flex items-center border-b border-border bg-background/80 px-6 pb-4 pt-[max(1rem,env(safe-area-inset-top))] backdrop-blur-md',
         clsx(props.className),
       )}
     >
