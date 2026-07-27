@@ -68,18 +68,67 @@ body {
 body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Digits that must not reflow as they tick. */
 .tabular {
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
+  unicode-bidi: isolate;
+  direction: ltr;
+}
+
+/* HBAR amount pairs — tabular digits, slightly tighter tracking, LTR-isolated for RTL layouts. */
+.hbar-amount {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  unicode-bidi: isolate;
+  direction: ltr;
 }
 
 /* Grok's mono subtitle: used for supporting lines under a display heading. */
 .mono-caption {
   font-family: var(--font-geist-mono), ui-monospace, monospace;
-  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+}
+
+/* Text balance/wrapping for headings and body. */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Consistent amber focus ring for all interactive elements. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+/* Themed text selection. */
+::selection {
+  background: var(--accent-glow);
+  color: var(--foreground);
+}
+
+/* Interactive pill utility — used for PoweredBy pills and stake presets. */
+.pill-interactive {
+  transition: transform 150ms, border-color 150ms;
+}
+.pill-interactive:hover {
+  border-color: var(--muted);
+}
+.pill-interactive:active {
+  transform: scale(0.97);
 }
 
 /**

@@ -32,12 +32,28 @@ export const viewport: Viewport = {
   themeColor: '#08070a',
   // The session clock must stay put when the artifact field takes focus.
   maximumScale: 1,
+  viewportFit: 'cover',
 };
 
 export const metadata: Metadata = {
   title: 'DoomTax',
   description:
     'Stake on a focus session, state your intention, and let a private AI coach decide if you kept it. Forfeits go to charity, never to us.',
+  metadataBase: new URL('https://doomtax.vercel.app'),
+  openGraph: {
+    title: 'DoomTax',
+    description:
+      'Stake on a focus session, state your intention, and let a private AI coach decide if you kept it. Forfeits go to charity, never to us.',
+    images: ['/promo/og-card.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'DoomTax',
+  },
 };
 
 export default async function RootLayout({
