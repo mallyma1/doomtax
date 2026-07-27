@@ -21,6 +21,19 @@ end-to-end was already a full build. The extension would have needed its own
 packaging, a separate manifest, and a cross-origin messaging layer between the
 extension and the Next.js API. We scoped it out early and never started it.
 
+**Extension popup mockup** — the live-session view as a compact browser popup,
+showing the DoomTax header, the countdown ring with ambient glow, the stake
+badge with USD equivalent, and the partner activity pills at the bottom:
+
+![Extension popup mockup](../public/promo/extension-popup.svg)
+
+**Doomscroll intercept mockup** — when `chrome.tabs` detects prolonged passive
+scrolling, a centred overlay card appears over the dimmed feed. The copy is
+direct but not judgemental ("You're 12 minutes into a scroll. Put something
+behind the next 25?"), and the caption anchors the privacy promise:
+
+![Extension intercept mockup](../public/promo/extension-intercept.svg)
+
 ---
 
 ## Desktop / open-web path
