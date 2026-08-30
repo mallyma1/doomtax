@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { DATA_DIR, ensureDataDir } from '@/lib/dataDir';
 
 /**
  * Off-chain record of settled forfeits and the appeals against them.
@@ -28,7 +29,6 @@ import path from 'path';
  * sessions to money.
  */
 
-const DATA_DIR = path.join(process.cwd(), 'data');
 const LEDGER_FILE = path.join(DATA_DIR, 'session-ledger.json');
 
 export type ForfeitRecord = {
@@ -85,7 +85,7 @@ function readLedger(): Ledger {
 }
 
 function writeLedger(ledger: Ledger): void {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+  ensureDataDir('session-ledger');
   const tmp = `${LEDGER_FILE}.tmp.${process.pid}.${Date.now()}.${Math.random().toString(36).slice(2)}`;
   fs.writeFileSync(tmp, JSON.stringify(ledger, null, 2), { encoding: 'utf-8', mode: 0o600 });
   fs.renameSync(tmp, LEDGER_FILE);

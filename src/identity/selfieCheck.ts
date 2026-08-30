@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { DATA_DIR, ensureDataDir } from '@/lib/dataDir';
 
 /**
  * Claim-time Selfie Check — server side.
@@ -26,7 +27,6 @@ import path from 'path';
  * and touches the filesystem. `pnpm build` is the gate that catches it.
  */
 
-const DATA_DIR = path.join(process.cwd(), 'data');
 const SELFIE_CHECK_FILE = path.join(DATA_DIR, 'selfie-checks.json');
 
 const VERIFY_ENDPOINT = 'https://developer.world.org/api/v4/verify';
@@ -63,7 +63,7 @@ function readSelfieCheckMap(): SelfieCheckMap {
 }
 
 function writeSelfieCheckMap(map: SelfieCheckMap): void {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+  ensureDataDir('selfie-check');
   // Same atomic temp-then-rename as writeCustodyMap() in ./agentkit.ts, for
   // the same reason: a crash or a concurrent write must never leave a
   // truncated file. Mode 0o600 because nullifiers are per-person identifiers.
