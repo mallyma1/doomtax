@@ -1,13 +1,11 @@
 {
   "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
-
   "Header": {
     "wordmark": "DoomTax",
     "testnet": "rede de teste",
     "about": "Sobre",
     "backToSession": "Voltar à sessão"
   },
-
   "Common": {
     "close": "Fechar",
     "back": "Voltar",
@@ -15,9 +13,13 @@
     "loading": "A carregar",
     "openInWorldApp": "Abrir DoomTax no World App",
     "onYourPhone": "Já está no seu telemóvel?",
-    "viewOnHashScan": "Ver transação no HashScan"
+    "viewOnHashScan": "Ver transação no HashScan",
+    "cancel": "Cancelar",
+    "qrAlt": "Digitalize para abrir o DoomTax no World App",
+    "secondsCount": "{count, plural, one {# segundo} other {# segundos}}",
+    "minutesCount": "{count, plural, one {# minuto} other {# minutos}}",
+    "interruptionsCount": "{count, plural, =0 {sem interrupções} one {# interrupção} other {# interrupções}}"
   },
-
   "AuthButton": {
     "connect": "Ligar World App",
     "loginPending": "A iniciar sessão",
@@ -29,10 +31,10 @@
     "step2": "Abra o World App e toque no leitor de QR no separador principal, depois aponte-o para este código.",
     "step3": "DoomTax abre dentro do World App. Toque em Ligar — assina uma mensagem para confirmar a sua identidade. Nada é cobrado, nada é movido. DoomTax configura a sua conta de sessão automaticamente — nada mais a ligar.",
     "step4": "Funciona na rede de teste Hedera — os depósitos não envolvem dinheiro real hoje.",
-    "onPhoneAlready": "Já está no seu telemóvel?",
-    "openInWorldApp": "Abrir DoomTax no World App"
+    "notInWorldApp": "O DoomTax funciona dentro do World App.",
+    "setUpInWorldApp": "Configurar",
+    "sheetTitle": "Abrir o DoomTax no World App"
   },
-
   "StakeForm": {
     "commitment": "Faça um compromisso.",
     "description": "Escreva como uma promessa a si mesmo. O seu coach de IA lê estas palavras exactas ao avaliar a sua prova — seja específico o suficiente para que o veredicto seja claro.",
@@ -43,8 +45,8 @@
     "stakeLegend": "Depósito",
     "customAmountLabel": "Outro valor",
     "customAmountPlaceholder": "Introduza qualquer valor HBAR",
-    "customAmountError": "Introduza um valor HBAR positivo.",
-    "sessionInfo": "O seu {stakeHbar} ℏ fica retido na rede de teste Hedera durante {duration}. Cumpra o compromisso e recebe de volta na íntegra. Se falhar, vai para a causa partilhada, nunca para nós. Pode desactivar a sessão a qualquer momento antes da liquidação.",
+    "customAmountError": "Introduza um valor entre 0,01 e {max} ℏ.",
+    "sessionInfo": "O seu {stake} ℏ fica retido na rede de teste Hedera durante {duration}. Cumpra o compromisso e recebe de volta na íntegra. Se falhar, vai para a causa partilhada, nunca para nós. Pode desactivar a sessão a qualquer momento antes da liquidação.",
     "startButton": "Iniciar sessão",
     "demoLabel": "DEMONSTRAÇÃO · SESSÃO DE 30 SEGUNDOS",
     "realSessionNote": "As sessões reais duram 25 minutos.",
@@ -55,9 +57,8 @@
     "stepStake": "depósito",
     "stepGo": "ir"
   },
-
   "LiveSession": {
-    "atStake": "{stakeHbar} ℏ em depósito",
+    "atStake": "{stake} ℏ em depósito",
     "noInterruptions": "sem interrupções",
     "interruptions": "{count, plural, =1 {# interrupção} other {# interrupções}}",
     "finishEarly": "Terminar mais cedo",
@@ -67,7 +68,6 @@
     "milestoneFinal": "Reta final.",
     "demoLabel": "DEMONSTRAÇÃO · SESSÃO DE 30 SEGUNDOS"
   },
-
   "ArtifactForm": {
     "heading": "Mostre o seu trabalho",
     "youCommitted": "Comprometeu-se com isto:",
@@ -85,46 +85,36 @@
     "attachCaption": "Fica no seu dispositivo. Uma impressão digital (hash) é calculada localmente para que uma versão futura possa verificá-la na cadeia. A leitura OCR no 0G está a chegar — hoje o coach avalia apenas o seu texto.",
     "removeAttachment": "Remover anexo"
   },
-
   "Verdict": {
     "settledOnHedera": "Liquidado na rede de teste Hedera",
     "viewOnHashScan": "Ver no HashScan",
-    "noTransfer": "sem transferência",
+    "noTransfer": "Nada se moveu — o seu depósito ficou onde estava",
     "publicReceipt": "Recibo público",
     "publicReceiptDetail": "Contém apenas um hash do compromisso e o veredicto. Nunca a sua intenção ou o seu artefacto.",
     "appealWindow": "Janela de recurso",
     "appealExpired": "A janela de recurso fechou.",
     "whatSettlesLabel": "O que liquida no Hedera",
     "whatLedgerLabel": "O que fica no registo público",
-    "done": "Concluído"
+    "done": "Concluído",
+    "proofSummary": "Prova em cadeia"
   },
-
   "ConfirmSheet": {
     "title": "Desactivar esta sessão?",
-    "body": "O seu {stakeHbar} ℏ regressa-lhe na íntegra e nada é perdido. A sessão termina agora e não é enviada ao seu coach. Use isto quando o plano mudou genuinamente, não como hábito.",
+    "body": "O seu <amount>{stake} ℏ</amount> regressa-lhe na íntegra e nada é perdido. A sessão termina agora e não é enviada ao seu coach. Use isto quando o plano mudou genuinamente, não como hábito.",
     "confirm": "Desactivar e devolver o meu depósito",
     "cancel": "Continuar"
   },
-
   "CirclePanel": {
-    "demoCircleLabel": "Círculo de demonstração",
     "causeLabel": "Causa partilhada",
-    "causalAccount": "Conta de demonstração actual:",
-    "impactTotal": "{total} HBAR",
     "impactDetail": "{count} perdas financiaram esta causa. Sem tabela de classificação, sem totais individuais, e nunca uma menção de quem falhou.",
-    "pendingForfeit": "Se esta sessão se mantiver, {hbar} HBAR junta-se ao total do seu círculo após a janela de recurso. O bem conta, mas o seu nome não vai com ele.",
+    "pendingForfeit": "Se esta sessão se mantiver, <amount>{stake} HBAR</amount> junta-se ao total do seu círculo após a janela de recurso. O bem conta, mas o seu nome não vai com ele.",
     "private": "O seu círculo fica privado. Mostramos o que financiaram em conjunto, não uma lista de membros — e nunca quem falhou."
   },
-
   "PoweredBy": {
     "hederaDetail": "liquidação",
     "zeroGDetail": "coach",
-    "worldDetail": "mini app",
-    "hederaLabel": "Saiba mais sobre Hedera",
-    "zeroGLabel": "Saiba mais sobre 0G",
-    "worldLabel": "Saiba mais sobre World"
+    "worldDetail": "mini app"
   },
-
   "ExplainSheet": {
     "close": "Fechar",
     "hedera-settlement": {
@@ -148,7 +138,6 @@
       "title": "O token de sequência"
     }
   },
-
   "About": {
     "pageTitle": "Sobre DoomTax",
     "heroTitle": "Uma forma mais gentil de transformar intenção em acção",
@@ -160,8 +149,13 @@
     "startSession": "Iniciar uma sessão",
     "openInWorldApp": "Abrir no World App"
   },
-
   "LanguageSwitcher": {
     "label": "Idioma"
+  },
+  "SessionFlow": {
+    "heroTitle": "A sua palavra, em jogo.",
+    "heroBody": "Faça um compromisso, apoie-o com um depósito e deixe um coach privado dar o veredicto.",
+    "howItWorks": "Como funciona o DoomTax",
+    "newSession": "Nova sessão"
   }
 }

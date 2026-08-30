@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { AccountCreateTransaction, Hbar, TransferTransaction } from '@hiero-ledger/sdk';
 import { getHederaClient } from '@/hedera/client';
+import { DATA_DIR, ensureDataDir } from '@/lib/dataDir';
 
 /**
  * Per-user Hedera custodial account management.
@@ -19,7 +20,6 @@ import { getHederaClient } from '@/hedera/client';
  * - Testnet only, matching the operator client.
  */
 
-const DATA_DIR = path.join(process.cwd(), 'data');
 const CUSTODY_FILE = path.join(DATA_DIR, 'custody.json');
 
 type CustodyRecord = { accountId: string; createdAt: number };
@@ -36,7 +36,7 @@ function readCustodyMap(): CustodyMap {
 }
 
 function writeCustodyMap(map: CustodyMap): void {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+  ensureDataDir('custody');
   // Write to a temp file first, then rename atomically so a crash or
   // concurrent write never leaves a truncated/corrupted custody.json.
   // Mode 0o600 restricts the file to the owning process only, since it

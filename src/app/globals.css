@@ -1,4 +1,26 @@
+/**
+ * Layer order, declared before anything is imported.
+ *
+ * @worldcoin/mini-apps-ui-kit-react ships an entire Tailwind v3 build with no
+ * cascade layer of its own — a preflight plus 243 utility selectors. Unlayered
+ * author styles beat layered ones no matter their specificity, and Tailwind v4
+ * emits everything into layers, so the kit silently shadowed our utilities
+ * wherever the two overlapped:
+ *
+ *   - `a { color: inherit }` killed every text colour utility on a link, so
+ *     `text-accent` on the HashScan links rendered as body text.
+ *   - `button, input, select, textarea { padding: 0 }` killed `py-*` on every
+ *     form control, which cost the claim screen's attachment button its height.
+ *
+ * Importing the kit into its own layer, ordered after Tailwind's `components`
+ * and before `utilities`, settles both directions at once: our utilities now
+ * win over the kit, and the kit still wins over Tailwind's own preflight, so
+ * its components keep the resets they are built on.
+ */
+@layer theme, base, components, kit, utilities;
+
 @import 'tailwindcss';
+@import '@worldcoin/mini-apps-ui-kit-react/styles.css' layer(kit);
 
 /**
  * DoomTax design tokens.
@@ -13,8 +35,16 @@
   --surface-raised: #1c1a22;
   --foreground: #f7f5f3;
   --muted: #9b95a3;
-  --faint: #635d6c;
+  --faint: #807a8d;
   --border: #262430;
+
+  /*
+   * --faint is the de-emphasised text tier: captions, counters, the mono
+   * eyebrows. At #635d6c it measured 3.17:1 on --background and 2.94:1 on
+   * --surface, and it is used almost exclusively at 11-13px, where WCAG asks
+   * for 4.5:1. Raised until it clears that on both surfaces (4.87 and 4.51)
+   * while staying clearly below --muted, which carries body copy at 6.91:1.
+   */
 
   --accent: #f59e0b;
   --accent-dim: #7c4a06;
@@ -65,6 +95,29 @@ body {
   color: var(--foreground);
 }
 
+/**
+ * Reclaim the UI kit's font variable.
+ *
+ * @worldcoin/mini-apps-ui-kit-react declares `--font-sans: "TWK Lausanne"` in a
+ * universal `*, ::before, ::after` rule — a face it never ships and with no
+ * generic family after it. Every kit `Typography` and `Button` therefore fell
+ * back to the browser default serif, so headings and the primary CTA on every
+ * screen rendered in Times while the rest of the app was Geist.
+ *
+ * The kit's own `:root` rule does carry a fallback stack, but the universal
+ * rule sets the property directly on each element, and a directly-applied
+ * declaration beats an inherited one. Load order cannot fix that either: the
+ * kit's stylesheet is unlayered and injected after this file. `html *` scores
+ * one element selector against the universal rule's zero, so it wins on
+ * specificity no matter which sheet lands last.
+ */
+html *,
+html *::before,
+html *::after {
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
 body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -74,28 +127,44 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/**
+ * The project's own classes live in `components` so utilities can override them.
+ *
+ * Same trap the UI kit fell into, one file closer to home: an unlayered class
+ * beats every Tailwind utility regardless of specificity. `.mono-caption` sets
+ * a size, a transform and a tracking, and seventeen call sites pair it with a
+ * `text-xs`, `text-[10px]`, `normal-case` or `tracking-*` that was silently
+ * doing nothing — including the settlement error's technical detail, which
+ * asked for `normal-case` and still rendered the server's message in caps.
+ */
 /* Digits that must not reflow as they tick. */
-.tabular {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum';
-  unicode-bidi: isolate;
-  direction: ltr;
+@layer components {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+    unicode-bidi: isolate;
+    direction: ltr;
+  }
 }
 
 /* HBAR amount pairs — tabular digits, slightly tighter tracking, LTR-isolated for RTL layouts. */
-.hbar-amount {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-  unicode-bidi: isolate;
-  direction: ltr;
+@layer components {
+  .hbar-amount {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    unicode-bidi: isolate;
+    direction: ltr;
+  }
 }
 
 /* Grok's mono subtitle: used for supporting lines under a display heading. */
-.mono-caption {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  text-transform: uppercase;
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+@layer components {
+  .mono-caption {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+  }
 }
 
 /* Text balance/wrapping for headings and body. */
@@ -121,14 +190,20 @@ p {
 }
 
 /* Interactive pill utility — used for PoweredBy pills and stake presets. */
-.pill-interactive {
-  transition: transform 150ms, border-color 150ms;
+@layer components {
+  .pill-interactive {
+    transition: transform 150ms, border-color 150ms;
+  }
 }
-.pill-interactive:hover {
-  border-color: var(--muted);
+@layer components {
+  .pill-interactive:hover {
+    border-color: var(--muted);
+  }
 }
-.pill-interactive:active {
-  transform: scale(0.97);
+@layer components {
+  .pill-interactive:active {
+    transform: scale(0.97);
+  }
 }
 
 /**
@@ -141,28 +216,34 @@ p {
  * the viewport, so the gradient falls off in open space. Constrained to a
  * container it reads as a flat rectangle instead of light.
  */
-.wash-kept {
-  background: radial-gradient(
-    140% 100% at 50% 0%,
-    var(--kept-glow) 0%,
-    transparent 72%
-  );
+@layer components {
+  .wash-kept {
+    background: radial-gradient(
+      140% 100% at 50% 0%,
+      var(--kept-glow) 0%,
+      transparent 72%
+    );
+  }
 }
 
-.wash-slipped {
-  background: radial-gradient(
-    140% 100% at 50% 0%,
-    var(--slipped-glow) 0%,
-    transparent 72%
-  );
+@layer components {
+  .wash-slipped {
+    background: radial-gradient(
+      140% 100% at 50% 0%,
+      var(--slipped-glow) 0%,
+      transparent 72%
+    );
+  }
 }
 
-.wash-accent {
-  background: radial-gradient(
-    140% 100% at 50% 0%,
-    var(--accent-glow) 0%,
-    transparent 72%
-  );
+@layer components {
+  .wash-accent {
+    background: radial-gradient(
+      140% 100% at 50% 0%,
+      var(--accent-glow) 0%,
+      transparent 72%
+    );
+  }
 }
 
 /**
@@ -185,8 +266,10 @@ p {
   }
 }
 
-.animate-fade-up {
-  animation: fade-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+@layer components {
+  .animate-fade-up {
+    animation: fade-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
 /* Verdict icon — spring pop on mount */
@@ -201,8 +284,10 @@ p {
   }
 }
 
-.animate-pop-in {
-  animation: pop-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+@layer components {
+  .animate-pop-in {
+    animation: pop-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
 }
 
 /* Idle-screen hero orb — breathing amber glow */
@@ -216,20 +301,26 @@ p {
   }
 }
 
-.animate-glow-pulse {
-  animation: glow-pulse 2.8s ease-in-out infinite;
+@layer components {
+  .animate-glow-pulse {
+    animation: glow-pulse 2.8s ease-in-out infinite;
+  }
 }
 
 /* Live session badge — pulsing dot */
 /* Glow utilities for partner activity pills */
-.pill-live {
-  box-shadow: 0 0 12px 2px var(--accent-glow);
-  border-color: rgba(245, 158, 11, 0.45);
+@layer components {
+  .pill-live {
+    box-shadow: 0 0 12px 2px var(--accent-glow);
+    border-color: rgba(245, 158, 11, 0.45);
+  }
 }
 
-.pill-settled {
-  box-shadow: 0 0 12px 2px var(--kept-glow);
-  border-color: rgba(74, 222, 128, 0.45);
+@layer components {
+  .pill-settled {
+    box-shadow: 0 0 12px 2px var(--kept-glow);
+    border-color: rgba(74, 222, 128, 0.45);
+  }
 }
 
 @keyframes dot-live {
@@ -242,8 +333,10 @@ p {
   }
 }
 
-.animate-dot-live {
-  animation: dot-live 1.6s ease-in-out infinite;
+@layer components {
+  .animate-dot-live {
+    animation: dot-live 1.6s ease-in-out infinite;
+  }
 }
 
 /* Bottom sheet — slides up from off-screen */
@@ -258,8 +351,10 @@ p {
   }
 }
 
-.animate-sheet-up {
-  animation: sheet-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+@layer components {
+  .animate-sheet-up {
+    animation: sheet-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
 /**
@@ -269,10 +364,12 @@ p {
  * edge catches the imaginary overhead light source, producing a glossy lift
  * without needing a lighter background colour.
  */
-.card-raised {
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.36),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+@layer components {
+  .card-raised {
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.36),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

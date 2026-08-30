@@ -59,6 +59,7 @@ export const ArtifactForm = ({
   const [attachment, setAttachment] = useState<AttachmentState | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations('ArtifactForm');
+  const tc = useTranslations('Common');
 
   const handleFile = async (file: File) => {
     const previewUrl = URL.createObjectURL(file);
@@ -83,7 +84,12 @@ export const ArtifactForm = ({
       <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
         <Spinner />
         <div>
-          <Typography variant="heading" level={3} className="text-foreground">
+          <Typography
+            as="h1"
+            variant="heading"
+            level={3}
+            className="text-foreground"
+          >
             {t('coachReading')}
           </Typography>
           <Typography variant="body" level={3} className="mt-1 text-muted">
@@ -100,7 +106,12 @@ export const ArtifactForm = ({
   return (
     <div className="animate-fade-up flex w-full flex-col gap-6">
       <div>
-        <Typography variant="heading" level={2} className="text-foreground">
+        <Typography
+          as="h1"
+          variant="heading"
+          level={2}
+          className="text-foreground"
+        >
           {t('heading')}
         </Typography>
         <Typography variant="body" level={3} className="mt-1 text-muted">
@@ -171,10 +182,11 @@ export const ArtifactForm = ({
             </button>
           </div>
         ) : (
+          /* min-h rather than padding, so the tap target holds at 56px. */
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-border px-4 py-4 text-sm text-muted transition-colors hover:border-muted hover:text-foreground"
+            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-border px-4 text-sm text-muted transition-colors hover:border-muted hover:text-foreground"
           >
             <span aria-hidden="true">📎</span>
             {t('attachButton')}
@@ -197,7 +209,12 @@ export const ArtifactForm = ({
           <li className="flex gap-2">
             <span className="text-accent" aria-hidden="true">+</span>
             <span className="tabular">
-              {t('coachReceivesForeground', { held, count: interruptions })}
+              {t('coachReceivesForeground', {
+                held,
+                // Pluralised through Common so each locale can translate the
+                // noun without restating this sentence's plural rules.
+                interruptions: tc('interruptionsCount', { count: interruptions }),
+              })}
             </span>
           </li>
           <li className="flex gap-2">

@@ -15,7 +15,15 @@ const allowedDevOrigins: string[] = [
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['static.usernames.app-backend.toolsforhumanity.com'],
+    // `domains` is deprecated in Next 15; remotePatterns is the supported form
+    // and is narrower — it pins the scheme and path rather than the host alone.
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'static.usernames.app-backend.toolsforhumanity.com',
+        pathname: '/**',
+      },
+    ],
   },
   allowedDevOrigins,
   reactStrictMode: false,

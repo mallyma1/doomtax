@@ -1,13 +1,11 @@
 {
   "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
-
   "Header": {
     "wordmark": "DoomTax",
     "testnet": "mtandao wa majaribio",
     "about": "Kuhusu",
     "backToSession": "Rudi kwenye kikao"
   },
-
   "Common": {
     "close": "Funga",
     "back": "Rudi",
@@ -17,7 +15,6 @@
     "onYourPhone": "Tayari ipo kwenye simu yako?",
     "viewOnHashScan": "Tazama muamala kwenye HashScan"
   },
-
   "AuthButton": {
     "connect": "Unganisha World App",
     "loginPending": "Inaingia",
@@ -28,11 +25,8 @@
     "step1LinkLabel": "world.org/download",
     "step2": "Fungua World App na uguse kichanganuzi cha QR kwenye kichupo kikuu, kisha ielekeze kwenye msimbo huu.",
     "step3": "DoomTax inafunguka ndani ya World App. Gusa Unganisha — inasaini ujumbe mmoja kuthibitisha ni wewe. Hakuna kinachochajiwa, hakuna kinachosogea. DoomTax inasanidi akaunti yako ya kikao kiotomatiki — hakuna kingine cha kuunganisha.",
-    "step4": "Inafanya kazi kwenye mtandao wa majaribio wa Hedera — ahadi hazina pesa halisi leo.",
-    "onPhoneAlready": "Tayari ipo kwenye simu yako?",
-    "openInWorldApp": "Fungua DoomTax katika World App"
+    "step4": "Inafanya kazi kwenye mtandao wa majaribio wa Hedera — ahadi hazina pesa halisi leo."
   },
-
   "StakeForm": {
     "commitment": "Toa ahadi.",
     "description": "Iandike kama ahadi kwako mwenyewe. Kocha wako wa AI anasoma maneno haya hasa wakati wa kuhukumu uthibitisho wako — kuwa maalum vya kutosha ili hukumu iwe wazi.",
@@ -43,8 +37,7 @@
     "stakeLegend": "Dhamana",
     "customAmountLabel": "Kiasi kingine",
     "customAmountPlaceholder": "Ingiza kiasi chochote cha HBAR",
-    "customAmountError": "Ingiza kiasi chanya cha HBAR.",
-    "sessionInfo": "Dhamana yako ya {stakeHbar} ℏ inashikiliwa kwenye mtandao wa majaribio wa Hedera kwa {duration}. Timiza ahadi na itarudi kamili. Shindwa na itaenda kwa sababu ya pamoja, kamwe kwetu. Unaweza kuzima kikao wakati wowote kabla ya utatuzi.",
+    "sessionInfo": "Dhamana yako ya {stake} ℏ inashikiliwa kwenye mtandao wa majaribio wa Hedera kwa {duration}. Timiza ahadi na itarudi kamili. Shindwa na itaenda kwa sababu ya pamoja, kamwe kwetu. Unaweza kuzima kikao wakati wowote kabla ya utatuzi.",
     "startButton": "Anza kikao",
     "demoLabel": "MAONYESHO · KIKAO CHA SEKUNDE 30",
     "realSessionNote": "Vikao halisi vya dakika 25.",
@@ -55,9 +48,8 @@
     "stepStake": "dhamana",
     "stepGo": "nenda"
   },
-
   "LiveSession": {
-    "atStake": "{stakeHbar} ℏ kama dhamana",
+    "atStake": "{stake} ℏ kama dhamana",
     "noInterruptions": "hakuna usumbufu",
     "interruptions": "{count, plural, =1 {# usumbufu} other {# usumbufu}}",
     "finishEarly": "Maliza mapema",
@@ -67,7 +59,6 @@
     "milestoneFinal": "Sehemu ya mwisho.",
     "demoLabel": "MAONYESHO · KIKAO CHA SEKUNDE 30"
   },
-
   "ArtifactForm": {
     "heading": "Onyesha kazi yako",
     "youCommitted": "Uliahidi hili:",
@@ -85,7 +76,6 @@
     "attachCaption": "Inabaki kwenye kifaa chako. Alama ya kidole (hash) inakokotolewa kienyeji ili toleo la baadaye liweze kuthibitisha kwenye mnyororo. Usomaji wa OCR kwenye 0G unakuja — leo kocha anahukumu maandishi yako peke yake.",
     "removeAttachment": "Ondoa kiambatisho"
   },
-
   "Verdict": {
     "settledOnHedera": "Imelipwa kwenye mtandao wa majaribio wa Hedera",
     "viewOnHashScan": "Tazama kwenye HashScan",
@@ -98,33 +88,23 @@
     "whatLedgerLabel": "Nini kinaenda kwenye daftari la umma",
     "done": "Imekamilika"
   },
-
   "ConfirmSheet": {
     "title": "Zima kikao hiki?",
-    "body": "Dhamana yako ya {stakeHbar} ℏ inarudi kwako kamili na hakuna kinachopotea. Kikao kinaisha sasa na hakipelekwi kwa kocha wako. Tumia hii wakati mpango umebadilika kweli, si kama tabia.",
+    "body": "Dhamana yako ya <amount>{stake} ℏ</amount> inarudi kwako kamili na hakuna kinachopotea. Kikao kinaisha sasa na hakipelekwi kwa kocha wako. Tumia hii wakati mpango umebadilika kweli, si kama tabia.",
     "confirm": "Zima na nirudishie dhamana yangu",
     "cancel": "Endelea"
   },
-
   "CirclePanel": {
-    "demoCircleLabel": "Duara la maonyesho",
     "causeLabel": "Sababu ya pamoja",
-    "causalAccount": "Akaunti ya maonyesho ya sasa:",
-    "impactTotal": "{total} HBAR",
     "impactDetail": "{count} hasara zimefadhili sababu hii. Hakuna jedwali la nafasi, hakuna jumla za mtu binafsi, na kamwe hakutajwa aliyeshindwa.",
-    "pendingForfeit": "Ikiwa kikao hiki kitasimama, {hbar} HBAR itajumuishwa kwenye jumla ya duara lako baada ya dirisha la rufaa. Wema bado unahesabika, lakini jina lako halifuatani nao.",
+    "pendingForfeit": "Ikiwa kikao hiki kitasimama, <amount>{stake} HBAR</amount> itajumuishwa kwenye jumla ya duara lako baada ya dirisha la rufaa. Wema bado unahesabika, lakini jina lako halifuatani nao.",
     "private": "Duara lako linabaki kuwa la faragha. Tunaonyesha ulichofadhili pamoja, si orodha ya wanachama — na kamwe aliyeshindwa."
   },
-
   "PoweredBy": {
     "hederaDetail": "utatuzi",
     "zeroGDetail": "kocha",
-    "worldDetail": "programu ndogo",
-    "hederaLabel": "Jifunze kuhusu Hedera",
-    "zeroGLabel": "Jifunze kuhusu 0G",
-    "worldLabel": "Jifunze kuhusu World"
+    "worldDetail": "programu ndogo"
   },
-
   "ExplainSheet": {
     "close": "Funga",
     "hedera-settlement": {
@@ -148,7 +128,6 @@
       "title": "Tokeni ya mfululizo"
     }
   },
-
   "About": {
     "pageTitle": "Kuhusu DoomTax",
     "heroTitle": "Njia laini zaidi ya kugeuza nia kuwa utekelezaji",
@@ -160,7 +139,6 @@
     "startSession": "Anza kikao",
     "openInWorldApp": "Fungua katika World App"
   },
-
   "LanguageSwitcher": {
     "label": "Lugha"
   }

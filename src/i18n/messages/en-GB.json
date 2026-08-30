@@ -17,7 +17,8 @@
     "viewOnHashScan": "View transaction on HashScan",
     "qrAlt": "Scan to open DoomTax in World App",
     "secondsCount": "{count, plural, =1 {# second} other {# seconds}}",
-    "minutesCount": "{count, plural, =1 {# minute} other {# minutes}}"
+    "minutesCount": "{count, plural, =1 {# minute} other {# minutes}}",
+    "interruptionsCount": "{count, plural, =0 {no interruptions} =1 {# interruption} other {# interruptions}}"
   },
   "AuthButton": {
     "connect": "Connect World App",
@@ -29,7 +30,12 @@
     "step1LinkLabel": "world.org/download",
     "step2": "Open World App and tap the QR scanner on the main tab, then point it at this code.",
     "step3": "DoomTax opens inside World App. Tap Connect — it signs one message to say it is you. Nothing is charged, nothing moves. DoomTax sets up your session account automatically — nothing else to connect.",
-    "step4": "Runs on Hedera testnet — stakes carry no real-world money today."
+    "step4": "Runs on Hedera testnet — stakes carry no real-world money today.",
+    "sheetTitle": "Open DoomTax in World App",
+    "notInWorldApp": "DoomTax runs inside World App.",
+    "setUpInWorldApp": "Set it up",
+    "signedInAs": "Signed in as {username}",
+    "signedIn": "Signed in"
   },
   "StakeForm": {
     "commitment": "Make a commitment.",
@@ -42,7 +48,7 @@
     "customAmountLabel": "Other amount",
     "customAmountPlaceholder": "Enter any HBAR amount",
     "customAmountAriaLabel": "Custom stake amount in HBAR",
-    "customAmountError": "Enter a positive HBAR amount.",
+    "customAmountError": "Enter an amount between 0.01 and {max} ℏ.",
     "sessionInfo": "Your {stake} ℏ is held on Hedera testnet for {duration}. Keep the commitment and it returns in full. Slip and it goes to the shared cause, never to us. You can disarm the session at any point before it settles.",
     "startButton": "Start session",
     "demoLabel": "DEMO · 30-SECOND SESSION",
@@ -74,7 +80,7 @@
     "artifactLabel": "Your artifact for this session",
     "coachReads": "What your coach receives",
     "coachReceivesIntention": "Your intention and the text above",
-    "coachReceivesForeground": "{held} in the foreground, {count, plural, =1 {# interruption} other {# interruptions}}",
+    "coachReceivesForeground": "{held} in the foreground, {interruptions}",
     "coachNeverReceivesAttachment": "Your attachment — it never leaves this phone (yet)",
     "coachPrivacy": "Never your screen, your browsing, your keystrokes, or anything from other apps.",
     "submit": "Submit for review",
@@ -97,12 +103,12 @@
     "bodyKept": "Your {stake} ℏ stays with you.",
     "settledOnHedera": "Settled on Hedera testnet",
     "viewOnHashScan": "View on HashScan",
-    "noTransfer": "no transfer",
+    "noTransfer": "Nothing moved — your stake stayed put",
     "publicReceipt": "Public receipt",
     "publicReceiptNotRecorded": "not recorded: {error}",
     "publicReceiptDetail": "Carries a commitment hash and the verdict only. Never your intention or your artifact.",
     "appealWindow": "Appeal window",
-    "appealClosesIn": "Closes in {remaining}{at}. Nothing reaches the shared cause until it does, and an appeal resolves toward you.",
+    "appealClosesIn": "Closes in <strong>{remaining}</strong>{at}. Nothing reaches the shared cause until it does, and an appeal resolves toward you.",
     "appealClosesAt": ", at {time}",
     "appealPlaceholder": "Why should this resolve in your favour?",
     "appealReasonLabel": "Reason for your appeal",
@@ -112,13 +118,23 @@
     "appealExpired": "The appeal window has closed.",
     "whatSettlesLabel": "What settles on Hedera",
     "whatLedgerLabel": "What goes on the public ledger",
-    "done": "Done"
+    "done": "Done",
+    "errorBodySafe": "Your stake did not move and nothing reached the shared cause. Sending it again is safe.",
+    "errorBodyUnsure": "We could not confirm what happened to your stake. If it did move, the appeal window still applies and it is still refundable.",
+    "errorDetailSummary": "Technical detail",
+    "errorRetry": "Try again",
+    "errorStartOver": "Start a new session",
+    "proofSummary": "Proof on-chain"
   },
   "ConfirmSheet": {
     "title": "Disarm this session?",
-    "body": "Your {amount} returns to you in full and nothing is forfeited. The session ends now and is not sent to your coach. Use this when the plan genuinely changed, not as a habit.",
+    "body": "Your <amount>{stake} ℏ</amount> returns to you in full and nothing is forfeited. The session ends now and is not sent to your coach. Use this when the plan genuinely changed, not as a habit.",
     "confirm": "Disarm and return my stake",
-    "cancel": "Keep going"
+    "cancel": "Keep going",
+    "largeTitle": "Stake {stake} ℏ?",
+    "largeBody": "That is more than the usual amounts. If you slip, it goes to the shared cause and you cannot get it back after the appeal window. You can still disarm the session at any point before it settles.",
+    "largeConfirm": "Yes, stake {stake} ℏ",
+    "largeCancel": "Pick a smaller amount"
   },
   "CirclePanel": {
     "heading": "Circle",
@@ -129,7 +145,7 @@
     "causeLabel": "Shared cause",
     "causeAccount": "Current demo account: {account}",
     "impactDetail": "{count, plural, =1 {# forfeit has} other {# forfeits have}} funded this cause. No leaderboard, no individual totals, and never a callout of who slipped.",
-    "pendingForfeit": "If this session stands, {amount} joins your circle's total after the appeal window. The good still counts, but your name does not go with it.",
+    "pendingForfeit": "If this session stands, <amount>{stake} HBAR</amount> joins your circle's total after the appeal window. The good still counts, but your name does not go with it.",
     "private": "Your circle stays private. We show what you have funded together, not a list of members — and never who slipped."
   },
   "PoweredBy": {
@@ -318,6 +334,16 @@
     "appealStateMissing": "Appeal state is missing. Start a new session.",
     "unexpectedAppeal": "Unexpected appeal response shape.",
     "appealRequestFailed": "Appeal request failed.",
-    "appealSubmitFailed": "Failed to submit appeal. Check your connection."
+    "appealSubmitFailed": "Failed to submit appeal. Check your connection.",
+    "heroTitle": "Your word, on the line.",
+    "heroBody": "Make one commitment, back it with a stake, and let a private coach hold the verdict.",
+    "howItWorks": "How DoomTax works",
+    "newSession": "New session",
+    "sessionIdMissing": "This session lost its ID before it could settle. Nothing moved.",
+    "announceRunning": "Session started. The clock is running.",
+    "announceClaim": "Time is up. Show your work.",
+    "announceSubmitting": "Sending your work to the coach.",
+    "announceComplete": "The verdict is in.",
+    "announceError": "Settlement could not be confirmed."
   }
 }

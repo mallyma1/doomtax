@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { UsdHint } from '@/components/UsdHint';
 
+import { MAX_STAKE_HBAR } from '@/lib/session';
+
 const MAX_INTENTION = 140;
 
 const EXAMPLE_KEYS = ['exampleChip1', 'exampleChip2', 'exampleChip3'] as const;
@@ -28,6 +30,9 @@ function parseStake(value: string): number | null {
   if (normalized === '') return null;
   const parsed = Number(normalized);
   if (!Number.isFinite(parsed) || parsed <= 0) return null;
+  // The API enforces the same ceiling. Rejecting here means the user finds out
+  // while they are typing rather than after committing to a session.
+  if (parsed > MAX_STAKE_HBAR) return null;
   return parsed;
 }
 
@@ -119,11 +124,17 @@ export const StakeForm = ({
         <button
           type="button"
           onClick={onBack}
-          className="-my-3 w-fit py-3 text-sm font-medium text-muted underline underline-offset-4 min-h-[44px]"
+          className="-mx-1 -my-3 flex min-h-[44px] min-w-[44px] items-center px-1 py-3 text-sm font-medium text-muted underline underline-offset-4"
         >
           {tc('back')}
         </button>
-        <Typography variant="heading" level={2} className="text-foreground">
+        {/* Typography renders <p> unless told otherwise; each phase owns the h1. */}
+        <Typography
+          as="h1"
+          variant="heading"
+          level={2}
+          className="text-foreground"
+        >
           {t('commitment')}
         </Typography>
         <Typography variant="body" level={3} className="mt-1.5 text-muted">
@@ -141,7 +152,7 @@ export const StakeForm = ({
               onIntentionChange(t(exampleKey));
               textareaRef.current?.focus();
             }}
-            className="shrink-0 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:border-muted hover:text-foreground"
+            className="flex min-h-[44px] shrink-0 items-center rounded-full border border-border bg-surface px-4 text-xs text-muted transition-colors hover:border-muted hover:text-foreground"
           >
             {t(exampleKey)}
           </button>
@@ -205,7 +216,7 @@ export const StakeForm = ({
                     : 'border-border bg-surface text-muted hover:scale-[1.03] hover:border-muted hover:text-foreground',
                 ].join(' ')}
               >
-                <span>{option} ℏ</span>
+                <span className="hbar-amount">{option} ℏ</span>
                 <UsdHint hbar={option} className="block text-[10px]" />
               </button>
             );
@@ -218,6 +229,7 @@ export const StakeForm = ({
           <input
             type="number"
             min="0.01"
+            max={MAX_STAKE_HBAR}
             step="0.01"
             inputMode="decimal"
             value={customStake}
@@ -228,7 +240,7 @@ export const StakeForm = ({
             className="h-12 w-full rounded-2xl border border-border bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
           />
           <div className="mt-1.5 text-xs text-slipped">
-            {invalidCustomStake ? t('customAmountError') : ''}
+            {invalidCustomStake ? t('customAmountError', { max: MAX_STAKE_HBAR }) : ''}
           </div>
           {parsedCustomStake !== null && (
             <UsdHint hbar={parsedCustomStake} className="mt-1 block" />

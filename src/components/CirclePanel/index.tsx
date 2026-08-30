@@ -62,9 +62,10 @@ export const CirclePanel = ({
       {pendingForfeitHbar !== null ? (
         <p className="text-sm text-muted">
           {t.rich('pendingForfeit', {
-            amount: () => (
+            stake: pendingForfeitHbar,
+            amount: (chunks) => (
               <>
-                {pendingForfeitHbar} HBAR{' '}
+                <span className="hbar-amount text-foreground">{chunks}</span>{' '}
                 <UsdHint hbar={pendingForfeitHbar} className="inline" />
               </>
             ),
