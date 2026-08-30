@@ -121,6 +121,13 @@ Fixed by importing the kit into its own layer, ordered after Tailwind's
 kit still wins over Tailwind's own preflight, so its components keep the resets
 they are built on.
 
+The project's own classes in `globals.css` had the same problem one file closer
+to home. `.mono-caption` sets a size, a transform and a tracking, and seventeen
+call sites paired it with a `text-xs`, `text-[10px]`, `normal-case` or
+`tracking-*` that was silently doing nothing — including the settlement error's
+technical detail, which asked for `normal-case` and rendered the server's
+message in capitals anyway. They now live in `@layer components`.
+
 ### The live session did not fit on a phone
 
 At a fixed 232px ring the running screen ran 76px past a 390x844 viewport and

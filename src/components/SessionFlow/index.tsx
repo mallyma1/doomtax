@@ -362,7 +362,26 @@ export const SessionFlow = ({
 
       const payload = await response.json();
       if (!isSettleResponse(payload)) {
-        throw new Error(t('unexpectedSettlement'));
+        /*
+         * Every validation and configuration failure on the route answers with
+         * `{ error }`, which is not a settlement shape — so this branch is the
+         * one that actually fires when the server rejects a request or is
+         * missing an operator key. Discarding that string left the "technical
+         * detail" disclosure reporting "unexpected settlement response shape"
+         * for a server that had said exactly what was wrong
+         * ("HEDERA_ACCOUNT_ID is not set on the server"). The disclosure exists
+         * to be quoted to whoever can fix it, so it should carry the server's
+         * own words when there are any.
+         */
+        const serverError =
+          payload && typeof payload === 'object' && 'error' in payload
+            ? (payload as { error?: unknown }).error
+            : null;
+        throw new Error(
+          typeof serverError === 'string' && serverError.trim() !== ''
+            ? serverError
+            : t('unexpectedSettlement'),
+        );
       }
 
       const submittedAt = Date.now();
