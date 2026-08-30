@@ -94,7 +94,7 @@ export const Verdict = ({
    */
   if (errorMessage) {
     return (
-      <div className="animate-fade-up flex min-h-full w-full flex-col justify-between gap-6">
+      <div className="animate-fade-up flex w-full flex-1 flex-col justify-between gap-6">
         <div
           role="alert"
           className="flex flex-1 flex-col items-center justify-center py-6 text-center"
@@ -186,8 +186,16 @@ export const Verdict = ({
   const moved = settlement?.ok && settlement.moved;
   const hcs = result?.hcs;
 
+  /*
+   * The root is flex-1, never min-h-full: this renders as a sibling of
+   * CirclePanel, so `min-h-full` resolved to 100% of a parent whose height
+   * already included that sibling. The verdict grew to the pair's combined
+   * height and then centred a 700px block inside 1145px of it, opening a void
+   * above the headline and pushing the appeal panel off the bottom of the
+   * screen.
+   */
   return (
-    <div className="animate-fade-up flex min-h-full w-full flex-col justify-between gap-6">
+    <div className="animate-fade-up flex w-full flex-1 flex-col justify-between gap-6">
       {/*
         Portalled to <body>, not just `fixed`.
 
