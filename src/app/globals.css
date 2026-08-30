@@ -65,6 +65,29 @@ body {
   color: var(--foreground);
 }
 
+/**
+ * Reclaim the UI kit's font variable.
+ *
+ * @worldcoin/mini-apps-ui-kit-react declares `--font-sans: "TWK Lausanne"` in a
+ * universal `*, ::before, ::after` rule — a face it never ships and with no
+ * generic family after it. Every kit `Typography` and `Button` therefore fell
+ * back to the browser default serif, so headings and the primary CTA on every
+ * screen rendered in Times while the rest of the app was Geist.
+ *
+ * The kit's own `:root` rule does carry a fallback stack, but the universal
+ * rule sets the property directly on each element, and a directly-applied
+ * declaration beats an inherited one. Load order cannot fix that either: the
+ * kit's stylesheet is unlayered and injected after this file. `html *` scores
+ * one element selector against the universal rule's zero, so it wins on
+ * specificity no matter which sheet lands last.
+ */
+html *,
+html *::before,
+html *::after {
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
 body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
