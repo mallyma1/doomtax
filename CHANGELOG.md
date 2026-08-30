@@ -9,6 +9,20 @@ not every commit. See `git log` for the full history.
 
 ### Fixed
 
+- `/api/session/settle` returned a 500 crash page in production for every
+  request. The 0G SDK's ESM entry re-exports named bindings out of a CommonJS
+  chunk, which Vercel's runtime cannot resolve, so the route module threw while
+  loading and the handler never ran. Settlement — the one action the product
+  exists for — was down. Loaded through `createRequire` now.
+- Auth.js rejected the hostname of every Vercel preview deployment, so sign-in
+  was dead there and each page render logged an error.
+- The stake had no upper bound: 999,999,999 passed validation on an endpoint
+  that moves operator funds. Bounded by `MAX_STAKE_HBAR`, shared by the form and
+  the route, and settlement attempts are now rate limited.
+- The custody map, forfeit ledger and selfie-check record all wrote to a path
+  that is read-only on Vercel. Every write failed silently, so no forfeit was
+  ever recorded and the charity sweep had nothing to act on.
+
 - Headings and buttons rendered in the browser's default serif. The UI kit
   declares `--font-sans: "TWK Lausanne"` in a universal rule, naming a face it
   never ships with no generic family behind it, so every kit `Typography` and
@@ -50,7 +64,8 @@ not every commit. See `git log` for the full history.
 
 ### Added
 
-
+- Confirmation before a large stake, which CLAUDE.md specified and the app
+  never implemented.
 - A designed session flow across four screens: commit, live session, artifact
   submission, and verdict. Replaces the unstyled forms that shipped before.
 - `CountdownRing`, the live session clock. The arc is time remaining, so it

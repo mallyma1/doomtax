@@ -128,6 +128,22 @@ call sites paired it with a `text-xs`, `text-[10px]`, `normal-case` or
 technical detail, which asked for `normal-case` and rendered the server's
 message in capitals anyway. They now live in `@layer components`.
 
+### The stake was unbounded, and a large one was never confirmed
+
+`/api/session/settle` moves value from an operator-held account and validated
+only that the amount was a finite positive number: 999,999,999 passed,
+unauthenticated and unrate-limited. `MAX_STAKE_HBAR` now bounds it, imported by
+the form as well as the route so the two cannot disagree.
+
+CLAUDE.md also asks for "confirmation before any large jump", which was
+specified and never built — the amount field took any positive number and
+started the session on one tap. Anything past the biggest preset now asks once,
+before the clock starts rather than after the stake is committed.
+
+Settlement attempts are capped at ten a minute per caller. In-process, so each
+serverless instance counts separately; that is documented at the limiter rather
+than implied away.
+
 ### The live session did not fit on a phone
 
 At a fixed 232px ring the running screen ran 76px past a 390x844 viewport and
@@ -188,19 +204,46 @@ always-visible strings on the session screens were completed for the ten
 languages where the wording could be written with confidence; `sw`, `ha` and
 `tw` stay on the English fallback rather than carry invented plurals.
 
-Worth knowing for the RTL locales specifically: English text inside an
+Deliberately not closed by machine translation. A subtly wrong sentence about
+what a model can see, or about whether money comes back, is worse than an
+obviously English one — the fallback at least reads as untranslated rather than
+as a claim the product is making.
+
+Worth knowing for the RTL locales specifically: English text inside a
 `dir="rtl"` document has its trailing punctuation reordered to the wrong end by
 the bidi algorithm, so a fallback string reads as ".Your word, on the line" in
 Arabic. Every fallback string on a main screen was translated for that reason;
 the remaining gaps are on `/about` and inside the explainer sheets.
 
-### 375x667 still scrolls on the live screen
+### The forfeit ledger is not durable on serverless
 
-By 88px, down from 253. That viewport leaves 451px of main area, which cannot
-hold the commitment, the ring, the stake and both controls at once.
+Fixed as far as it can be in code: the stores write to `/tmp` on Vercel instead
+of a read-only path, so the write succeeds and the appeal route's ledger
+authority engages. But `/tmp` is per-instance and lost on a cold start, so a
+sweep worker on another instance still cannot see what a settlement wrote.
 
-### The settlement error still links to the HashScan root
+`DOOMTAX_DATA_DIR` points the stores at a mounted volume, and the helper warns
+once at runtime when it is running somewhere ephemeral. Anything that must
+survive — the charity sweep especially — needs a shared store, which is a
+provisioning decision rather than a code change.
 
-When settlement fails there is no transaction or account to link, so
-`couldHaveMoved` sends the user to the explorer homepage. Actionable only if the
-route returns an account ID on the failure path.
+### Settlement is still unauthenticated
+
+By design: a judge opening the preview outside World App has no wallet to sign
+with, and demo mode exists so the flow still demonstrates. The exposure is now
+bounded rather than open — `MAX_STAKE_HBAR` caps a single call and the rate
+limit caps the loop — but an unauthenticated caller can still cause operator
+funds to move on testnet. Requiring auth would close it and would also close the
+browser demo path; that is a product call, not a code one.
+
+### `AUTH_SECRET` is not scoped to Preview
+
+Preview deployments return Auth.js's generic configuration error, so sign-in is
+dead there while production works. A dashboard setting, not code.
+
+### No live Hedera, 0G or World ID call has been exercised
+
+This environment has no testnet credentials and blocks the gRPC consensus port,
+so those paths are verified by shape and failure handling only. What the
+deployment log did confirm is that the 0G SDK import itself was breaking the
+settle route — see above.
