@@ -1,11 +1,36 @@
 import { ethers } from 'ethers';
-import { createZGComputeNetworkBroker } from '@0gfoundation/0g-compute-ts-sdk';
+import { createRequire } from 'node:module';
+import type { createZGComputeNetworkBroker as CreateBroker } from '@0gfoundation/0g-compute-ts-sdk';
 import {
   getZeroGInferenceApiKey,
   getZeroGInferenceBaseUrl,
   getZeroGInferenceModel,
   joinZeroGUrl,
 } from '@/ai/zero-g';
+
+/**
+ * The 0G SDK is loaded through createRequire, not a static import.
+ *
+ * Its ESM entry re-exports named bindings out of a CommonJS chunk. Node's ESM
+ * loader cannot always resolve those, and on Vercel it does not:
+ *
+ *   SyntaxError: Named export 'C' not found. The requested module
+ *   './index-28fb2bc1.js' is a CommonJS module...  page: '/api/session/settle'
+ *
+ * That threw while the route module was still loading, so /api/session/settle
+ * returned a 500 crash page for every request — including bodies that should
+ * have failed validation with a 400. Settlement, the one action the product
+ * exists for, was down in production while every other route was healthy.
+ *
+ * It does not reproduce locally: `next dev` and `next start` both resolve the
+ * package's CommonJS entry, which is fine. Only Vercel's runtime picked the
+ * ESM one. Requiring it explicitly pins the entry that works everywhere, and
+ * the type import above keeps the broker's signature checked.
+ */
+const require_ = createRequire(import.meta.url);
+const { createZGComputeNetworkBroker } = require_(
+  '@0gfoundation/0g-compute-ts-sdk',
+) as { createZGComputeNetworkBroker: typeof CreateBroker };
 
 export type CoachInput = {
   intention: string;

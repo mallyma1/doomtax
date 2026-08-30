@@ -26,7 +26,20 @@ declare module 'next-auth' {
 // https://authjs.dev/getting-started/authentication/credentials
 export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET,
-  trustHost: process.env.AUTH_TRUST_HOST === 'true',
+  /*
+   * Vercel gives every preview deployment its own hostname, and Auth.js
+   * refuses a host it was not told to trust:
+   *
+   *   [auth][error] UntrustedHost: Host must be trusted. URL was:
+   *   https://doomtax-git-<branch>-doomtax.vercel.app/api/auth/session
+   *
+   * That 500s /api/auth/session and logs on every page render, so sign-in is
+   * broken on every preview — the deployments used to demo the app. Trusting
+   * the host on Vercel is safe: the platform terminates TLS and sets the Host
+   * header itself, so it is not attacker-controlled. AUTH_TRUST_HOST still
+   * works for anywhere else this runs behind a proxy.
+   */
+  trustHost: process.env.AUTH_TRUST_HOST === 'true' || !!process.env.VERCEL,
   session: { strategy: 'jwt' },
   providers: [
     Credentials({
