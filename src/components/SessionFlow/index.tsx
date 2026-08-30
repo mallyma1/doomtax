@@ -68,6 +68,12 @@ export type SettleResponse = {
   verdict: 'kept' | 'slipped';
   settlement: SettlementSuccess | SettlementFailure;
   hcs: HcsResult;
+  /**
+   * Which account the stake was settled from. Present on the failure path too,
+   * which is the only reason the "check HashScan" advice can name an account
+   * instead of dropping a worried user on the explorer's front page.
+   */
+  custody?: { sourceAccountId?: string | null } | null;
   hcsTopicId?: string | null;
   hcsRecord?: {
     sessionId: string;
@@ -631,6 +637,7 @@ export const SessionFlow = ({
             responseStatus === HTTP_STATUS_BAD_GATEWAY &&
             result?.settlement.ok === false
           }
+          sourceAccountId={result?.custody?.sourceAccountId ?? null}
           reviewState={reviewState}
           appealRemainingMs={appealRemainingMs}
           appealWindowEndsAt={appealWindowEndsAt}

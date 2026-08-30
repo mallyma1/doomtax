@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'sessionId is required' }, { status: 400 });
   }
 
-  // Same check as /api/verify-proof: the proof was requested under our relying
+  // The proof must have been requested under our relying
   // party, so a mismatch means this result belongs to a different one.
   if (rp_id !== expectedRpId) {
     return NextResponse.json({ error: 'Invalid rp_id' }, { status: 400 });

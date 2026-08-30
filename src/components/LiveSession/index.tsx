@@ -59,8 +59,8 @@ export const LiveSession = ({
   const isFinalStretch = progress >= 0.85;
 
   return (
-    <div className="animate-fade-up flex h-full min-h-full w-full flex-col items-center justify-between gap-4 py-1">
-      <div className="card-raised w-full rounded-2xl border border-border bg-surface px-4 py-3">
+    <div className="animate-fade-up flex h-full min-h-full w-full flex-col items-center justify-between gap-3 py-0">
+      <div className="card-raised w-full shrink-0 rounded-2xl border border-border bg-surface px-4 py-2.5">
         {/* The commitment is what this screen is about, so it is its heading. */}
         <Typography as="h1" variant="body" level={3} className="text-foreground">
           {intention}
@@ -91,7 +91,7 @@ export const LiveSession = ({
       {milestoneKey && (
         <p
           key={milestoneKey}
-          className={`animate-fade-up mono-caption text-center text-faint ${isFinalStretch ? 'text-accent' : ''}`}
+          className={`animate-fade-up mono-caption hidden text-center text-faint min-[380px]:block ${isFinalStretch ? 'text-accent' : ''}`}
         >
           {t(milestoneKey)}
         </p>
@@ -117,7 +117,7 @@ export const LiveSession = ({
         <UsdHint hbar={stakeHbar} />
       </div>
 
-      <div className="mt-4 flex w-full flex-col items-center gap-2 pb-1">
+      <div className="mt-3 flex w-full shrink-0 flex-col items-center gap-2">
         <Button variant="primary" size="lg" fullWidth onClick={onFinishEarly}>
           {t('finishEarly')}
         </Button>

@@ -15,6 +15,8 @@ interface VerdictProps {
   amnestiedAt: number | null;
   errorMessage: string | null;
   couldHaveMoved: boolean;
+  /** Lets the unconfirmed-settlement advice link an account, not the explorer root. */
+  sourceAccountId?: string | null;
   reviewState: ReviewState;
   appealRemainingMs: number;
   appealWindowEndsAt: number | null;
@@ -63,6 +65,7 @@ export const Verdict = ({
   amnestiedAt,
   errorMessage,
   couldHaveMoved,
+  sourceAccountId,
   reviewState,
   appealRemainingMs,
   appealWindowEndsAt,
@@ -123,11 +126,22 @@ export const Verdict = ({
           </Typography>
           {couldHaveMoved && (
             <p className="mt-4 max-w-[34ch] text-xs leading-relaxed text-faint">
+              {/*
+                Linking the account the stake would have left, not the explorer
+                front page. Telling someone worried about their money to "check
+                HashScan" and then handing them an unfiltered homepage is not
+                advice they can act on. Falls back to the root only when the
+                route could not say which account it was using.
+              */}
               {t.rich('couldHaveMoved', {
                 link: (chunks) => (
                   <a
                     className="text-accent underline"
-                    href="https://hashscan.io/testnet"
+                    href={
+                      sourceAccountId
+                        ? `https://hashscan.io/testnet/account/${sourceAccountId}`
+                        : 'https://hashscan.io/testnet'
+                    }
                     target="_blank"
                     rel="noreferrer"
                   >

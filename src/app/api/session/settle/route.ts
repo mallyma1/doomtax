@@ -7,6 +7,7 @@ import { fundUserAccount, getOrCreateUserAccount } from '@/identity/agentkit';
 import { DEMO_MODE, MAX_STAKE_HBAR, hbarToTinybar } from '@/lib/session';
 import { recordForfeit } from '@/lib/sessionLedger';
 import { auth } from '@/auth';
+import { callerKey, checkRateLimit } from '@/lib/rateLimit';
 
 // The Hedera SDK is Node-only and this route holds the operator key.
 // Never let this become an edge function, and never import anything in
@@ -42,7 +43,28 @@ const ALLOWED_REQUEST_KEYS = [
 ] as const;
 const ALLOWED_REQUEST_KEY_SET = new Set<string>(ALLOWED_REQUEST_KEYS);
 
+/**
+ * Settlement is unauthenticated by design — a judge outside World App has no
+ * wallet to sign with — but it moves value from an operator-held account, so
+ * the number of attempts a caller gets is capped. Generous enough that a real
+ * demo never notices; low enough that a script cannot drain the account.
+ */
+const SETTLE_RATE_LIMIT = 10;
+const SETTLE_RATE_WINDOW_MS = 60_000;
+
 export async function POST(request: Request) {
+  const limit = checkRateLimit(
+    callerKey(request, 'settle'),
+    SETTLE_RATE_LIMIT,
+    SETTLE_RATE_WINDOW_MS,
+  );
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Too many settlement attempts. Try again shortly.' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfterSeconds) } },
+    );
+  }
+
   let rawBody: unknown;
   try {
     rawBody = await request.json();
