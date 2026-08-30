@@ -117,7 +117,12 @@
     "appealExpired": "The appeal window has closed.",
     "whatSettlesLabel": "What settles on Hedera",
     "whatLedgerLabel": "What goes on the public ledger",
-    "done": "Done"
+    "done": "Done",
+    "errorBodySafe": "Your stake did not move and nothing reached the shared cause. Sending it again is safe.",
+    "errorBodyUnsure": "We could not confirm what happened to your stake. If it did move, the appeal window still applies and it is still refundable.",
+    "errorDetailSummary": "Technical detail",
+    "errorRetry": "Try again",
+    "errorStartOver": "Start a new session"
   },
   "ConfirmSheet": {
     "title": "Disarm this session?",
@@ -323,6 +328,16 @@
     "appealStateMissing": "Appeal state is missing. Start a new session.",
     "unexpectedAppeal": "Unexpected appeal response shape.",
     "appealRequestFailed": "Appeal request failed.",
-    "appealSubmitFailed": "Failed to submit appeal. Check your connection."
+    "appealSubmitFailed": "Failed to submit appeal. Check your connection.",
+    "heroTitle": "Your word, on the line.",
+    "heroBody": "Make one commitment, back it with a stake, and let a private coach hold the verdict.",
+    "howItWorks": "How DoomTax works",
+    "newSession": "New session",
+    "sessionIdMissing": "This session lost its ID before it could settle. Nothing moved.",
+    "announceRunning": "Session started. The clock is running.",
+    "announceClaim": "Time is up. Show your work.",
+    "announceSubmitting": "Sending your work to the coach.",
+    "announceComplete": "The verdict is in.",
+    "announceError": "Settlement could not be confirmed."
   }
 }

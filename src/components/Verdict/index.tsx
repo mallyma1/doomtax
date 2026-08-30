@@ -21,6 +21,8 @@ interface VerdictProps {
   appealError: string | null;
   isSubmittingAppeal: boolean;
   onSubmitAppeal: (reason: string) => void;
+  /** Re-posts the same settlement. Omitted when there is no artifact to resend. */
+  onRetry?: () => void;
   onDone: () => void;
 }
 
@@ -57,18 +59,31 @@ export const Verdict = ({
   appealError,
   isSubmittingAppeal,
   onSubmitAppeal,
+  onRetry,
   onDone,
 }: VerdictProps) => {
   const [reason, setReason] = useState('');
   const [explain, setExplain] = useState<ExplainTopic | null>(null);
   const t = useTranslations('Verdict');
 
-  // Settlement could not be confirmed. This is not a verdict, and must never
-  // be dressed up as one.
+  /*
+   * Settlement could not be confirmed. This is not a verdict, and must never be
+   * dressed up as one.
+   *
+   * The screen used to print the raw server string as its only body copy and
+   * offer a single "Done" — so a cold backend or a dropped connection read as
+   * "Unexpected settlement response shape", threw away the artifact the user
+   * had just written, and left reloading the page as the only way out. What a
+   * worried user needs first is whether their stake moved; the exception text
+   * is for whoever they report it to, so it sits under a disclosure instead.
+   */
   if (errorMessage) {
     return (
-      <div className="animate-fade-up flex h-full w-full flex-col justify-between">
-        <div className="flex flex-1 flex-col items-center justify-center text-center">
+      <div className="animate-fade-up flex min-h-full w-full flex-col justify-between gap-6">
+        <div
+          role="alert"
+          className="flex flex-1 flex-col items-center justify-center py-6 text-center"
+        >
           <div
             className="animate-pop-in grid size-16 place-items-center rounded-full"
             style={{ background: 'var(--slipped-glow)' }}
@@ -88,7 +103,7 @@ export const Verdict = ({
             level={3}
             className="mt-3 max-w-[32ch] text-muted"
           >
-            {errorMessage}
+            {couldHaveMoved ? t('errorBodyUnsure') : t('errorBodySafe')}
           </Typography>
           {couldHaveMoved && (
             <p className="mt-4 max-w-[34ch] text-xs leading-relaxed text-faint">
@@ -106,10 +121,31 @@ export const Verdict = ({
               })}
             </p>
           )}
+
+          <details className="mt-6 w-full text-left">
+            <summary className="mono-caption cursor-pointer list-none py-2 text-faint transition-colors hover:text-muted">
+              {t('errorDetailSummary')}
+            </summary>
+            <p className="mono-caption mt-1 break-words text-xs normal-case tracking-normal text-muted">
+              {errorMessage}
+            </p>
+          </details>
         </div>
-        <Button variant="primary" size="lg" fullWidth onClick={onDone}>
-          {t('done')}
-        </Button>
+
+        <div className="flex flex-col gap-2">
+          {onRetry && (
+            <Button variant="primary" size="lg" fullWidth onClick={onRetry}>
+              {t('errorRetry')}
+            </Button>
+          )}
+          <button
+            type="button"
+            onClick={onDone}
+            className="h-12 rounded-full border border-border text-sm font-semibold text-muted transition-colors hover:text-foreground"
+          >
+            {t('errorStartOver')}
+          </button>
+        </div>
       </div>
     );
   }
@@ -135,7 +171,7 @@ export const Verdict = ({
   const hcs = result?.hcs;
 
   return (
-    <div className="animate-fade-up flex h-full w-full flex-col justify-between">
+    <div className="animate-fade-up flex min-h-full w-full flex-col justify-between gap-6">
       {/*
         Fixed rather than absolute: the wash should read as light falling from
         the top of the screen, not as a panel inside the scroll container.
