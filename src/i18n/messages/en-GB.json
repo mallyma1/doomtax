@@ -29,7 +29,12 @@
     "step1LinkLabel": "world.org/download",
     "step2": "Open World App and tap the QR scanner on the main tab, then point it at this code.",
     "step3": "DoomTax opens inside World App. Tap Connect — it signs one message to say it is you. Nothing is charged, nothing moves. DoomTax sets up your session account automatically — nothing else to connect.",
-    "step4": "Runs on Hedera testnet — stakes carry no real-world money today."
+    "step4": "Runs on Hedera testnet — stakes carry no real-world money today.",
+    "sheetTitle": "Open DoomTax in World App",
+    "notInWorldApp": "DoomTax runs inside World App.",
+    "setUpInWorldApp": "Set it up",
+    "signedInAs": "Signed in as {username}",
+    "signedIn": "Signed in"
   },
   "StakeForm": {
     "commitment": "Make a commitment.",
