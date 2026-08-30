@@ -34,6 +34,15 @@ not every commit. See `git log` for the full history.
   retains an identity transform after it finishes.
 - The live session did not fit a phone screen, putting "Finish early" and the
   disarm link below the fold.
+- The UI kit shadowed Tailwind utilities wherever the two overlapped, because
+  it ships an unlayered Tailwind v3 build and Tailwind v4 emits into layers:
+  `text-*` did nothing on a link and `py-*` did nothing on a form control. The
+  kit is now imported into its own cascade layer between `components` and
+  `utilities`.
+- A bottom sheet opened from inside an animated phase rendered inset and
+  scrolled off-screen with a backdrop covering only part of the viewport, since
+  `position: fixed` resolves against the nearest transformed ancestor. Sheets
+  render through a portal now.
 - Accessibility: every phase now carries an `h1` (the kit's `Typography`
   renders a `<p>` by default), phase changes are announced, `--faint` and the
   kit's disabled tone now meet contrast, and tap targets under 44px were

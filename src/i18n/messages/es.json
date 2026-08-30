@@ -30,7 +30,10 @@
     "step1LinkLabel": "world.org/download",
     "step2": "Abre World App y toca el escáner QR en la pestaña principal, luego apúntalo a este código.",
     "step3": "DoomTax se abre dentro de World App. Toca Conectar — firma un mensaje para confirmar tu identidad. No se cobra nada, nada se mueve. DoomTax configura tu cuenta de sesión automáticamente — no hay nada más que conectar.",
-    "step4": "Funciona en la red de pruebas Hedera — los depósitos no involucran dinero real hoy."
+    "step4": "Funciona en la red de pruebas Hedera — los depósitos no involucran dinero real hoy.",
+    "notInWorldApp": "DoomTax funciona dentro de World App.",
+    "setUpInWorldApp": "Configúralo",
+    "sheetTitle": "Abre DoomTax en World App"
   },
   "StakeForm": {
     "commitment": "Haz un compromiso.",
@@ -85,14 +88,15 @@
   "Verdict": {
     "settledOnHedera": "Liquidado en la red de pruebas Hedera",
     "viewOnHashScan": "Ver en HashScan",
-    "noTransfer": "sin transferencia",
+    "noTransfer": "Nada se movió: tu depósito se quedó donde estaba",
     "publicReceipt": "Recibo público",
     "publicReceiptDetail": "Contiene solo un hash del compromiso y el veredicto. Nunca tu intención ni tu artefacto.",
     "appealWindow": "Ventana de apelación",
     "appealExpired": "La ventana de apelación se ha cerrado.",
     "whatSettlesLabel": "Qué se liquida en Hedera",
     "whatLedgerLabel": "Qué queda en el registro público",
-    "done": "Hecho"
+    "done": "Hecho",
+    "proofSummary": "Prueba en cadena"
   },
   "ConfirmSheet": {
     "title": "¿Desactivar esta sesión?",
@@ -147,5 +151,11 @@
   },
   "LanguageSwitcher": {
     "label": "Idioma"
+  },
+  "SessionFlow": {
+    "heroTitle": "Tu palabra, en juego.",
+    "heroBody": "Haz un solo compromiso, respáldalo con un depósito y deja que un coach privado emita el veredicto.",
+    "howItWorks": "Cómo funciona DoomTax",
+    "newSession": "Nueva sesión"
   }
 }

@@ -102,6 +102,25 @@ A transaction ID, a topic ID and a HashScan URL were the first thing on the
 screen a user reaches straight after holding a commitment. Moved behind a
 `Proof on-chain` disclosure — still one tap for anyone verifying a settlement.
 
+### The UI kit shadowed Tailwind utilities
+
+The kit ships an entire Tailwind v3 build — a preflight plus 243 utility
+selectors — with no cascade layer of its own. Unlayered author styles beat
+layered ones regardless of specificity, and Tailwind v4 emits everything into
+layers, so the kit silently won wherever the two overlapped. The class was in
+the markup and did nothing:
+
+- `a { color: inherit }` killed every text colour utility on a link, so
+  `text-accent` on the HashScan links rendered as ordinary body text.
+- `button, input, select, textarea { padding: 0 }` killed `py-*` on every form
+  control, which cost the claim screen's attachment button its height — 24px
+  instead of 56.
+
+Fixed by importing the kit into its own layer, ordered after Tailwind's
+`components` and before `utilities`: our utilities now win over the kit, and the
+kit still wins over Tailwind's own preflight, so its components keep the resets
+they are built on.
+
 ### The live session did not fit on a phone
 
 At a fixed 232px ring the running screen ran 76px past a 390x844 viewport and
@@ -128,6 +147,12 @@ parent has left. 390x844 fits exactly; 375x667 still scrolls, by 88px.
   dialog onto controls behind a backdrop that still swallowed clicks. One of
   those dialogs is amnesty. Consolidated into one `Sheet` primitive that traps
   focus and restores it on close.
+- A sheet opened from inside an animated phase was not a modal at all. Same
+  containing-block trap as the wash: the explainer opened from the verdict
+  measured 342x937 at y=-387, heading scrolled off the top of the screen, inset
+  from both edges, with the page showing through a backdrop covering only a band
+  of the viewport. `Sheet` renders through a portal now, so no caller's nesting
+  can capture it.
 
 ### Smaller
 
@@ -147,29 +172,20 @@ parent has left. 390x844 fits exactly; 375x667 still scrolls, by 88px.
 
 ## Known, not fixed
 
-### `py-*` silently does nothing on form elements
+### Translation coverage is 46%
 
-The kit bundles a Tailwind v3 preflight that is **not** wrapped in a cascade
-layer, carrying the usual `button, input, optgroup, select, textarea { padding:
-0 }`. Unlayered author styles beat layered ones regardless of specificity, and
-Tailwind v4 emits every utility inside `@layer utilities` — so that reset wins.
-Horizontal padding usually survives only because the kit's own bundle happens to
-ship an unlayered `.px-4`.
-
-The one control this broke is fixed, and the trap is documented in
-`globals.css`. The general fix is to import the kit's stylesheet into a layer
-ordered between Tailwind's `components` and `utilities`, which is a larger
-change than it looks: the kit's grey ramp and font variables are already being
-wrestled into place around it, and every kit component would need re-checking.
-
-### Translation coverage is 42%
-
-148 of 255 keys are absent from every locale and fall back to English, mostly
+136 of 256 keys are absent from most locales and fall back to English, mostly
 the long `ExplainSheet` and `About` passages — which are exactly the ones
-carrying the privacy and custody claims. The `Common` namespace was completed
-for the ten languages where the plural forms could be written with confidence;
-`sw`, `ha` and `tw` stay on the English fallback rather than carry invented
-plurals.
+carrying the privacy and custody claims. `Common`, the hero and the
+always-visible strings on the session screens were completed for the ten
+languages where the wording could be written with confidence; `sw`, `ha` and
+`tw` stay on the English fallback rather than carry invented plurals.
+
+Worth knowing for the RTL locales specifically: English text inside an
+`dir="rtl"` document has its trailing punctuation reordered to the wrong end by
+the bidi algorithm, so a fallback string reads as ".Your word, on the line" in
+Arabic. Every fallback string on a main screen was translated for that reason;
+the remaining gaps are on `/about` and inside the explainer sheets.
 
 ### 375x667 still scrolls on the live screen
 

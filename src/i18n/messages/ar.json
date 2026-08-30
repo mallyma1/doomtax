@@ -30,7 +30,10 @@
     "step1LinkLabel": "world.org/download",
     "step2": "افتح World App واضغط على ماسح QR في التبويب الرئيسي، ثم وجّهه نحو هذا الرمز.",
     "step3": "يفتح DoomTax داخل World App. اضغط على ربط — يُوقَّع رسالة واحدة لتأكيد هويتك. لا يُخصم شيء ولا يتحرك شيء. يُعدّ DoomTax حساب جلستك تلقائياً — لا شيء آخر يحتاج إلى ربط.",
-    "step4": "يعمل على شبكة اختبار Hedera — التعهدات لا تتضمن أموالاً حقيقية اليوم."
+    "step4": "يعمل على شبكة اختبار Hedera — التعهدات لا تتضمن أموالاً حقيقية اليوم.",
+    "notInWorldApp": "يعمل DoomTax داخل World App.",
+    "setUpInWorldApp": "إعداده",
+    "sheetTitle": "افتح DoomTax في World App"
   },
   "StakeForm": {
     "commitment": "قطع التزاماً على نفسك.",
@@ -85,14 +88,15 @@
   "Verdict": {
     "settledOnHedera": "تمت التسوية على شبكة اختبار Hedera",
     "viewOnHashScan": "عرض على HashScan",
-    "noTransfer": "لا تحويل",
+    "noTransfer": "لم يتحرك شيء — بقي مبلغك في مكانه",
     "publicReceipt": "إيصال عام",
     "publicReceiptDetail": "يحتوي فقط على بصمة التزام والحكم. لا يتضمن نيّتك أو قطعة عملك أبداً.",
     "appealWindow": "نافذة الاستئناف",
     "appealExpired": "نافذة الاستئناف مغلقة.",
     "whatSettlesLabel": "ما يُسوَّى على Hedera",
     "whatLedgerLabel": "ما يدخل السجل العام",
-    "done": "تم"
+    "done": "تم",
+    "proofSummary": "إثبات على السلسلة"
   },
   "ConfirmSheet": {
     "title": "إلغاء تسليح هذه الجلسة؟",
@@ -147,5 +151,11 @@
   },
   "LanguageSwitcher": {
     "label": "اللغة"
+  },
+  "SessionFlow": {
+    "heroTitle": "كلمتك على المحك.",
+    "heroBody": "اقطع التزاماً واحداً، وادعمه بمبلغ، ودع مدرّباً خاصاً يصدر الحكم.",
+    "howItWorks": "كيف يعمل DoomTax",
+    "newSession": "جلسة جديدة"
   }
 }

@@ -30,7 +30,10 @@
     "step1LinkLabel": "world.org/download",
     "step2": "World App खोलें और मुख्य टैब पर QR स्कैनर पर टैप करें, फिर इस कोड पर इंगित करें।",
     "step3": "DoomTax, World App के अंदर खुलता है। कनेक्ट पर टैप करें — यह आपकी पहचान बताने के लिए एक संदेश पर हस्ताक्षर करता है। कुछ भी चार्ज नहीं होता, कुछ भी नहीं हिलता। DoomTax आपका सत्र खाता स्वचालित रूप से सेट करता है — कनेक्ट करने के लिए और कुछ नहीं।",
-    "step4": "Hedera परीक्षण नेटवर्क पर चलता है — प्रतिबद्धताओं में आज कोई वास्तविक पैसा नहीं है।"
+    "step4": "Hedera परीक्षण नेटवर्क पर चलता है — प्रतिबद्धताओं में आज कोई वास्तविक पैसा नहीं है।",
+    "notInWorldApp": "DoomTax World App के अंदर चलता है।",
+    "setUpInWorldApp": "सेट अप करें",
+    "sheetTitle": "World App में DoomTax खोलें"
   },
   "StakeForm": {
     "commitment": "एक प्रतिबद्धता करें।",
@@ -85,14 +88,15 @@
   "Verdict": {
     "settledOnHedera": "Hedera परीक्षण नेटवर्क पर निपटाया गया",
     "viewOnHashScan": "HashScan पर देखें",
-    "noTransfer": "कोई हस्तांतरण नहीं",
+    "noTransfer": "कुछ भी नहीं हिला — आपकी जमा राशि वहीं रही",
     "publicReceipt": "सार्वजनिक रसीद",
     "publicReceiptDetail": "केवल एक प्रतिबद्धता हैश और निर्णय शामिल है। कभी भी आपका इरादा या आपका कार्य नहीं।",
     "appealWindow": "अपील विंडो",
     "appealExpired": "अपील विंडो बंद हो गई है।",
     "whatSettlesLabel": "Hedera पर क्या निपटाया जाता है",
     "whatLedgerLabel": "सार्वजनिक खाता-बही में क्या जाता है",
-    "done": "हो गया"
+    "done": "हो गया",
+    "proofSummary": "ऑन-चेन प्रमाण"
   },
   "ConfirmSheet": {
     "title": "इस सत्र को निष्क्रिय करें?",
@@ -147,5 +151,11 @@
   },
   "LanguageSwitcher": {
     "label": "भाषा"
+  },
+  "SessionFlow": {
+    "heroTitle": "आपका वादा, दांव पर।",
+    "heroBody": "एक प्रतिबद्धता बनाएं, उसे एक जमा राशि से समर्थन दें, और एक निजी कोच को फैसला सुनाने दें।",
+    "howItWorks": "DoomTax कैसे काम करता है",
+    "newSession": "नया सत्र"
   }
 }

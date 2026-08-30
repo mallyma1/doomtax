@@ -30,7 +30,10 @@
     "step1LinkLabel": "world.org/download",
     "step2": "打开 World App，点击主界面的 QR 扫描器，然后对准此二维码。",
     "step3": "DoomTax 在 World App 内打开。点击连接 —— 签署一条消息以确认身份。不收取任何费用，没有任何资金移动。DoomTax 会自动设置你的会话账户 —— 无需再连接其他任何内容。",
-    "step4": "运行在 Hedera 测试网上 —— 今日的承诺押金不涉及真实资金。"
+    "step4": "运行在 Hedera 测试网上 —— 今日的承诺押金不涉及真实资金。",
+    "notInWorldApp": "DoomTax 在 World App 内运行。",
+    "setUpInWorldApp": "去设置",
+    "sheetTitle": "在 World App 中打开 DoomTax"
   },
   "StakeForm": {
     "commitment": "做出承诺。",
@@ -85,14 +88,15 @@
   "Verdict": {
     "settledOnHedera": "已在 Hedera 测试网上结算",
     "viewOnHashScan": "在 HashScan 上查看",
-    "noTransfer": "无转账",
+    "noTransfer": "没有任何转账 — 你的押金原封未动",
     "publicReceipt": "公开收据",
     "publicReceiptDetail": "仅包含承诺哈希和裁决结果。绝不包含你的意图或成果。",
     "appealWindow": "申诉窗口",
     "appealExpired": "申诉窗口已关闭。",
     "whatSettlesLabel": "在 Hedera 上结算的内容",
     "whatLedgerLabel": "进入公开账本的内容",
-    "done": "完成"
+    "done": "完成",
+    "proofSummary": "链上凭证"
   },
   "ConfirmSheet": {
     "title": "解除此会话？",
@@ -147,5 +151,11 @@
   },
   "LanguageSwitcher": {
     "label": "语言"
+  },
+  "SessionFlow": {
+    "heroTitle": "一诺，押上。",
+    "heroBody": "许下一个承诺，用押金支持它，让私人教练给出裁定。",
+    "howItWorks": "DoomTax 如何运作",
+    "newSession": "新的会话"
   }
 }

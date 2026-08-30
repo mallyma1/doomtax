@@ -30,7 +30,10 @@
     "step1LinkLabel": "world.org/download",
     "step2": "Ouvrez World App et appuyez sur le scanner QR dans l'onglet principal, puis pointez-le vers ce code.",
     "step3": "DoomTax s'ouvre dans World App. Appuyez sur Connecter — cela signe un message pour confirmer votre identité. Rien n'est facturé, rien ne bouge. DoomTax configure automatiquement votre compte de session — rien d'autre à connecter.",
-    "step4": "Fonctionne sur le réseau de test Hedera — les engagements ne représentent pas d'argent réel aujourd'hui."
+    "step4": "Fonctionne sur le réseau de test Hedera — les engagements ne représentent pas d'argent réel aujourd'hui.",
+    "notInWorldApp": "DoomTax fonctionne dans World App.",
+    "setUpInWorldApp": "Configurer",
+    "sheetTitle": "Ouvrir DoomTax dans World App"
   },
   "StakeForm": {
     "commitment": "Prenez un engagement.",
@@ -85,14 +88,15 @@
   "Verdict": {
     "settledOnHedera": "Réglé sur le réseau de test Hedera",
     "viewOnHashScan": "Voir sur HashScan",
-    "noTransfer": "aucun transfert",
+    "noTransfer": "Rien n’a bougé — votre mise est restée en place",
     "publicReceipt": "Reçu public",
     "publicReceiptDetail": "Contient uniquement un hash d'engagement et le verdict. Jamais votre intention ni votre artefact.",
     "appealWindow": "Fenêtre d'appel",
     "appealExpired": "La fenêtre d'appel est fermée.",
     "whatSettlesLabel": "Ce qui se règle sur Hedera",
     "whatLedgerLabel": "Ce qui va dans le registre public",
-    "done": "Terminé"
+    "done": "Terminé",
+    "proofSummary": "Preuve on-chain"
   },
   "ConfirmSheet": {
     "title": "Désarmer cette session ?",
@@ -147,5 +151,11 @@
   },
   "LanguageSwitcher": {
     "label": "Langue"
+  },
+  "SessionFlow": {
+    "heroTitle": "Votre parole, en jeu.",
+    "heroBody": "Prenez un seul engagement, appuyez-le par une mise, et laissez un coach privé rendre le verdict.",
+    "howItWorks": "Comment fonctionne DoomTax",
+    "newSession": "Nouvelle session"
   }
 }
