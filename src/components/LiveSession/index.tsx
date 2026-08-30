@@ -59,7 +59,7 @@ export const LiveSession = ({
   const isFinalStretch = progress >= 0.85;
 
   return (
-    <div className="animate-fade-up flex h-full w-full flex-col items-center justify-between gap-6 py-2">
+    <div className="animate-fade-up flex h-full min-h-full w-full flex-col items-center justify-between gap-4 py-1">
       <div className="card-raised w-full rounded-2xl border border-border bg-surface px-4 py-3">
         <Typography variant="body" level={3} className="text-foreground">
           {intention}
@@ -73,8 +73,9 @@ export const LiveSession = ({
         )}
       </div>
 
+      {/* min-h-0 lets this shrink below the ring's natural size on short screens. */}
       <div
-        className="relative"
+        className="relative flex min-h-0 flex-1 items-center justify-center"
         style={{
           filter: `drop-shadow(0 0 ${8 + glowStrength * 16}px rgba(245,158,11,${0.15 + glowStrength * 0.25}))`,
         }}
@@ -115,7 +116,7 @@ export const LiveSession = ({
         <UsdHint hbar={stakeHbar} />
       </div>
 
-      <div className="flex w-full flex-col items-center gap-3 mt-8 pb-2">
+      <div className="mt-4 flex w-full flex-col items-center gap-2 pb-1">
         <Button variant="primary" size="lg" fullWidth onClick={onFinishEarly}>
           {t('finishEarly')}
         </Button>

@@ -17,6 +17,7 @@ interface CountdownRingProps {
   atStake?: boolean;
 }
 
+/** SVG user units. The rendered size is set in CSS; this is only geometry. */
 const SIZE = 232;
 const STROKE = 3;
 const RADIUS = (SIZE - STROKE) / 2;
@@ -28,6 +29,13 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
  * The arc is time remaining, so it depletes toward the commitment, and a marker
  * rides its leading edge. The hairline ring and glowing core follow the Orbit
  * reference: the light is the thing that carries state, not the stroke weight.
+ *
+ * Sized from the space its parent has left rather than a fixed 232px. At a
+ * fixed size the live screen overflowed by 76px on a 390x844 phone and 253px on
+ * a 375x667 one, pushing "Finish early" and the disarm link below the fold — on
+ * the one screen that is supposed to be a single calm view with the way out
+ * visible. The SVG keeps its own coordinate system and scales through the
+ * viewBox, so the ring shrinks to fit and never past its natural size.
  */
 export const CountdownRing = ({
   remaining,
@@ -45,17 +53,14 @@ export const CountdownRing = ({
 
   return (
     <div
-      className="relative grid place-items-center"
-      style={{ width: SIZE, height: SIZE }}
+      className="relative grid aspect-square h-full max-h-[232px] w-auto max-w-full place-items-center"
       role="timer"
       aria-live="off"
     >
       {/* Ambient light behind the digits, held well inside the ring. */}
       <div
-        className="absolute rounded-full"
+        className="absolute size-[62%] rounded-full"
         style={{
-          width: SIZE * 0.62,
-          height: SIZE * 0.62,
           background: atStake
             ? 'radial-gradient(circle, rgba(245,158,11,0.16) 0%, transparent 68%)'
             : 'radial-gradient(circle, rgba(155,149,163,0.10) 0%, transparent 68%)',
@@ -63,7 +68,11 @@ export const CountdownRing = ({
         aria-hidden="true"
       />
 
-      <svg width={SIZE} height={SIZE} className="absolute" aria-hidden="true">
+      <svg
+        viewBox={`0 0 ${SIZE} ${SIZE}`}
+        className="absolute inset-0 size-full"
+        aria-hidden="true"
+      >
         <g transform={`rotate(-90 ${SIZE / 2} ${SIZE / 2})`}>
           <circle
             cx={SIZE / 2}
@@ -92,7 +101,7 @@ export const CountdownRing = ({
       </svg>
 
       <div className="relative flex flex-col items-center">
-        <span className="tabular text-[60px] font-semibold leading-none tracking-tight text-foreground">
+        <span className="tabular text-[clamp(2.25rem,13vw,3.75rem)] font-semibold leading-none tracking-tight text-foreground">
           {formatClock(remaining)}
         </span>
         <span className="mono-caption mt-3 text-xs uppercase tracking-widest text-faint">
