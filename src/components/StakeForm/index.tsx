@@ -205,7 +205,7 @@ export const StakeForm = ({
                     : 'border-border bg-surface text-muted hover:scale-[1.03] hover:border-muted hover:text-foreground',
                 ].join(' ')}
               >
-                <span>{option} ℏ</span>
+                <span className="hbar-amount">{option} ℏ</span>
                 <UsdHint hbar={option} className="block text-[10px]" />
               </button>
             );

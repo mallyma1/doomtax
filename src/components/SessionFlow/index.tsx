@@ -23,6 +23,11 @@ import {
   commitmentHash,
 } from '@/lib/session';
 import { markSessionCompleted, useSessionsCompleted } from '@/lib/history';
+import {
+  clearActiveSession,
+  loadActiveSession,
+  saveActiveSession,
+} from '@/lib/persistence';
 import { Button } from '@worldcoin/mini-apps-ui-kit-react';
 import { useActivity } from '@/providers/ActivityContext';
 import { useTranslations } from 'next-intl';
@@ -137,6 +142,48 @@ export const SessionFlow = ({
   const lastFocusRef = useRef<number | null>(null);
   const [interruptions, setInterruptions] = useState(0);
 
+  /**
+   * Pick a live session back up after a reload.
+   *
+   * Every piece of session state lived in `useState`, so a refresh — or the
+   * webview being reclaimed, which World App does freely — silently dropped the
+   * intention, the stake and the clock, and dumped the user on the start screen
+   * mid-commitment. The clock is restored from the stored `startedAt`, so they
+   * land where the wall clock says they should be, and the integrity counters
+   * come back with it: rebuilding them from zero would under-report foreground
+   * time to the coach, which is the one direction the error must not go.
+   */
+  useEffect(() => {
+    const restored = loadActiveSession();
+    if (!restored) return;
+
+    const { session, elapsed } = restored;
+    foregroundTimeRef.current = session.foregroundTime;
+    interruptionCountRef.current = session.interruptionCount;
+    setInterruptions(session.interruptionCount);
+    setSessionId(session.sessionId);
+    setIntention(session.intention);
+    setStakeHbar(session.stakeHbar);
+    setStartedAt(session.startedAt);
+    setPhase(elapsed ? 'claim' : 'running');
+  }, []);
+
+  // Mirror the live session to storage; anything past the claim has a server
+  // result behind it and must not be resumed from the client.
+  useEffect(() => {
+    if (phase !== 'running' && phase !== 'claim') return;
+    if (sessionId === null || startedAt === null) return;
+
+    saveActiveSession({
+      sessionId,
+      intention,
+      stakeHbar,
+      startedAt,
+      foregroundTime: foregroundTimeRef.current,
+      interruptionCount: interruptions,
+    });
+  }, [phase, sessionId, startedAt, intention, stakeHbar, interruptions]);
+
   useEffect(() => {
     if (phase !== 'running') return;
 
@@ -205,6 +252,12 @@ export const SessionFlow = ({
   // A finished session is what unlocks the circle panel on the idle screen.
   useEffect(() => {
     if (phase === 'complete') markSessionCompleted();
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase === 'idle' || phase === 'complete' || phase === 'error') {
+      clearActiveSession();
+    }
   }, [phase]);
 
   useEffect(() => {
