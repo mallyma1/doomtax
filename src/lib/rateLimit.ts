@@ -5,15 +5,20 @@
  * outside World App has no wallet to sign with, and demo mode exists so that
  * flow still works — but it settles from an operator-held account, so an
  * unthrottled endpoint is a scripted drain waiting to happen. The stake ceiling
- * bounds a single call; this bounds how many a caller gets.
+ * bounds what one call can move; this is meant to bound how many a caller gets
+ * — with the large caveat below about where it actually manages that.
  *
- * Deliberately in-process and deliberately not sold as more than that. On
- * serverless each instance keeps its own counter, so a caller spread across
- * instances gets a higher effective ceiling than the number below suggests.
- * That is worth having anyway: it turns an unbounded loop into a bounded one at
- * zero infrastructure cost, and it is honest about the gap rather than implying
- * a guarantee. A real limit needs shared state — the same shared store the
- * forfeit ledger wants.
+ * In-process, and measured rather than assumed: on a single long-lived server
+ * this binds exactly as configured — ten through, then 429. On the Vercel
+ * deployment it did not bind at all across twelve consecutive requests, because
+ * each instance keeps its own Map and requests are spread across instances that
+ * may each start cold. Treat it as protection for a self-hosted or long-lived
+ * process and as approximately nothing on serverless.
+ *
+ * It is kept because it costs nothing and helps where it applies, but the real
+ * bound on that deployment today is MAX_STAKE_HBAR, which caps a single call.
+ * A limit that actually holds across instances needs shared state — the same
+ * shared store the forfeit ledger wants, and the same provisioning decision.
  */
 
 type Window = { count: number; resetAt: number };

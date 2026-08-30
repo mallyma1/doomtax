@@ -230,11 +230,20 @@ provisioning decision rather than a code change.
 ### Settlement is still unauthenticated
 
 By design: a judge opening the preview outside World App has no wallet to sign
-with, and demo mode exists so the flow still demonstrates. The exposure is now
-bounded rather than open — `MAX_STAKE_HBAR` caps a single call and the rate
-limit caps the loop — but an unauthenticated caller can still cause operator
-funds to move on testnet. Requiring auth would close it and would also close the
-browser demo path; that is a product call, not a code one.
+with, and demo mode exists so the flow still demonstrates.
+
+`MAX_STAKE_HBAR` caps what a single call can move, and that is the bound that
+actually holds. The rate limiter does not, on this deployment: it binds exactly
+as configured against a single long-lived server — ten through, then 429 — but
+twelve consecutive requests to the Vercel preview all went through, because each
+instance keeps its own counter and requests spread across instances that may
+each start cold. It is kept for the self-hosted case and is documented at the
+limiter as approximately nothing on serverless.
+
+So an unauthenticated caller can still cause repeated operator transfers on
+testnet, each capped at `MAX_STAKE_HBAR`. Closing that properly means either
+requiring auth — which also closes the browser demo path — or a shared store for
+the counter. Both are decisions rather than code.
 
 ### `AUTH_SECRET` is not scoped to Preview
 
