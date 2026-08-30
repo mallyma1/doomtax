@@ -1,6 +1,22 @@
 import { ethers } from 'ethers';
-import { createZGComputeNetworkBroker } from '@0gfoundation/0g-compute-ts-sdk';
+import { createRequire } from 'node:module';
+import type { createZGComputeNetworkBroker as CreateBroker } from '@0gfoundation/0g-compute-ts-sdk';
 import { getZeroGNetwork } from '../src/ai/zero-g';
+
+/**
+ * Loaded through createRequire rather than a static import.
+ *
+ * The SDK's ESM entry re-exports named bindings out of a CommonJS chunk, which
+ * tsx's loader cannot resolve — `pnpm exec tsx scripts/check-0g.ts` died with
+ * "does not provide an export named 'C'" before running a line of this file.
+ * Plain Node and Next's server runtime both handle it, so the app is
+ * unaffected and only this script needed the CommonJS entry. The type import
+ * above keeps the signature; only the runtime value comes through require.
+ */
+const require_ = createRequire(import.meta.url);
+const { createZGComputeNetworkBroker } = require_(
+  '@0gfoundation/0g-compute-ts-sdk',
+) as { createZGComputeNetworkBroker: typeof CreateBroker };
 
 /**
  * Live probe for the 0G Compute coach path (#11).
