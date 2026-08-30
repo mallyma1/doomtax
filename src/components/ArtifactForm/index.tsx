@@ -182,12 +182,7 @@ export const ArtifactForm = ({
             </button>
           </div>
         ) : (
-          /*
-            Height comes from min-h, not py-4: the UI kit's unlayered preflight
-            zeroes padding on form elements and beats Tailwind's layered
-            utilities, so py-* on a <button> silently does nothing. See the note
-            in globals.css.
-          */
+          /* min-h rather than padding, so the tap target holds at 56px. */
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}

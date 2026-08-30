@@ -1,6 +1,7 @@
 'use client';
 
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface SheetProps {
   /** Called on Escape, backdrop tap, and the grabber's close affordance. */
@@ -35,6 +36,15 @@ const FOCUSABLE = [
  * different grabber widths, different max heights — and none of them trapped
  * focus, so Tab walked out of the dialog and into the page behind it while the
  * backdrop still swallowed clicks. Fixing that once here fixes it everywhere.
+ *
+ * Rendered into <body>. `position: fixed` resolves against the nearest ancestor
+ * with a transform, and `.animate-fade-up` keeps an identity transform after it
+ * finishes (`animation-fill-mode: both`), so a sheet opened from inside an
+ * animated phase was not a modal at all: the explainer opened from the verdict
+ * measured 342x937 at y=-387, its heading scrolled off the top of the screen,
+ * inset from both edges, with the page showing through a backdrop that only
+ * covered a band of the viewport. A portal is the only placement that cannot be
+ * captured by whatever a caller happens to be nested in.
  */
 export const Sheet = ({
   onClose,
@@ -46,8 +56,17 @@ export const Sheet = ({
   const panelRef = useRef<HTMLDivElement>(null);
   // Whatever opened the sheet, so focus can go home when it closes.
   const openerRef = useRef<HTMLElement | null>(null);
+  // document.body does not exist during the server render.
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
+    // The portal has not rendered on the first pass, so the panel node does not
+    // exist yet. Without waiting for it, this captures a null ref: nothing takes
+    // focus and the Tab handler below bails out, silently disabling the trap.
+    if (!mounted) return;
+
     openerRef.current = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
     panel?.focus();
@@ -92,9 +111,11 @@ export const Sheet = ({
       document.body.style.overflow = previousOverflow;
       openerRef.current?.focus?.();
     };
-  }, [onClose]);
+  }, [onClose, mounted]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <button
         type="button"
@@ -118,6 +139,7 @@ export const Sheet = ({
         />
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };

@@ -1,4 +1,26 @@
+/**
+ * Layer order, declared before anything is imported.
+ *
+ * @worldcoin/mini-apps-ui-kit-react ships an entire Tailwind v3 build with no
+ * cascade layer of its own — a preflight plus 243 utility selectors. Unlayered
+ * author styles beat layered ones no matter their specificity, and Tailwind v4
+ * emits everything into layers, so the kit silently shadowed our utilities
+ * wherever the two overlapped:
+ *
+ *   - `a { color: inherit }` killed every text colour utility on a link, so
+ *     `text-accent` on the HashScan links rendered as body text.
+ *   - `button, input, select, textarea { padding: 0 }` killed `py-*` on every
+ *     form control, which cost the claim screen's attachment button its height.
+ *
+ * Importing the kit into its own layer, ordered after Tailwind's `components`
+ * and before `utilities`, settles both directions at once: our utilities now
+ * win over the kit, and the kit still wins over Tailwind's own preflight, so
+ * its components keep the resets they are built on.
+ */
+@layer theme, base, components, kit, utilities;
+
 @import 'tailwindcss';
+@import '@worldcoin/mini-apps-ui-kit-react/styles.css' layer(kit);
 
 /**
  * DoomTax design tokens.
@@ -89,28 +111,6 @@ body {
  * one element selector against the universal rule's zero, so it wins on
  * specificity no matter which sheet lands last.
  */
-/**
- * Trap: `py-*` does nothing on a <button>, <input>, <textarea> or <select>.
- *
- * The UI kit bundles a Tailwind v3 preflight that is not wrapped in a cascade
- * layer, and it carries the usual form reset:
- *
- *   button, input, optgroup, select, textarea { padding: 0 }
- *
- * Unlayered author styles beat layered ones no matter their specificity, and
- * Tailwind v4 emits every utility inside `@layer utilities`, so that reset wins
- * over `.py-4 { padding-block: … }`. Horizontal padding usually survives only
- * because the kit's own bundle happens to ship an unlayered `.px-4` of its own.
- * The failure is silent: the class is in the markup and does nothing. It cost
- * the claim screen's attachment button its height — 24px instead of 56.
- *
- * So give form controls an explicit `h-*` or `min-h-*` and centre with flex,
- * which is what the rest of the app already does. The deeper fix is to import
- * the kit's stylesheet into a layer ordered between Tailwind's `components` and
- * `utilities`; that is a bigger change than it looks, because the kit's grey
- * ramp and font variables are already being wrestled into place above.
- */
-
 html *,
 html *::before,
 html *::after {

@@ -1,7 +1,6 @@
 import { auth } from '@/auth';
 import { RTL_LOCALES } from '@/i18n/config';
 import ClientProviders from '@/providers';
-import '@worldcoin/mini-apps-ui-kit-react/styles.css';
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata, Viewport } from 'next';
