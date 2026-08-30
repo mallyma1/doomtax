@@ -522,7 +522,7 @@ export const SessionFlow = ({
     }
 
     return (
-      <div className="animate-fade-up flex h-full w-full flex-col gap-4">
+      <div className="animate-fade-up flex min-h-full w-full flex-col gap-4">
         <Verdict
           result={result}
           stakeHbar={stakeHbar}
@@ -559,11 +559,15 @@ export const SessionFlow = ({
         {!DEMO_MODE && result?.verdict === 'kept' && sessionId && selfieAction ? (
           <SelfieCheck sessionId={sessionId} action={selfieAction} />
         ) : null}
-        <CirclePanel
-          pendingForfeitHbar={
-            amnestiedAt !== null ? null : circlePendingForfeitHbar
-          }
-        />
+        {/*
+          A circle exists to give forfeits somewhere good to go, so after a kept
+          or disarmed session it has nothing to say — and "2 forfeits have
+          funded this cause" directly under "You kept it" spends the win on a
+          panel about losing. Shown only where a forfeit is actually in play.
+        */}
+        {amnestiedAt === null && result?.verdict === 'slipped' && (
+          <CirclePanel pendingForfeitHbar={circlePendingForfeitHbar} />
+        )}
       </div>
     );
   };

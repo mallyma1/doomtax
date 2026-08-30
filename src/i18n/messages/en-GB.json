@@ -103,7 +103,7 @@
     "bodyKept": "Your {stake} ℏ stays with you.",
     "settledOnHedera": "Settled on Hedera testnet",
     "viewOnHashScan": "View on HashScan",
-    "noTransfer": "no transfer",
+    "noTransfer": "Nothing moved — your stake stayed put",
     "publicReceipt": "Public receipt",
     "publicReceiptNotRecorded": "not recorded: {error}",
     "publicReceiptDetail": "Carries a commitment hash and the verdict only. Never your intention or your artifact.",
@@ -123,7 +123,8 @@
     "errorBodyUnsure": "We could not confirm what happened to your stake. If it did move, the appeal window still applies and it is still refundable.",
     "errorDetailSummary": "Technical detail",
     "errorRetry": "Try again",
-    "errorStartOver": "Start a new session"
+    "errorStartOver": "Start a new session",
+    "proofSummary": "Proof on-chain"
   },
   "ConfirmSheet": {
     "title": "Disarm this session?",
