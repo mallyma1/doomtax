@@ -481,8 +481,8 @@ export const SessionFlow = ({
   const renderPhase = () => {
     if (phase === 'idle') {
       return (
-        <div className="animate-fade-up flex min-h-full w-full flex-col justify-between gap-8">
-          <div className="flex flex-1 flex-col items-center justify-center py-6 text-center">
+        <div className="animate-fade-up flex min-h-full w-full flex-col justify-between gap-6">
+          <div className="flex flex-1 flex-col items-center justify-center py-4 text-center">
             <div
               className="animate-glow-pulse mb-10 size-16 rounded-full"
               style={{
