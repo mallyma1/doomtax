@@ -13,8 +13,16 @@
   --surface-raised: #1c1a22;
   --foreground: #f7f5f3;
   --muted: #9b95a3;
-  --faint: #635d6c;
+  --faint: #807a8d;
   --border: #262430;
+
+  /*
+   * --faint is the de-emphasised text tier: captions, counters, the mono
+   * eyebrows. At #635d6c it measured 3.17:1 on --background and 2.94:1 on
+   * --surface, and it is used almost exclusively at 11-13px, where WCAG asks
+   * for 4.5:1. Raised until it clears that on both surfaces (4.87 and 4.51)
+   * while staying clearly below --muted, which carries body copy at 6.91:1.
+   */
 
   --accent: #f59e0b;
   --accent-dim: #7c4a06;
@@ -81,6 +89,28 @@ body {
  * one element selector against the universal rule's zero, so it wins on
  * specificity no matter which sheet lands last.
  */
+/**
+ * Trap: `py-*` does nothing on a <button>, <input>, <textarea> or <select>.
+ *
+ * The UI kit bundles a Tailwind v3 preflight that is not wrapped in a cascade
+ * layer, and it carries the usual form reset:
+ *
+ *   button, input, optgroup, select, textarea { padding: 0 }
+ *
+ * Unlayered author styles beat layered ones no matter their specificity, and
+ * Tailwind v4 emits every utility inside `@layer utilities`, so that reset wins
+ * over `.py-4 { padding-block: … }`. Horizontal padding usually survives only
+ * because the kit's own bundle happens to ship an unlayered `.px-4` of its own.
+ * The failure is silent: the class is in the markup and does nothing. It cost
+ * the claim screen's attachment button its height — 24px instead of 56.
+ *
+ * So give form controls an explicit `h-*` or `min-h-*` and centre with flex,
+ * which is what the rest of the app already does. The deeper fix is to import
+ * the kit's stylesheet into a layer ordered between Tailwind's `components` and
+ * `utilities`; that is a bigger change than it looks, because the kit's grey
+ * ramp and font variables are already being wrestled into place above.
+ */
+
 html *,
 html *::before,
 html *::after {

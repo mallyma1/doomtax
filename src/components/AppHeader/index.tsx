@@ -32,7 +32,7 @@ export const AppHeader = async ({
         <LanguageSwitcher />
         <Link
           href={variant === 'about' ? '/' : '/about'}
-          className="-my-3 py-3 text-sm text-muted transition-colors hover:text-foreground"
+          className="-mx-1.5 -my-3 flex min-h-[44px] items-center px-1.5 py-3 text-sm text-muted transition-colors hover:text-foreground"
         >
           {variant === 'about' ? t('backToSession') : t('about')}
         </Link>

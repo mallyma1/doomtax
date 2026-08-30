@@ -33,6 +33,7 @@ export const ConfirmSheet = ({
       closeLabel={tc('cancel')}
     >
       <Typography
+        as="h2"
         variant="heading"
         level={3}
         id="disarm-title"

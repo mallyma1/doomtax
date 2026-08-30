@@ -119,11 +119,17 @@ export const StakeForm = ({
         <button
           type="button"
           onClick={onBack}
-          className="-my-3 w-fit py-3 text-sm font-medium text-muted underline underline-offset-4 min-h-[44px]"
+          className="-mx-1 -my-3 flex min-h-[44px] min-w-[44px] items-center px-1 py-3 text-sm font-medium text-muted underline underline-offset-4"
         >
           {tc('back')}
         </button>
-        <Typography variant="heading" level={2} className="text-foreground">
+        {/* Typography renders <p> unless told otherwise; each phase owns the h1. */}
+        <Typography
+          as="h1"
+          variant="heading"
+          level={2}
+          className="text-foreground"
+        >
           {t('commitment')}
         </Typography>
         <Typography variant="body" level={3} className="mt-1.5 text-muted">
@@ -141,7 +147,7 @@ export const StakeForm = ({
               onIntentionChange(t(exampleKey));
               textareaRef.current?.focus();
             }}
-            className="shrink-0 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:border-muted hover:text-foreground"
+            className="flex min-h-[44px] shrink-0 items-center rounded-full border border-border bg-surface px-4 text-xs text-muted transition-colors hover:border-muted hover:text-foreground"
           >
             {t(exampleKey)}
           </button>

@@ -499,7 +499,7 @@ export const SessionFlow = ({
             </p>
             <Link
               href="/about"
-              className="-my-2 mt-2 py-2 text-sm font-medium text-foreground underline underline-offset-4"
+              className="mt-1 inline-flex min-h-[44px] items-center text-sm font-medium text-foreground underline underline-offset-4"
             >
               {t('howItWorks')}
             </Link>

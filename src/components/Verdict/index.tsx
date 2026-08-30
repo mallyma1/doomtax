@@ -107,6 +107,7 @@ export const Verdict = ({
             <span className="text-2xl text-slipped">!</span>
           </div>
           <Typography
+            as="h1"
             variant="heading"
             level={2}
             className="mt-6 text-foreground"
@@ -243,9 +244,12 @@ export const Verdict = ({
         </div>
 
         <Typography
+          as="h1"
           variant="display"
           level={1}
-          className={tone === 'kept' ? 'mt-7 text-foreground' : 'mt-5 text-foreground'}
+          className={
+            tone === 'kept' ? 'mt-7 text-foreground' : 'mt-5 text-foreground'
+          }
         >
           {title}
         </Typography>

@@ -84,7 +84,12 @@ export const ArtifactForm = ({
       <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
         <Spinner />
         <div>
-          <Typography variant="heading" level={3} className="text-foreground">
+          <Typography
+            as="h1"
+            variant="heading"
+            level={3}
+            className="text-foreground"
+          >
             {t('coachReading')}
           </Typography>
           <Typography variant="body" level={3} className="mt-1 text-muted">
@@ -101,7 +106,12 @@ export const ArtifactForm = ({
   return (
     <div className="animate-fade-up flex w-full flex-col gap-6">
       <div>
-        <Typography variant="heading" level={2} className="text-foreground">
+        <Typography
+          as="h1"
+          variant="heading"
+          level={2}
+          className="text-foreground"
+        >
           {t('heading')}
         </Typography>
         <Typography variant="body" level={3} className="mt-1 text-muted">
@@ -172,10 +182,16 @@ export const ArtifactForm = ({
             </button>
           </div>
         ) : (
+          /*
+            Height comes from min-h, not py-4: the UI kit's unlayered preflight
+            zeroes padding on form elements and beats Tailwind's layered
+            utilities, so py-* on a <button> silently does nothing. See the note
+            in globals.css.
+          */
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-border px-4 py-4 text-sm text-muted transition-colors hover:border-muted hover:text-foreground"
+            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-border px-4 text-sm text-muted transition-colors hover:border-muted hover:text-foreground"
           >
             <span aria-hidden="true">📎</span>
             {t('attachButton')}

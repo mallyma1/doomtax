@@ -25,7 +25,7 @@ export const LanguageSwitcher = () => {
         aria-label={t('changeLanguage')}
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
-        className="-my-3 flex min-h-[44px] items-center py-3 text-sm text-muted transition-colors hover:text-foreground"
+        className="-mx-1 -my-3 flex min-h-[44px] min-w-[44px] items-center justify-center px-1 py-3 text-sm text-muted transition-colors hover:text-foreground"
       >
         <span aria-hidden="true">文A</span>
       </button>

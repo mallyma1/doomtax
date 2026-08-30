@@ -61,7 +61,8 @@ export const LiveSession = ({
   return (
     <div className="animate-fade-up flex h-full min-h-full w-full flex-col items-center justify-between gap-4 py-1">
       <div className="card-raised w-full rounded-2xl border border-border bg-surface px-4 py-3">
-        <Typography variant="body" level={3} className="text-foreground">
+        {/* The commitment is what this screen is about, so it is its heading. */}
+        <Typography as="h1" variant="body" level={3} className="text-foreground">
           {intention}
         </Typography>
         {demoMode && (
