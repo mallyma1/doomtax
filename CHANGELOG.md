@@ -7,7 +7,40 @@ not every commit. See `git log` for the full history.
 
 ## Unreleased
 
+### Fixed
+
+- Headings and buttons rendered in the browser's default serif. The UI kit
+  declares `--font-sans: "TWK Lausanne"` in a universal rule, naming a face it
+  never ships with no generic family behind it, so every kit `Typography` and
+  `Button` fell back to Times against Geist body copy.
+- Five load-bearing strings rendered as their key paths in all thirteen
+  non-English locales, including the sentence explaining what happens to a
+  user's stake. next-intl formats translations with the values the component
+  passes for the English message, so a locale that renames a placeholder does
+  not fall back to English — it fails to format. `pnpm check:messages` now
+  guards against recurrence.
+- The World App onboarding card rendered twice outside World App, burying the
+  product under roughly 1,700px of install instructions and stacking on top of
+  the live countdown. It is now a sheet behind a one-line link.
+- The session clock decremented a counter on an interval, so it lost time
+  whenever the tab was backgrounded. It is read from the start timestamp now.
+- A page reload destroyed a running session. It is mirrored to `sessionStorage`
+  with its integrity counters and resumes against the wall clock.
+- A failed settlement was a dead end: the raw server string as body copy and a
+  single "Done" that discarded the artifact. It now says whether the stake
+  moved and can retry.
+- The verdict wash rendered as a hard-edged rectangle. `position: fixed`
+  resolves against the nearest transformed ancestor, and `.animate-fade-up`
+  retains an identity transform after it finishes.
+- The live session did not fit a phone screen, putting "Finish early" and the
+  disarm link below the fold.
+- Accessibility: every phase now carries an `h1` (the kit's `Typography`
+  renders a `<p>` by default), phase changes are announced, `--faint` and the
+  kit's disabled tone now meet contrast, and tap targets under 44px were
+  enlarged. The bottom sheets trap focus and restore it on close.
+
 ### Added
+
 
 - A designed session flow across four screens: commit, live session, artifact
   submission, and verdict. Replaces the unstyled forms that shipped before.
@@ -38,6 +71,13 @@ not every commit. See `git log` for the full history.
 - `CirclePanel` restyled onto the shared tokens. It previously hardcoded
   Tailwind grays and blues, which rendered as white cards on the dark canvas.
 - `AuthButton` is now full width and reads "Connect World App".
+- The verdict screen follows "wins are louder than losses": a kept session gets
+  scale and the returned stake called out, a slip stays quiet, and the circle
+  panel no longer runs under "You kept it". Ledger detail moved behind a
+  `Proof on-chain` disclosure.
+- The circle panel waits for a first finished session rather than greeting new
+  users with a circle they are not in.
+- All four bottom sheets share one `Sheet` primitive.
 
 - The appeal window is now 24 hours by default, up from 60 seconds. A slipped
   verdict is the only outcome that costs a user money, and the window is what
