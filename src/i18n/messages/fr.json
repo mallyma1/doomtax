@@ -45,7 +45,7 @@
     "stakeLegend": "Engagement",
     "customAmountLabel": "Autre montant",
     "customAmountPlaceholder": "Saisissez n'importe quel montant HBAR",
-    "customAmountError": "Saisissez un montant HBAR positif.",
+    "customAmountError": "Saisissez un montant entre 0,01 et {max} ℏ.",
     "sessionInfo": "Votre {stake} ℏ est retenu sur le réseau de test Hedera pendant {duration}. Tenez l'engagement et il vous revient intégralement. Si vous ne le tenez pas, il va à la cause commune, jamais à nous. Vous pouvez désarmer la session à tout moment avant le règlement.",
     "startButton": "Démarrer la session",
     "demoLabel": "DÉMO · SESSION DE 30 SECONDES",

@@ -45,7 +45,7 @@
     "stakeLegend": "押金",
     "customAmountLabel": "其他金额",
     "customAmountPlaceholder": "输入任意 HBAR 金额",
-    "customAmountError": "请输入正数 HBAR 金额。",
+    "customAmountError": "请输入 0.01 到 {max} ℏ 之间的金额。",
     "sessionInfo": "你的 {stake} ℏ 将在 Hedera 测试网上保留 {duration}。完成承诺后全额返还。若未完成，将归入共同事业，永不归我们所有。你可以在结算前随时解除会话。",
     "startButton": "开始会话",
     "demoLabel": "演示 · 30 秒会话",

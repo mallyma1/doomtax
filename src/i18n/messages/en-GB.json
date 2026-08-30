@@ -48,7 +48,7 @@
     "customAmountLabel": "Other amount",
     "customAmountPlaceholder": "Enter any HBAR amount",
     "customAmountAriaLabel": "Custom stake amount in HBAR",
-    "customAmountError": "Enter a positive HBAR amount.",
+    "customAmountError": "Enter an amount between 0.01 and {max} ℏ.",
     "sessionInfo": "Your {stake} ℏ is held on Hedera testnet for {duration}. Keep the commitment and it returns in full. Slip and it goes to the shared cause, never to us. You can disarm the session at any point before it settles.",
     "startButton": "Start session",
     "demoLabel": "DEMO · 30-SECOND SESSION",
@@ -130,7 +130,11 @@
     "title": "Disarm this session?",
     "body": "Your <amount>{stake} ℏ</amount> returns to you in full and nothing is forfeited. The session ends now and is not sent to your coach. Use this when the plan genuinely changed, not as a habit.",
     "confirm": "Disarm and return my stake",
-    "cancel": "Keep going"
+    "cancel": "Keep going",
+    "largeTitle": "Stake {stake} ℏ?",
+    "largeBody": "That is more than the usual amounts. If you slip, it goes to the shared cause and you cannot get it back after the appeal window. You can still disarm the session at any point before it settles.",
+    "largeConfirm": "Yes, stake {stake} ℏ",
+    "largeCancel": "Pick a smaller amount"
   },
   "CirclePanel": {
     "heading": "Circle",

@@ -48,3 +48,29 @@ export const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE !== 'false';
 export const SESSION_DURATION_SECONDS = DEMO_MODE ? 30 : 25 * 60;
 
 export const STAKE_OPTIONS_HBAR = [1, 5, 10] as const;
+
+/**
+ * The largest stake the app will accept, shared by the form and the API.
+ *
+ * Two jobs. For the user it backs the product rule that a large jump gets
+ * confirmed rather than waved through: anything above the biggest preset asks
+ * first, and nothing above this ceiling is offered at all. For the server it
+ * bounds an endpoint that moves real value — /api/session/settle validated only
+ * that the amount was a finite positive number, so a stake of 999,999,999 was
+ * accepted and would have been transferred out of the operator account.
+ *
+ * The API must import this rather than restate it, or the form and the route
+ * can disagree about what is allowed and the user meets a rejection the screen
+ * said nothing about.
+ */
+export const MAX_STAKE_HBAR = 100;
+
+/**
+ * Above this, starting a session asks for confirmation first.
+ *
+ * The biggest preset. Presets are the deliberately easy path, so a value beyond
+ * them is by definition a jump the user typed on purpose — worth one question,
+ * not a wall.
+ */
+export const LARGE_STAKE_THRESHOLD_HBAR =
+  STAKE_OPTIONS_HBAR[STAKE_OPTIONS_HBAR.length - 1];

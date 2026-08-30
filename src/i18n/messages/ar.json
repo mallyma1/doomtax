@@ -45,7 +45,7 @@
     "stakeLegend": "التعهد",
     "customAmountLabel": "مبلغ آخر",
     "customAmountPlaceholder": "أدخل أي مبلغ بـ HBAR",
-    "customAmountError": "أدخل مبلغاً موجباً بـ HBAR.",
+    "customAmountError": "أدخل مبلغاً بين 0.01 و {max} ℏ.",
     "sessionInfo": "يُحتجز {stake} ℏ الخاص بك على شبكة اختبار Hedera لمدة {duration}. أوفِ بالتزامك ويعود إليك كاملاً. إن لم تفِ به، يذهب إلى القضية المشتركة، ولا يأتي إلينا أبداً. يمكنك إلغاء تسليح الجلسة في أي وقت قبل التسوية.",
     "startButton": "بدء الجلسة",
     "demoLabel": "عرض توضيحي · جلسة 30 ثانية",

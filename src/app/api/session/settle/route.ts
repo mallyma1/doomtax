@@ -4,7 +4,7 @@ import { askCoach } from '@/ai/coach';
 import { submitSessionRecord } from '@/hedera/consensus';
 import { ensureStreakTokenAssociated, mintStreakToken } from '@/hedera/token';
 import { fundUserAccount, getOrCreateUserAccount } from '@/identity/agentkit';
-import { DEMO_MODE, hbarToTinybar } from '@/lib/session';
+import { DEMO_MODE, MAX_STAKE_HBAR, hbarToTinybar } from '@/lib/session';
 import { recordForfeit } from '@/lib/sessionLedger';
 import { auth } from '@/auth';
 
@@ -89,6 +89,17 @@ export async function POST(request: Request) {
   if (!Number.isFinite(stakeHbar) || stakeHbar <= 0) {
     return NextResponse.json(
       { error: 'stakeHbar must be a finite positive number' },
+      { status: 400 },
+    );
+  }
+
+  // This route moves value out of an operator-held account, and it previously
+  // accepted any positive number: a stake of 999,999,999 passed validation and
+  // would have been transferred. The ceiling is shared with the form so the two
+  // cannot disagree about what is allowed.
+  if (stakeHbar > MAX_STAKE_HBAR) {
+    return NextResponse.json(
+      { error: `stakeHbar must not exceed ${MAX_STAKE_HBAR}` },
       { status: 400 },
     );
   }

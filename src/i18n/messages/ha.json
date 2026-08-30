@@ -37,7 +37,6 @@
     "stakeLegend": "Lamuni",
     "customAmountLabel": "Wani adadi",
     "customAmountPlaceholder": "Shigar da kowane adadin HBAR",
-    "customAmountError": "Shigar da adadin HBAR mai kyau.",
     "sessionInfo": "Lamunin {stake} ℏ ɗinka yana a hanyar gwaji ta Hedera na {duration}. Cika alkawarin kuma zai dawo cikakke. Rashin cika zai tafi ga manufar tare, ba zuwa gare mu ba. Kana iya kashe zaman a kowane lokaci kafin tsarawa.",
     "startButton": "Fara zaman",
     "demoLabel": "DEMO · ZAMAN DAKIKA 30",

@@ -18,6 +18,7 @@ import {
 } from '@/lib/appeal';
 import {
   DEMO_MODE,
+  LARGE_STAKE_THRESHOLD_HBAR,
   SESSION_DURATION_SECONDS,
   STAKE_OPTIONS_HBAR,
   commitmentHash,
@@ -133,6 +134,7 @@ export const SessionFlow = ({
   const [isSubmittingAppeal, setIsSubmittingAppeal] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [disarmOpen, setDisarmOpen] = useState(false);
+  const [largeStakeOpen, setLargeStakeOpen] = useState(false);
   const { setHedera, setZeroG } = useActivity();
   const sessionsCompleted = useSessionsCompleted();
 
@@ -300,8 +302,23 @@ export const SessionFlow = ({
     setPhase('idle');
   };
 
+  /**
+   * CLAUDE.md: "confirmation before any large jump". Anything past the biggest
+   * preset is a number the user typed rather than tapped, so it gets one
+   * question before the clock starts — not after, when the stake is committed.
+   */
+  const requestStart = () => {
+    if (!intention.trim()) return;
+    if (stakeHbar > LARGE_STAKE_THRESHOLD_HBAR) {
+      setLargeStakeOpen(true);
+      return;
+    }
+    startSession();
+  };
+
   const startSession = () => {
     if (!intention.trim()) return;
+    setLargeStakeOpen(false);
     setNowMs(Date.now());
     foregroundTimeRef.current = 0;
     interruptionCountRef.current = 0;
@@ -543,6 +560,7 @@ export const SessionFlow = ({
 
     if (phase === 'draft') {
       return (
+        <>
         <StakeForm
           intention={intention}
           onIntentionChange={setIntention}
@@ -552,8 +570,17 @@ export const SessionFlow = ({
           durationSeconds={SESSION_DURATION_SECONDS}
           demoMode={DEMO_MODE}
           onBack={returnToIdle}
-          onStart={startSession}
+          onStart={requestStart}
         />
+        {largeStakeOpen && (
+          <ConfirmSheet
+            stakeHbar={stakeHbar}
+            variant="large-stake"
+            onConfirm={startSession}
+            onCancel={() => setLargeStakeOpen(false)}
+          />
+        )}
+        </>
       );
     }
 

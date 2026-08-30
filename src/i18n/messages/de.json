@@ -45,7 +45,7 @@
     "stakeLegend": "Pfand",
     "customAmountLabel": "Anderer Betrag",
     "customAmountPlaceholder": "Beliebigen HBAR-Betrag eingeben",
-    "customAmountError": "Gib einen positiven HBAR-Betrag ein.",
+    "customAmountError": "Gib einen Betrag zwischen 0,01 und {max} ℏ ein.",
     "sessionInfo": "Dein {stake} ℏ wird für {duration} im Hedera-Testnetz gehalten. Halte die Selbstverpflichtung und es kommt vollständig zurück. Schaffst du es nicht, geht es an die gemeinsame Sache, nie an uns. Du kannst die Sitzung jederzeit vor der Abrechnung deaktivieren.",
     "startButton": "Sitzung starten",
     "demoLabel": "DEMO · 30-SEKUNDEN-SITZUNG",

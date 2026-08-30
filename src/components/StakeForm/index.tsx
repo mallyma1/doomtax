@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { UsdHint } from '@/components/UsdHint';
 
+import { MAX_STAKE_HBAR } from '@/lib/session';
+
 const MAX_INTENTION = 140;
 
 const EXAMPLE_KEYS = ['exampleChip1', 'exampleChip2', 'exampleChip3'] as const;
@@ -28,6 +30,9 @@ function parseStake(value: string): number | null {
   if (normalized === '') return null;
   const parsed = Number(normalized);
   if (!Number.isFinite(parsed) || parsed <= 0) return null;
+  // The API enforces the same ceiling. Rejecting here means the user finds out
+  // while they are typing rather than after committing to a session.
+  if (parsed > MAX_STAKE_HBAR) return null;
   return parsed;
 }
 
@@ -224,6 +229,7 @@ export const StakeForm = ({
           <input
             type="number"
             min="0.01"
+            max={MAX_STAKE_HBAR}
             step="0.01"
             inputMode="decimal"
             value={customStake}
@@ -234,7 +240,7 @@ export const StakeForm = ({
             className="h-12 w-full rounded-2xl border border-border bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus:bg-surface-raised"
           />
           <div className="mt-1.5 text-xs text-slipped">
-            {invalidCustomStake ? t('customAmountError') : ''}
+            {invalidCustomStake ? t('customAmountError', { max: MAX_STAKE_HBAR }) : ''}
           </div>
           {parsedCustomStake !== null && (
             <UsdHint hbar={parsedCustomStake} className="mt-1 block" />

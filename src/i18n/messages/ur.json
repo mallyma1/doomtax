@@ -45,7 +45,7 @@
     "stakeLegend": "ضمانت",
     "customAmountLabel": "دوسری رقم",
     "customAmountPlaceholder": "کوئی بھی HBAR رقم درج کریں",
-    "customAmountError": "ایک مثبت HBAR رقم درج کریں۔",
+    "customAmountError": "0.01 سے {max} ℏ کے درمیان رقم درج کریں۔",
     "sessionInfo": "آپ کا {stake} ℏ {duration} کے لیے Hedera ٹیسٹ نیٹ ورک پر رکھا جاتا ہے۔ عہد پورا کریں تو پوری رقم واپس آتی ہے۔ چوک جائیں تو یہ مشترکہ مقصد میں جاتا ہے، ہمارے پاس کبھی نہیں۔ آپ تصفیے سے پہلے کسی بھی وقت سیشن کو غیر فعال کر سکتے ہیں۔",
     "startButton": "سیشن شروع کریں",
     "demoLabel": "ڈیمو · 30 سیکنڈ سیشن",

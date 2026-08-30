@@ -45,7 +45,7 @@
     "stakeLegend": "Depósito",
     "customAmountLabel": "Outro valor",
     "customAmountPlaceholder": "Introduza qualquer valor HBAR",
-    "customAmountError": "Introduza um valor HBAR positivo.",
+    "customAmountError": "Introduza um valor entre 0,01 e {max} ℏ.",
     "sessionInfo": "O seu {stake} ℏ fica retido na rede de teste Hedera durante {duration}. Cumpra o compromisso e recebe de volta na íntegra. Se falhar, vai para a causa partilhada, nunca para nós. Pode desactivar a sessão a qualquer momento antes da liquidação.",
     "startButton": "Iniciar sessão",
     "demoLabel": "DEMONSTRAÇÃO · SESSÃO DE 30 SEGUNDOS",

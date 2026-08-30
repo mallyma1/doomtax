@@ -37,7 +37,6 @@
     "stakeLegend": "Dhamana",
     "customAmountLabel": "Kiasi kingine",
     "customAmountPlaceholder": "Ingiza kiasi chochote cha HBAR",
-    "customAmountError": "Ingiza kiasi chanya cha HBAR.",
     "sessionInfo": "Dhamana yako ya {stake} ℏ inashikiliwa kwenye mtandao wa majaribio wa Hedera kwa {duration}. Timiza ahadi na itarudi kamili. Shindwa na itaenda kwa sababu ya pamoja, kamwe kwetu. Unaweza kuzima kikao wakati wowote kabla ya utatuzi.",
     "startButton": "Anza kikao",
     "demoLabel": "MAONYESHO · KIKAO CHA SEKUNDE 30",
