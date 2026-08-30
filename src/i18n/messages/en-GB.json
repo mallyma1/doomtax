@@ -17,7 +17,8 @@
     "viewOnHashScan": "View transaction on HashScan",
     "qrAlt": "Scan to open DoomTax in World App",
     "secondsCount": "{count, plural, =1 {# second} other {# seconds}}",
-    "minutesCount": "{count, plural, =1 {# minute} other {# minutes}}"
+    "minutesCount": "{count, plural, =1 {# minute} other {# minutes}}",
+    "interruptionsCount": "{count, plural, =0 {no interruptions} =1 {# interruption} other {# interruptions}}"
   },
   "AuthButton": {
     "connect": "Connect World App",
@@ -79,7 +80,7 @@
     "artifactLabel": "Your artifact for this session",
     "coachReads": "What your coach receives",
     "coachReceivesIntention": "Your intention and the text above",
-    "coachReceivesForeground": "{held} in the foreground, {count, plural, =1 {# interruption} other {# interruptions}}",
+    "coachReceivesForeground": "{held} in the foreground, {interruptions}",
     "coachNeverReceivesAttachment": "Your attachment — it never leaves this phone (yet)",
     "coachPrivacy": "Never your screen, your browsing, your keystrokes, or anything from other apps.",
     "submit": "Submit for review",
@@ -107,7 +108,7 @@
     "publicReceiptNotRecorded": "not recorded: {error}",
     "publicReceiptDetail": "Carries a commitment hash and the verdict only. Never your intention or your artifact.",
     "appealWindow": "Appeal window",
-    "appealClosesIn": "Closes in {remaining}{at}. Nothing reaches the shared cause until it does, and an appeal resolves toward you.",
+    "appealClosesIn": "Closes in <strong>{remaining}</strong>{at}. Nothing reaches the shared cause until it does, and an appeal resolves toward you.",
     "appealClosesAt": ", at {time}",
     "appealPlaceholder": "Why should this resolve in your favour?",
     "appealReasonLabel": "Reason for your appeal",
@@ -126,7 +127,7 @@
   },
   "ConfirmSheet": {
     "title": "Disarm this session?",
-    "body": "Your {amount} returns to you in full and nothing is forfeited. The session ends now and is not sent to your coach. Use this when the plan genuinely changed, not as a habit.",
+    "body": "Your <amount>{stake} ℏ</amount> returns to you in full and nothing is forfeited. The session ends now and is not sent to your coach. Use this when the plan genuinely changed, not as a habit.",
     "confirm": "Disarm and return my stake",
     "cancel": "Keep going"
   },
@@ -139,7 +140,7 @@
     "causeLabel": "Shared cause",
     "causeAccount": "Current demo account: {account}",
     "impactDetail": "{count, plural, =1 {# forfeit has} other {# forfeits have}} funded this cause. No leaderboard, no individual totals, and never a callout of who slipped.",
-    "pendingForfeit": "If this session stands, {amount} joins your circle's total after the appeal window. The good still counts, but your name does not go with it.",
+    "pendingForfeit": "If this session stands, <amount>{stake} HBAR</amount> joins your circle's total after the appeal window. The good still counts, but your name does not go with it.",
     "private": "Your circle stays private. We show what you have funded together, not a list of members — and never who slipped."
   },
   "PoweredBy": {

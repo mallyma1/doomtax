@@ -59,6 +59,7 @@ export const ArtifactForm = ({
   const [attachment, setAttachment] = useState<AttachmentState | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations('ArtifactForm');
+  const tc = useTranslations('Common');
 
   const handleFile = async (file: File) => {
     const previewUrl = URL.createObjectURL(file);
@@ -197,7 +198,12 @@ export const ArtifactForm = ({
           <li className="flex gap-2">
             <span className="text-accent" aria-hidden="true">+</span>
             <span className="tabular">
-              {t('coachReceivesForeground', { held, count: interruptions })}
+              {t('coachReceivesForeground', {
+                held,
+                // Pluralised through Common so each locale can translate the
+                // noun without restating this sentence's plural rules.
+                interruptions: tc('interruptionsCount', { count: interruptions }),
+              })}
             </span>
           </li>
           <li className="flex gap-2">

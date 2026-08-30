@@ -1,13 +1,11 @@
 {
   "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
-
   "Header": {
     "wordmark": "DoomTax",
     "testnet": "شبكة الاختبار",
     "about": "حول",
     "backToSession": "العودة إلى الجلسة"
   },
-
   "Common": {
     "close": "إغلاق",
     "back": "رجوع",
@@ -15,9 +13,13 @@
     "loading": "جاري التحميل",
     "openInWorldApp": "فتح DoomTax في World App",
     "onYourPhone": "هل هو بالفعل على هاتفك؟",
-    "viewOnHashScan": "عرض المعاملة على HashScan"
+    "viewOnHashScan": "عرض المعاملة على HashScan",
+    "cancel": "إلغاء",
+    "qrAlt": "امسح الرمز لفتح DoomTax في World App",
+    "secondsCount": "{count, plural, zero {# ثانية} one {ثانية واحدة} two {ثانيتان} few {# ثوانٍ} many {# ثانية} other {# ثانية}}",
+    "minutesCount": "{count, plural, zero {# دقيقة} one {دقيقة واحدة} two {دقيقتان} few {# دقائق} many {# دقيقة} other {# دقيقة}}",
+    "interruptionsCount": "{count, plural, =0 {بلا مقاطعات} one {مقاطعة واحدة} two {مقاطعتان} few {# مقاطعات} many {# مقاطعة} other {# مقاطعة}}"
   },
-
   "AuthButton": {
     "connect": "ربط World App",
     "loginPending": "جارٍ تسجيل الدخول",
@@ -28,11 +30,8 @@
     "step1LinkLabel": "world.org/download",
     "step2": "افتح World App واضغط على ماسح QR في التبويب الرئيسي، ثم وجّهه نحو هذا الرمز.",
     "step3": "يفتح DoomTax داخل World App. اضغط على ربط — يُوقَّع رسالة واحدة لتأكيد هويتك. لا يُخصم شيء ولا يتحرك شيء. يُعدّ DoomTax حساب جلستك تلقائياً — لا شيء آخر يحتاج إلى ربط.",
-    "step4": "يعمل على شبكة اختبار Hedera — التعهدات لا تتضمن أموالاً حقيقية اليوم.",
-    "onPhoneAlready": "هل هو بالفعل على هاتفك؟",
-    "openInWorldApp": "فتح DoomTax في World App"
+    "step4": "يعمل على شبكة اختبار Hedera — التعهدات لا تتضمن أموالاً حقيقية اليوم."
   },
-
   "StakeForm": {
     "commitment": "قطع التزاماً على نفسك.",
     "description": "اكتبه كوعد لنفسك. يقرأ مدرّبك الذكي هذه الكلمات بالتحديد عند الحكم على إثباتك — كن محدداً بما يكفي لأن يكون الحكم واضحاً.",
@@ -44,7 +43,7 @@
     "customAmountLabel": "مبلغ آخر",
     "customAmountPlaceholder": "أدخل أي مبلغ بـ HBAR",
     "customAmountError": "أدخل مبلغاً موجباً بـ HBAR.",
-    "sessionInfo": "يُحتجز {stakeHbar} ℏ الخاص بك على شبكة اختبار Hedera لمدة {duration}. أوفِ بالتزامك ويعود إليك كاملاً. إن لم تفِ به، يذهب إلى القضية المشتركة، ولا يأتي إلينا أبداً. يمكنك إلغاء تسليح الجلسة في أي وقت قبل التسوية.",
+    "sessionInfo": "يُحتجز {stake} ℏ الخاص بك على شبكة اختبار Hedera لمدة {duration}. أوفِ بالتزامك ويعود إليك كاملاً. إن لم تفِ به، يذهب إلى القضية المشتركة، ولا يأتي إلينا أبداً. يمكنك إلغاء تسليح الجلسة في أي وقت قبل التسوية.",
     "startButton": "بدء الجلسة",
     "demoLabel": "عرض توضيحي · جلسة 30 ثانية",
     "realSessionNote": "الجلسات الحقيقية تستمر 25 دقيقة.",
@@ -55,9 +54,8 @@
     "stepStake": "التعهد",
     "stepGo": "ابدأ"
   },
-
   "LiveSession": {
-    "atStake": "{stakeHbar} ℏ كتعهد",
+    "atStake": "{stake} ℏ كتعهد",
     "noInterruptions": "لا انقطاعات",
     "interruptions": "{count, plural, =1 {# انقطاع} other {# انقطاعات}}",
     "finishEarly": "الانتهاء مبكراً",
@@ -67,7 +65,6 @@
     "milestoneFinal": "المرحلة الأخيرة.",
     "demoLabel": "عرض توضيحي · جلسة 30 ثانية"
   },
-
   "ArtifactForm": {
     "heading": "أظهر عملك",
     "youCommitted": "التزمت بهذا:",
@@ -85,7 +82,6 @@
     "attachCaption": "تبقى على جهازك. يُحسب بصمة (hash) محلياً حتى تتمكن نسخة مستقبلية من التحقق منها على السلسلة. قراءة OCR على 0G قادمة — اليوم يحكم المدرّب على نصك فقط.",
     "removeAttachment": "إزالة المرفق"
   },
-
   "Verdict": {
     "settledOnHedera": "تمت التسوية على شبكة اختبار Hedera",
     "viewOnHashScan": "عرض على HashScan",
@@ -98,33 +94,23 @@
     "whatLedgerLabel": "ما يدخل السجل العام",
     "done": "تم"
   },
-
   "ConfirmSheet": {
     "title": "إلغاء تسليح هذه الجلسة؟",
-    "body": "يعود {stakeHbar} ℏ الخاص بك إليك كاملاً ولا يُصادر شيء. تنتهي الجلسة الآن ولا تُرسل إلى مدرّبك. استخدم هذا عندما تغيّرت الخطة فعلاً، ليس كعادة.",
+    "body": "يعود <amount>{stake} ℏ</amount> الخاص بك إليك كاملاً ولا يُصادر شيء. تنتهي الجلسة الآن ولا تُرسل إلى مدرّبك. استخدم هذا عندما تغيّرت الخطة فعلاً، ليس كعادة.",
     "confirm": "إلغاء التسليح وإعادة تعهدي",
     "cancel": "مواصلة"
   },
-
   "CirclePanel": {
-    "demoCircleLabel": "دائرة توضيحية",
     "causeLabel": "القضية المشتركة",
-    "causalAccount": "حساب العرض التوضيحي الحالي:",
-    "impactTotal": "{total} HBAR",
     "impactDetail": "{count} خسارة موّلت هذه القضية. لا ترتيب، لا مجاميع فردية، ولا يُكشف عمن لم يفِ بالتزامه.",
-    "pendingForfeit": "إذا استمرت هذه الجلسة، سينضم {hbar} HBAR إلى مجموع دائرتك بعد نافذة الاستئناف. الخير يُحتسب لكن اسمك لا يُذكر معه.",
+    "pendingForfeit": "إذا استمرت هذه الجلسة، سينضم <amount>{stake} HBAR</amount> إلى مجموع دائرتك بعد نافذة الاستئناف. الخير يُحتسب لكن اسمك لا يُذكر معه.",
     "private": "تبقى دائرتك خاصة. نُظهر ما موّلتموه معاً، لا قائمة بالأعضاء — ولا نكشف أبداً عمن لم يفِ بالتزامه."
   },
-
   "PoweredBy": {
     "hederaDetail": "تسوية",
     "zeroGDetail": "مدرّب",
-    "worldDetail": "تطبيق مصغر",
-    "hederaLabel": "تعرّف على Hedera",
-    "zeroGLabel": "تعرّف على 0G",
-    "worldLabel": "تعرّف على World"
+    "worldDetail": "تطبيق مصغر"
   },
-
   "ExplainSheet": {
     "close": "إغلاق",
     "hedera-settlement": {
@@ -148,7 +134,6 @@
       "title": "رمز السلسلة"
     }
   },
-
   "About": {
     "pageTitle": "حول DoomTax",
     "heroTitle": "طريقة ألطف لتحويل النية إلى إنجاز",
@@ -160,7 +145,6 @@
     "startSession": "بدء جلسة",
     "openInWorldApp": "فتح في World App"
   },
-
   "LanguageSwitcher": {
     "label": "اللغة"
   }

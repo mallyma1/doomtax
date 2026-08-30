@@ -1,13 +1,11 @@
 {
   "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
-
   "Header": {
     "wordmark": "DoomTax",
     "testnet": "Testnetz",
     "about": "Über",
     "backToSession": "Zurück zur Sitzung"
   },
-
   "Common": {
     "close": "Schließen",
     "back": "Zurück",
@@ -15,9 +13,13 @@
     "loading": "Laden",
     "openInWorldApp": "DoomTax in World App öffnen",
     "onYourPhone": "Bereits auf deinem Telefon?",
-    "viewOnHashScan": "Transaktion auf HashScan anzeigen"
+    "viewOnHashScan": "Transaktion auf HashScan anzeigen",
+    "cancel": "Abbrechen",
+    "qrAlt": "Scannen, um DoomTax in World App zu öffnen",
+    "secondsCount": "{count, plural, one {# Sekunde} other {# Sekunden}}",
+    "minutesCount": "{count, plural, one {# Minute} other {# Minuten}}",
+    "interruptionsCount": "{count, plural, =0 {keine Unterbrechungen} one {# Unterbrechung} other {# Unterbrechungen}}"
   },
-
   "AuthButton": {
     "connect": "World App verbinden",
     "loginPending": "Anmeldung läuft",
@@ -28,11 +30,8 @@
     "step1LinkLabel": "world.org/download",
     "step2": "Öffne World App und tippe auf den QR-Scanner im Haupt-Tab, dann halte ihn auf diesen Code.",
     "step3": "DoomTax öffnet sich in World App. Tippe auf Verbinden — eine Nachricht wird unterschrieben, um deine Identität zu bestätigen. Nichts wird abgebucht, nichts bewegt sich. DoomTax richtet dein Sitzungskonto automatisch ein — nichts weiter zu verbinden.",
-    "step4": "Läuft auf dem Hedera-Testnetz — Pfänder enthalten heute kein echtes Geld.",
-    "onPhoneAlready": "Bereits auf deinem Telefon?",
-    "openInWorldApp": "DoomTax in World App öffnen"
+    "step4": "Läuft auf dem Hedera-Testnetz — Pfänder enthalten heute kein echtes Geld."
   },
-
   "StakeForm": {
     "commitment": "Gib eine Selbstverpflichtung ab.",
     "description": "Schreib sie wie ein Versprechen an dich selbst. Dein KI-Coach liest genau diese Worte, wenn er dein Ergebnis bewertet — sei präzise genug, damit das Urteil eindeutig ist.",
@@ -44,7 +43,7 @@
     "customAmountLabel": "Anderer Betrag",
     "customAmountPlaceholder": "Beliebigen HBAR-Betrag eingeben",
     "customAmountError": "Gib einen positiven HBAR-Betrag ein.",
-    "sessionInfo": "Dein {stakeHbar} ℏ wird für {duration} im Hedera-Testnetz gehalten. Halte die Selbstverpflichtung und es kommt vollständig zurück. Schaffst du es nicht, geht es an die gemeinsame Sache, nie an uns. Du kannst die Sitzung jederzeit vor der Abrechnung deaktivieren.",
+    "sessionInfo": "Dein {stake} ℏ wird für {duration} im Hedera-Testnetz gehalten. Halte die Selbstverpflichtung und es kommt vollständig zurück. Schaffst du es nicht, geht es an die gemeinsame Sache, nie an uns. Du kannst die Sitzung jederzeit vor der Abrechnung deaktivieren.",
     "startButton": "Sitzung starten",
     "demoLabel": "DEMO · 30-SEKUNDEN-SITZUNG",
     "realSessionNote": "Echte Sitzungen dauern 25 Minuten.",
@@ -55,9 +54,8 @@
     "stepStake": "Pfand",
     "stepGo": "Los"
   },
-
   "LiveSession": {
-    "atStake": "{stakeHbar} ℏ als Pfand",
+    "atStake": "{stake} ℏ als Pfand",
     "noInterruptions": "keine Unterbrechungen",
     "interruptions": "{count, plural, =1 {# Unterbrechung} other {# Unterbrechungen}}",
     "finishEarly": "Vorzeitig beenden",
@@ -67,7 +65,6 @@
     "milestoneFinal": "Endspurt.",
     "demoLabel": "DEMO · 30-SEKUNDEN-SITZUNG"
   },
-
   "ArtifactForm": {
     "heading": "Zeig deine Arbeit",
     "youCommitted": "Du hast dich dazu verpflichtet:",
@@ -85,7 +82,6 @@
     "attachCaption": "Bleibt auf deinem Gerät. Ein Fingerabdruck (Hash) wird lokal berechnet, damit eine zukünftige Version ihn on-chain verifizieren kann. OCR-Erkennung auf 0G kommt — heute bewertet der Coach nur deinen Text.",
     "removeAttachment": "Anhang entfernen"
   },
-
   "Verdict": {
     "settledOnHedera": "Auf dem Hedera-Testnetz abgerechnet",
     "viewOnHashScan": "Auf HashScan anzeigen",
@@ -98,33 +94,23 @@
     "whatLedgerLabel": "Was im öffentlichen Register steht",
     "done": "Fertig"
   },
-
   "ConfirmSheet": {
     "title": "Diese Sitzung deaktivieren?",
-    "body": "Dein {stakeHbar} ℏ wird vollständig zurückgegeben und nichts verfällt. Die Sitzung endet jetzt und wird nicht an deinen Coach gesendet. Nutze dies, wenn sich der Plan wirklich geändert hat, nicht als Gewohnheit.",
+    "body": "Dein <amount>{stake} ℏ</amount> wird vollständig zurückgegeben und nichts verfällt. Die Sitzung endet jetzt und wird nicht an deinen Coach gesendet. Nutze dies, wenn sich der Plan wirklich geändert hat, nicht als Gewohnheit.",
     "confirm": "Deaktivieren und mein Pfand zurückgeben",
     "cancel": "Weitermachen"
   },
-
   "CirclePanel": {
-    "demoCircleLabel": "Demo-Kreis",
     "causeLabel": "Gemeinsame Sache",
-    "causalAccount": "Aktuelles Demo-Konto:",
-    "impactTotal": "{total} HBAR",
     "impactDetail": "{count} Verluste haben diese Sache finanziert. Keine Rangliste, keine Einzelbeträge, und nie eine Nennung, wer gescheitert ist.",
-    "pendingForfeit": "Wenn diese Sitzung Bestand hat, schließt sich {hbar} HBAR nach dem Einspruchsfenster dem Gesamtbetrag deines Kreises an. Das Gute zählt, aber dein Name gehört nicht dazu.",
+    "pendingForfeit": "Wenn diese Sitzung Bestand hat, schließt sich <amount>{stake} HBAR</amount> nach dem Einspruchsfenster dem Gesamtbetrag deines Kreises an. Das Gute zählt, aber dein Name gehört nicht dazu.",
     "private": "Dein Kreis bleibt privat. Wir zeigen, was ihr gemeinsam finanziert habt, keine Mitgliederliste — und nie, wer gescheitert ist."
   },
-
   "PoweredBy": {
     "hederaDetail": "Abrechnung",
     "zeroGDetail": "Coach",
-    "worldDetail": "Mini App",
-    "hederaLabel": "Mehr über Hedera erfahren",
-    "zeroGLabel": "Mehr über 0G erfahren",
-    "worldLabel": "Mehr über World erfahren"
+    "worldDetail": "Mini App"
   },
-
   "ExplainSheet": {
     "close": "Schließen",
     "hedera-settlement": {
@@ -148,7 +134,6 @@
       "title": "Der Streak-Token"
     }
   },
-
   "About": {
     "pageTitle": "Über DoomTax",
     "heroTitle": "Ein sanfterer Weg, Absichten in Handlungen umzuwandeln",
@@ -160,7 +145,6 @@
     "startSession": "Sitzung starten",
     "openInWorldApp": "In World App öffnen"
   },
-
   "LanguageSwitcher": {
     "label": "Sprache"
   }

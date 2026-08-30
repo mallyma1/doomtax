@@ -42,9 +42,11 @@ export const ConfirmSheet = ({
       </Typography>
       <Typography variant="body" level={3} className="mt-2.5 text-muted">
         {t.rich('body', {
-          amount: () => (
+          stake: stakeHbar,
+          amount: (chunks) => (
             <>
-              {stakeHbar} ℏ <UsdHint hbar={stakeHbar} className="inline" />
+              <span className="hbar-amount text-foreground">{chunks}</span>{' '}
+              <UsdHint hbar={stakeHbar} className="inline" />
             </>
           ),
         })}

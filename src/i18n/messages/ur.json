@@ -1,13 +1,11 @@
 {
   "_comment": "UK English strings. No gambling vocabulary anywhere — use stake/commitment/pledge/forfeit.",
-
   "Header": {
     "wordmark": "DoomTax",
     "testnet": "ٹیسٹ نیٹ ورک",
     "about": "تعارف",
     "backToSession": "سیشن پر واپس جائیں"
   },
-
   "Common": {
     "close": "بند کریں",
     "back": "واپس",
@@ -15,9 +13,13 @@
     "loading": "لوڈ ہو رہا ہے",
     "openInWorldApp": "World App میں DoomTax کھولیں",
     "onYourPhone": "کیا یہ آپ کے فون پر پہلے سے ہے؟",
-    "viewOnHashScan": "HashScan پر لین دین دیکھیں"
+    "viewOnHashScan": "HashScan پر لین دین دیکھیں",
+    "cancel": "منسوخ کریں",
+    "qrAlt": "World App میں DoomTax کھولنے کے لیے اسکین کریں",
+    "secondsCount": "{count, plural, one {# سیکنڈ} other {# سیکنڈ}}",
+    "minutesCount": "{count, plural, one {# منٹ} other {# منٹ}}",
+    "interruptionsCount": "{count, plural, =0 {کوئی مداخلت نہیں} one {# مداخلت} other {# مداخلتیں}}"
   },
-
   "AuthButton": {
     "connect": "World App جوڑیں",
     "loginPending": "لاگ ان ہو رہا ہے",
@@ -28,11 +30,8 @@
     "step1LinkLabel": "world.org/download",
     "step2": "World App کھولیں اور مین ٹیب پر QR اسکینر پر ٹیپ کریں، پھر اسے اس کوڈ کی طرف کریں۔",
     "step3": "DoomTax، World App کے اندر کھلتا ہے۔ جوڑیں پر ٹیپ کریں — یہ آپ کی شناخت ثابت کرنے کے لیے ایک پیغام پر دستخط کرتا ہے۔ کچھ بھی چارج نہیں ہوتا، کچھ بھی نہیں ہلتا۔ DoomTax آپ کا سیشن اکاؤنٹ خودبخود ترتیب دیتا ہے — جوڑنے کے لیے اور کچھ نہیں۔",
-    "step4": "Hedera ٹیسٹ نیٹ ورک پر چلتا ہے — عہدوں میں آج کوئی حقیقی پیسہ نہیں ہے۔",
-    "onPhoneAlready": "کیا یہ آپ کے فون پر پہلے سے ہے؟",
-    "openInWorldApp": "World App میں DoomTax کھولیں"
+    "step4": "Hedera ٹیسٹ نیٹ ورک پر چلتا ہے — عہدوں میں آج کوئی حقیقی پیسہ نہیں ہے۔"
   },
-
   "StakeForm": {
     "commitment": "ایک عہد کریں۔",
     "description": "اسے اپنے آپ سے وعدے کی طرح لکھیں۔ آپ کا AI کوچ آپ کے ثبوت کا جائزہ لیتے وقت یہی الفاظ پڑھتا ہے — اتنا مخصوص رہیں کہ فیصلہ واضح ہو۔",
@@ -44,7 +43,7 @@
     "customAmountLabel": "دوسری رقم",
     "customAmountPlaceholder": "کوئی بھی HBAR رقم درج کریں",
     "customAmountError": "ایک مثبت HBAR رقم درج کریں۔",
-    "sessionInfo": "آپ کا {stakeHbar} ℏ {duration} کے لیے Hedera ٹیسٹ نیٹ ورک پر رکھا جاتا ہے۔ عہد پورا کریں تو پوری رقم واپس آتی ہے۔ چوک جائیں تو یہ مشترکہ مقصد میں جاتا ہے، ہمارے پاس کبھی نہیں۔ آپ تصفیے سے پہلے کسی بھی وقت سیشن کو غیر فعال کر سکتے ہیں۔",
+    "sessionInfo": "آپ کا {stake} ℏ {duration} کے لیے Hedera ٹیسٹ نیٹ ورک پر رکھا جاتا ہے۔ عہد پورا کریں تو پوری رقم واپس آتی ہے۔ چوک جائیں تو یہ مشترکہ مقصد میں جاتا ہے، ہمارے پاس کبھی نہیں۔ آپ تصفیے سے پہلے کسی بھی وقت سیشن کو غیر فعال کر سکتے ہیں۔",
     "startButton": "سیشن شروع کریں",
     "demoLabel": "ڈیمو · 30 سیکنڈ سیشن",
     "realSessionNote": "حقیقی سیشن 25 منٹ چلتے ہیں۔",
@@ -55,9 +54,8 @@
     "stepStake": "ضمانت",
     "stepGo": "جائیں"
   },
-
   "LiveSession": {
-    "atStake": "{stakeHbar} ℏ ضمانت میں",
+    "atStake": "{stake} ℏ ضمانت میں",
     "noInterruptions": "کوئی رکاوٹ نہیں",
     "interruptions": "{count, plural, =1 {# رکاوٹ} other {# رکاوٹیں}}",
     "finishEarly": "جلدی ختم کریں",
@@ -67,7 +65,6 @@
     "milestoneFinal": "آخری مرحلہ۔",
     "demoLabel": "ڈیمو · 30 سیکنڈ سیشن"
   },
-
   "ArtifactForm": {
     "heading": "اپنا کام دکھائیں",
     "youCommitted": "آپ نے اس کے لیے عہد کیا:",
@@ -85,7 +82,6 @@
     "attachCaption": "آپ کے ڈیوائس پر رہتی ہے۔ ایک فنگرپرنٹ (ہیش) مقامی طور پر شمار ہوتا ہے تاکہ ایک مستقبل کا ورژن اسے آن چین تصدیق کر سکے۔ 0G پر OCR پڑھنا آ رہا ہے — آج کوچ صرف آپ کے متن کا جائزہ لیتا ہے۔",
     "removeAttachment": "منسلکہ ہٹائیں"
   },
-
   "Verdict": {
     "settledOnHedera": "Hedera ٹیسٹ نیٹ ورک پر تصفیہ ہو گیا",
     "viewOnHashScan": "HashScan پر دیکھیں",
@@ -98,33 +94,23 @@
     "whatLedgerLabel": "عوامی بہی کھاتے میں کیا جاتا ہے",
     "done": "ہو گیا"
   },
-
   "ConfirmSheet": {
     "title": "اس سیشن کو غیر فعال کریں؟",
-    "body": "آپ کا {stakeHbar} ℏ آپ کو پوری طرح واپس آتا ہے اور کچھ بھی ضبط نہیں ہوتا۔ سیشن ابھی ختم ہوتا ہے اور آپ کے کوچ کو نہیں بھیجا جاتا۔ اسے اس وقت استعمال کریں جب منصوبہ واقعی بدل گیا ہو، عادت کے طور پر نہیں۔",
+    "body": "آپ کا <amount>{stake} ℏ</amount> آپ کو پوری طرح واپس آتا ہے اور کچھ بھی ضبط نہیں ہوتا۔ سیشن ابھی ختم ہوتا ہے اور آپ کے کوچ کو نہیں بھیجا جاتا۔ اسے اس وقت استعمال کریں جب منصوبہ واقعی بدل گیا ہو، عادت کے طور پر نہیں۔",
     "confirm": "غیر فعال کریں اور میری ضمانت واپس کریں",
     "cancel": "جاری رکھیں"
   },
-
   "CirclePanel": {
-    "demoCircleLabel": "ڈیمو حلقہ",
     "causeLabel": "مشترکہ مقصد",
-    "causalAccount": "موجودہ ڈیمو اکاؤنٹ:",
-    "impactTotal": "{total} HBAR",
     "impactDetail": "{count} چوک نے اس مقصد کو مالی تعاون دیا۔ کوئی لیڈر بورڈ نہیں، کوئی انفرادی رقم نہیں، اور کبھی نہیں بتایا جاتا کہ کس نے چوک کی۔",
-    "pendingForfeit": "اگر یہ سیشن برقرار رہا، تو {hbar} HBAR اپیل ونڈو کے بعد آپ کے حلقے کی کل رقم میں شامل ہو جائے گا۔ نیکی پھر بھی شمار ہوتی ہے لیکن آپ کا نام اس کے ساتھ نہیں جاتا۔",
+    "pendingForfeit": "اگر یہ سیشن برقرار رہا، تو <amount>{stake} HBAR</amount> اپیل ونڈو کے بعد آپ کے حلقے کی کل رقم میں شامل ہو جائے گا۔ نیکی پھر بھی شمار ہوتی ہے لیکن آپ کا نام اس کے ساتھ نہیں جاتا۔",
     "private": "آپ کا حلقہ نجی رہتا ہے۔ ہم دکھاتے ہیں کہ آپ نے مل کر کیا مالی تعاون دیا، اراکین کی فہرست نہیں — اور کبھی نہیں کہ کس نے چوک کی۔"
   },
-
   "PoweredBy": {
     "hederaDetail": "تصفیہ",
     "zeroGDetail": "کوچ",
-    "worldDetail": "منی ایپ",
-    "hederaLabel": "Hedera کے بارے میں جانیں",
-    "zeroGLabel": "0G کے بارے میں جانیں",
-    "worldLabel": "World کے بارے میں جانیں"
+    "worldDetail": "منی ایپ"
   },
-
   "ExplainSheet": {
     "close": "بند کریں",
     "hedera-settlement": {
@@ -148,7 +134,6 @@
       "title": "سٹریک ٹوکن"
     }
   },
-
   "About": {
     "pageTitle": "DoomTax کے بارے میں",
     "heroTitle": "ارادے کو عمل میں بدلنے کا ایک نرم طریقہ",
@@ -160,7 +145,6 @@
     "startSession": "ایک سیشن شروع کریں",
     "openInWorldApp": "World App میں کھولیں"
   },
-
   "LanguageSwitcher": {
     "label": "زبان"
   }

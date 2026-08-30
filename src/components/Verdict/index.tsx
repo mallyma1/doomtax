@@ -294,10 +294,9 @@ export const Verdict = ({
             </span>
             <p className="mt-1.5 text-sm leading-relaxed text-muted">
               {t.rich('appealClosesIn', {
-                remaining: () => (
-                  <span className="tabular text-foreground">
-                    {formatRemaining(appealRemainingMs)}
-                  </span>
+                remaining: formatRemaining(appealRemainingMs),
+                strong: (chunks) => (
+                  <span className="tabular text-foreground">{chunks}</span>
                 ),
                 at:
                   appealWindowEndsAt !== null
