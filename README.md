@@ -1,19 +1,27 @@
 # DoomTax
 
+**In plain terms, for readers who don't follow crypto:**
+
+- **The problem.** Most focus apps rely on willpower at the moment it is lowest. Staking money on a goal has real evidence behind it, but an app that keeps your stake when you fail profits from your bad days.
+- **What I built.** A phone app where you stake a small amount on a focus session and state what you will do. Keep to it and you are refunded; slip and the stake goes to charity, never to the app. Refunds and charity payments settle end to end on a test network; the AI coach that gives the verdict is written but not yet proven live.
+- **What it shows about how I work.** Honest scope and an audit trail. Every feature claim is marked built, in progress or planned, [what didn't ship](NOT-BUILT.md) has its own file, and [AI-USAGE.md](AI-USAGE.md) records which AI tool did what and what I did myself.
+
+<p>
+  <img src="public/promo/square-1-intro.png" alt="DoomTax home screen: start a new session, with a circle's shared cause and its weekly total" width="360">
+  <img src="public/promo/square-2-live.png" alt="A live DoomTax focus session: the stated intention, a countdown and the amount at stake" width="360">
+</p>
+
 > **A tax on doomscrolling that funds something good.**
 > Stake on a focus session. State your intention. A private AI coach decides if
 > you kept it. Keep it, get refunded. Slip, and an autonomous agent sends your
 > forfeit to charity. Grounded in commitment-device research. Designed to be kind about the bad days.
 
-Built at **ETHGlobal Lisbon 2026**.
+Built solo at **ETHGlobal Lisbon 2026**, using AI coding tools (GitHub Copilot and Claude) throughout. [AI-USAGE.md](AI-USAGE.md) logs what each tool did and what I did myself.
 
-🚀 **Live:** [doomtax.vercel.app](https://doomtax.vercel.app/) · 🏗 [Architecture](docs/ARCHITECTURE.md) · 📋 [What didn't ship](NOT-BUILT.md) · 🤖 [AI usage](AI-USAGE.md)
+**Live:** [doomtax.vercel.app](https://doomtax.vercel.app/) · [Architecture](docs/ARCHITECTURE.md) · [What didn't ship](NOT-BUILT.md) · [AI usage](AI-USAGE.md)
 
 > **Testnet only.** No real funds, no real charity partnership (placeholder account).
 > See [`NOT-BUILT.md`](NOT-BUILT.md) for honest scope.
-
-> Every claim below is marked 🟢 built, 🟡 in progress, or ⚪ planned. Nothing is
-> claimed working until it's green with a link next to it.
 
 ---
 
@@ -68,7 +76,50 @@ here worth a sybil attacking.
 - **Slipped:** quietly, your forfeit goes to charity. Bad days get an amnesty
   token, no questions.
 
+## Designed to be kind about the bad days
+
+A commitment device whose main output is "you lost money again" is a wellness
+product in the marketing copy only. These aren't bolt-ons, they're the product.
+
+- **You set the stake**, small by default, confirm before any large jump.
+- **Amnesty.** Bad-day tokens disarm a session before settlement, no questions.
+- **Forfeits never enrich anyone.** Charity only, never us, never another user.
+- **Ambiguity always resolves toward you.** Contested, failed inference, missing
+  evidence: refund. A wrong "kept" costs nothing. A wrong "slipped" costs trust.
+- **Wins are loud, losses are quiet.**
+- **No leaderboards, no ranking, no visible kept-rate.** DoomTax is a personal
+  app. If you want it social, you can join a **circle**: a group that picks a
+  shared cause together. Every circle forfeit funds that one cause, and the app
+  shows only the collective total, never who slipped. A bad day becomes
+  something good for someone else, not a public score.
+
+## Design decisions
+
+| Decision | Reasoning |
+|---|---|
+| **Personal app, solo** | Competing on kept-rate puts most pressure on whoever struggles most. Inverted for a wellness product. |
+| **No teams, pots, leaderboards, rankings** | Cut, not deferred. A team pot also dilutes the stake by 1/N and a solo-controlled team means no penalty at all. |
+| **Circles are the social layer** | Shared cause, collective total shown, individual contributions never shown. Makes a slip prosocial rather than punitive. Membership stays off-chain. |
+| **No accountability partner in v1** | Replaced by self-appeal: optimistic settlement, short window to contest, resolves toward the user. |
+| **Forfeits go to charity only** | Never the platform, never an individual. This is the ethical load-bearing wall and the Beeminder differentiator. |
+| **Pending account before charity** | Once money reaches a charity it cannot be reversed, so appeals and amnesty would be unfunded promises. |
+| **Honest custody** | World App signs World Chain, not Hedera. The app provisions and holds a Hedera testnet account per user and records consent to HCS. **Never write copy claiming the user signed the forfeit themselves.** |
+| **Charity is a placeholder** | No partnership exists. Mainnet target is The Giving Block, blocked on unconfirmed HBAR support and a commercial agreement. Say so in the README. |
+| **Business model: premium coach** | Free tier returns a verdict, paid tier is the long-memory coach on 0G Storage. Makes 0G Storage commercially load-bearing. A fee on successful refunds is an **open question**, not decided. |
+
+**Verdicts are judged only against the intention the user stated at session
+start.** Never against a general notion of productivity. Rest is productive.
+
+**Ambiguity always resolves toward the user.** Contested, failed inference,
+timeout, missing evidence: refund. A wrong "kept" costs nothing. A wrong
+"slipped" costs trust.
+
 ---
+
+*The sections from here to the evidence checklist were written for the ETHGlobal judges. The dollar figures are the prize each sponsor offered for its track, not money won.*
+
+> Every claim below is marked 🟢 built, 🟡 in progress, or ⚪ planned. Nothing is
+> claimed working until it's green with a link next to it.
 
 ## Why each chain is load-bearing
 
@@ -91,11 +142,11 @@ HBAR/HTS transfer on Hedera Testnet.
 HCS topic: `0.0.9748699`
 
 ### 🛠️ Hedera, No Solidity Allowed ($3,000) 🟢
-Zero Solidity — `find . -name "*.sol"` returns nothing. Two native services are
+Zero Solidity: `find . -name "*.sol"` returns nothing. Two native services are
 live and proven on testnet:
 
-- **HCS** — verdict and payout log, topic `0.0.9748699`
-- **HTS** — streak token `0.0.9762627`
+- **HCS**: verdict and payout log, topic `0.0.9748699`
+- **HTS**: streak token `0.0.9762627`
   ([HashScan](https://hashscan.io/testnet/token/0.0.9762627)), minted and
   delivered on a kept verdict
 
@@ -112,7 +163,7 @@ given back. Two scripts close the loop, both dry-run by default:
 Proven with three forfeits: the uncontested one swept to charity, the two
 appealed ones were returned to source. **An appeal that only skipped the sweep
 would have left the stake in escrow forever, which is a slower way of keeping
-it** — so "resolves toward you" means the money comes back.
+it**, so "resolves toward you" means the money comes back.
 
 Two privacy details. The sweep memo carries a count, never a session ID, so the
 public transaction cannot be used to work out who slipped. And the refund
@@ -121,16 +172,16 @@ rather than stored, so the ledger never holds a durable link between a session
 and an account.
 
 A third, **Scheduled Transactions** (HIP-423) for the pre-armed forfeit, is
-written in `src/hedera/schedule.ts` but **not yet wired into the session flow** —
+written in `src/hedera/schedule.ts` but **not yet wired into the session flow**:
 `armForfeit()` and `disarmForfeit()` have no caller. Counting it would be an
 overclaim, so it is listed here as what it is.
 
 ### 🧠 0G, Best AI Product ($6,000) ⚪
 **Focus Coach** runs on 0G Compute through two server-side paths:
 
-- **Broker path** — wallet + on-chain ledger, with response attestation
+- **Broker path**: wallet + on-chain ledger, with response attestation
   verification. This is the TEE-verified path.
-- **API-key path** — a Router base URL or provider-scoped endpoint plus a
+- **API-key path**: a Router base URL or provider-scoped endpoint plus a
   prepaid key, simpler to operate, but **no per-response attestation**.
 
 Both are wired in `src/ai/coach.ts`; the API-key path is selected by
@@ -170,10 +221,10 @@ Run one full 30 second session after `pnpm dev`, then fill these:
   ```json
   {"sessionId":"497d1101-0cf0-40b9-b5d4-3608bdb6dc49","commitmentHash":"22749163d6ddcc0e4f8f9462fcd34a84409905dcecbcf0d1b8d30dadf5e0abfb","stakeHbar":1,"intention":"Finish the README evidence pass","artifact":"Updated the submission checklist to match the current client payload.","foregroundTime":28.4,"interruptionCount":0}
   ```
-  Verified independently against the Hedera testnet mirror node, not just the app's own response — both the transfer and the HCS message match the values above. The plaintext coach fields are sent only to the server-side coach path and never reach HCS.
+  Verified independently against the Hedera testnet mirror node, not just the app's own response. Both the transfer and the HCS message match the values above. The plaintext coach fields are sent only to the server-side coach path and never reach HCS.
 
 - HTS streak token (the kept-verdict reward), verified against the mirror node:
-  - Token: `0.0.9762627` — `STREAK`, 0 decimals, infinite supply, treasury `0.0.9695721`
+  - Token: `0.0.9762627`, `STREAK`, 0 decimals, infinite supply, treasury `0.0.9695721`
     ([HashScan](https://hashscan.io/testnet/token/0.0.9762627))
   - Mint: `0.0.9695721@1785039170.758949116` · Transfer: `0.0.9695721@1785039171.047140243`
   - Result: custody account `0.0.9762638` holds `1` STREAK, token total supply `1`
@@ -183,47 +234,9 @@ Run one full 30 second session after `pnpm dev`, then fill these:
   account and a `'kept'` verdict, so the probe script is what makes the path
   demonstrable ahead of the phone test and a live coach.
 
-  **What never changes:** the coach fields are transient. `settleSession()` and the HCS write still only ever see `commitmentHash` and the boolean verdict — never the intention or artifact text. That HCS-facing privacy guarantee holds in both demo mode and live-coach mode.
+  **What never changes:** the coach fields are transient. `settleSession()` and the HCS write still only ever see `commitmentHash` and the boolean verdict, never the intention or artifact text. That HCS-facing privacy guarantee holds in both demo mode and live-coach mode.
 
 ---
-
-## Designed to be kind about the bad days
-
-A commitment device whose main output is "you lost money again" is a wellness
-product in the marketing copy only. These aren't bolt-ons, they're the product.
-
-- **You set the stake**, small by default, confirm before any large jump.
-- **Amnesty.** Bad-day tokens disarm a session before settlement, no questions.
-- **Forfeits never enrich anyone.** Charity only, never us, never another user.
-- **Ambiguity always resolves toward you.** Contested, failed inference, missing
-  evidence: refund. A wrong "kept" costs nothing. A wrong "slipped" costs trust.
-- **Wins are loud, losses are quiet.**
-- **No leaderboards, no ranking, no visible kept-rate.** DoomTax is a personal
-  app. If you want it social, you can join a **circle**: a group that picks a
-  shared cause together. Every circle forfeit funds that one cause, and the app
-  shows only the collective total, never who slipped. A bad day becomes
-  something good for someone else, not a public score.
-
- ## Design decisions
-
-| Decision | Reasoning |
-|---|---|
-| **Personal app, solo** | Competing on kept-rate puts most pressure on whoever struggles most. Inverted for a wellness product. |
-| **No teams, pots, leaderboards, rankings** | Cut, not deferred. A team pot also dilutes the stake by 1/N and a solo-controlled team means no penalty at all. |
-| **Circles are the social layer** | Shared cause, collective total shown, individual contributions never shown. Makes a slip prosocial rather than punitive. Membership stays off-chain. |
-| **No accountability partner in v1** | Replaced by self-appeal: optimistic settlement, short window to contest, resolves toward the user. |
-| **Forfeits go to charity only** | Never the platform, never an individual. This is the ethical load-bearing wall and the Beeminder differentiator. |
-| **Pending account before charity** | Once money reaches a charity it cannot be reversed, so appeals and amnesty would be unfunded promises. |
-| **Honest custody** | World App signs World Chain, not Hedera. The app provisions and holds a Hedera testnet account per user and records consent to HCS. **Never write copy claiming the user signed the forfeit themselves.** |
-| **Charity is a placeholder** | No partnership exists. Mainnet target is The Giving Block, blocked on unconfirmed HBAR support and a commercial agreement. Say so in the README. |
-| **Business model: premium coach** | Free tier returns a verdict, paid tier is the long-memory coach on 0G Storage. Makes 0G Storage commercially load-bearing. A fee on successful refunds is an **open question**, not decided. |
-
-**Verdicts are judged only against the intention the user stated at session
-start.** Never against a general notion of productivity. Rest is productive.
-
-**Ambiguity always resolves toward the user.** Contested, failed inference,
-timeout, missing evidence: refund. A wrong "kept" costs nothing. A wrong
-"slipped" costs trust.
 
 ## Tech Facts
 
