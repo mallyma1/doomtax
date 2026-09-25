@@ -10,7 +10,7 @@ It is isolated in the first commit so all later diffs are my own work.
 | Area | Files | Tool | What the AI did | What I did |
 |---|---|---|---|---|
 | Project instructions | CLAUDE.md | Claude Opus | Drafted from the audited build plan | Set every constraint, made the custody and privacy calls |
-| Handover | HANDOVER.md | Claude Opus | Compiled from the session's design and audit work; verified repo state and wrote the section 0 note | Made every product, scope and design decision recorded in it |
+| Handover | docs/HANDOVER.md | Claude Opus | Compiled from the session's design and audit work; verified repo state and wrote the section 0 note | Made every product, scope and design decision recorded in it |
 | Codespace port config | .devcontainer/devcontainer.json, next.config.ts | GitHub Copilot | Generated devcontainer.json and allowedDevOrigins Codespace detection | Verified port visibility requirement, confirmed no secrets |
 | Settle payload privacy | src/app/api/session/settle/route.ts | GitHub Copilot CLI | Hardened payload rejection to block extra fields; separated settlement and HCS outcomes in response | Verified the privacy constraints and that the HCS record shape matched SessionRecord |
 | Build fixes | next.config.ts, package.json | GitHub Copilot CLI | Externalized Hedera and 0G SDK from webpack; repaired lint script excluding .next output | Confirmed build was clean and no Node imports leaked to client |

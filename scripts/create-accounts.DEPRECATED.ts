@@ -9,7 +9,7 @@
  * Use scripts/create-escrow-accounts.ts instead — it sets the operator's
  * public key explicitly so the operator can sign transfers out of the accounts.
  *
- * See HANDOVER.md section 1 for the full story.
+ * See docs/HANDOVER.md section 1 for the full story.
  */
 import { AgentMode } from '@hashgraph/hedera-agent-kit';
 import { coreAccountPlugin } from '@hashgraph/hedera-agent-kit/plugins';
