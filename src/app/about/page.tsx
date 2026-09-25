@@ -52,7 +52,7 @@ export default async function AboutPage() {
               {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-2">
                   <span
-                    className="mt-2 size-1.5 rounded-full bg-accent"
+                    className="mt-2 size-1.5 shrink-0 rounded-full bg-accent"
                     aria-hidden="true"
                   />
                   <span>{benefit}</span>
@@ -134,6 +134,14 @@ export default async function AboutPage() {
             <p className="mt-3 text-sm leading-relaxed text-muted">
               {t('openSourceBody')}
             </p>
+            <a
+              href="https://github.com/mallyma1/doomtax"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex min-h-[44px] items-center text-sm font-medium text-foreground underline underline-offset-4"
+            >
+              {t('openSourceLink')}
+            </a>
           </section>
 
           <section className="rounded-2xl border border-border bg-surface px-5 py-6">

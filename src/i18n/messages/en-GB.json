@@ -252,7 +252,7 @@
     "heroTitle": "A kinder way to turn intention into follow-through",
     "heroBody": "DoomTax is a focus tool grounded in commitment-device research from behavioural economics. You name one task, put a small stake behind it, and get an honest verdict at the end.",
     "whyTitle": "Why this method works",
-    "whyBody": "The mechanism is called a commitment device — a voluntary constraint you place on your future self. Ariel Procaccia and colleagues have shown that pre-commitment with financial stakes significantly improves follow-through compared to intention alone. Ariely and Wertenbroch's deadline research found the same pattern: self-imposed consequences work, and they work better when the person chose them. The stake here is small by design. The research suggests that the act of committing matters more than the size of what is on the line.",
+    "whyBody": "The mechanism is called a commitment device, a voluntary constraint you place on your future self. Dean Karlan and colleagues have shown that pre-commitment with financial stakes significantly improves follow-through compared to intention alone. Ariely and Wertenbroch's deadline research found the same pattern: self-imposed consequences work, and they work better when the person chose them. The stake here is small by design. The research suggests that the act of committing matters more than the size of what is on the line.",
     "benefits": [
       "Less doomscrolling and fewer “where did the last hour go?” sessions.",
       "A cleaner start because you choose one intention instead of ten competing tabs.",
@@ -300,6 +300,7 @@
     "privacyBody": "We only use the intention you wrote, the artifact you submit at the end, and simple integrity signals from this page like focus time and interruptions. We do not see your screen, your browsing, your keystrokes, or what you do in other apps.",
     "openSourceTitle": "Open source, on purpose",
     "openSourceBody": "DoomTax is open source because trust matters here. You should be able to inspect how the flow works, what gets sent where, and what the app refuses to collect. That transparency is part of the product, not an extra.",
+    "openSourceLink": "Read the source on GitHub",
     "gettingInEyebrow": "GETTING IN",
     "gettingInTitle": "How to open DoomTax",
     "gettingInBody": "DoomTax runs as a mini app inside World App. Use the QR code below to open it on your phone.",
@@ -345,5 +346,21 @@
     "announceSubmitting": "Sending your work to the coach.",
     "announceComplete": "The verdict is in.",
     "announceError": "Settlement could not be confirmed."
+  },
+  "Visitor": {
+    "eyebrow": "ETHGlobal Lisbon 2026 · Hedera testnet",
+    "title": "Stake on your focus. A slip funds charity, never the app.",
+    "body": "Say what you will do, put a small stake on it, and a private AI coach gives the verdict. Keep your word and the stake comes back. Slip, and it goes to charity, a testnet placeholder for now.",
+    "shotIntroAlt": "DoomTax home screen: start a new session, with a circle’s shared cause and its weekly total",
+    "shotLiveAlt": "A live DoomTax focus session: the stated intention, a countdown and the amount at stake",
+    "tryTitle": "It runs here too.",
+    "tryBody": "DoomTax is a World mini app, but New session works in this browser, takes {duration} and needs no wallet.",
+    "tryDemoNote": "Demo mode rules every run slipped, so it ends in a testnet transfer you can check on HashScan.",
+    "openInWorldApp": "Open in World App",
+    "linkArchitecture": "Architecture",
+    "linkNotBuilt": "What didn’t ship",
+    "linkAiUsage": "AI usage",
+    "linkSource": "Source on GitHub",
+    "linkDocs": "All docs"
   }
 }
