@@ -64,6 +64,12 @@ not every commit. See `git log` for the full history.
 
 ### Added
 
+- A project panel beside the session flow for desktop visitors outside World
+  App: what DoomTax is, that New session works in a plain browser, and links to
+  the source, architecture, scope and AI usage docs. Hidden below 1024px and
+  inside World App, so the phone layout is unchanged.
+- `docs/README.md`, an index of every document in reading order, and a
+  repository map at the foot of the README.
 - Confirmation before a large stake, which CLAUDE.md specified and the app
   never implemented.
 - A designed session flow across four screens: commit, live session, artifact
@@ -84,6 +90,11 @@ not every commit. See `git log` for the full history.
 
 ### Changed
 
+- `HANDOVER.md` and `BUILD-REPORT.md` moved into `docs/`. The duplicate
+  `docs/qr code to doomtax.png` was removed.
+- The About page credited the commitment-contract research to the wrong
+  person. It now names Dean Karlan, and its open-source section links the
+  repository.
 - The verdict screen now surfaces settlement evidence directly: the HashScan
   link when funds moved, the HCS transaction ID, and the reason when no
   transfer occurred. Previously these were rendered as raw JSON.
