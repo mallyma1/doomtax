@@ -345,5 +345,21 @@
     "announceSubmitting": "Sending your work to the coach.",
     "announceComplete": "The verdict is in.",
     "announceError": "Settlement could not be confirmed."
+  },
+  "Visitor": {
+    "eyebrow": "ETHGlobal Lisbon 2026 · Hedera testnet",
+    "title": "Stake on your focus. A slip funds charity, never the app.",
+    "body": "Say what you will do, put a small stake on it, and a private AI coach gives the verdict. Keep your word and the stake comes back. Slip, and it goes to charity, a testnet placeholder for now.",
+    "shotIntroAlt": "DoomTax home screen: start a new session, with a circle’s shared cause and its weekly total",
+    "shotLiveAlt": "A live DoomTax focus session: the stated intention, a countdown and the amount at stake",
+    "tryTitle": "It runs here too.",
+    "tryBody": "DoomTax is a World mini app, but New session works in this browser, takes {duration} and needs no wallet.",
+    "tryDemoNote": "Demo mode rules every run slipped, so it ends in a testnet transfer you can check on HashScan.",
+    "openInWorldApp": "Open in World App",
+    "linkArchitecture": "Architecture",
+    "linkNotBuilt": "What didn’t ship",
+    "linkAiUsage": "AI usage",
+    "linkSource": "Source on GitHub",
+    "linkDocs": "All docs"
   }
 }
