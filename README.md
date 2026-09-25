@@ -18,7 +18,7 @@
 
 Built solo at **ETHGlobal Lisbon 2026**, using AI coding tools (GitHub Copilot and Claude) throughout. [AI-USAGE.md](AI-USAGE.md) logs what each tool did and what I did myself.
 
-**Live:** [doomtax.vercel.app](https://doomtax.vercel.app/) · [Architecture](docs/ARCHITECTURE.md) · [What didn't ship](NOT-BUILT.md) · [AI usage](AI-USAGE.md)
+**Live:** [doomtax.vercel.app](https://doomtax.vercel.app/) · [Architecture](docs/ARCHITECTURE.md) · [What didn't ship](NOT-BUILT.md) · [AI usage](AI-USAGE.md) · [All docs](docs/README.md) · [Repository map](#repository-map)
 
 > **Testnet only.** No real funds, no real charity partnership (placeholder account).
 > See [`NOT-BUILT.md`](NOT-BUILT.md) for honest scope.
@@ -302,3 +302,13 @@ product that gets better the longer you stay, and it's why 0G Storage is
 something we sell, not just something we use.
 
 ---
+
+## Repository map
+
+- `src/app/` holds the pages and the API routes; `api/session/settle` is where a session settles.
+- `src/components/` is the UI, one folder per component; `SessionFlow` drives a session from stake to verdict.
+- `src/agent/` and `src/hedera/` are the settlement agent and the Hedera services (HCS, HTS, scheduled transactions).
+- `src/ai/` is the 0G coach, `src/identity/` the Selfie Check and AgentKit, `src/lib/` the session rules, appeal window and persistence.
+- `src/i18n/messages/` holds the 14 locales; `en-GB.json` is the source every other locale falls back to.
+- `scripts/` holds the operational scripts, every fund movement a dry run by default.
+- `docs/` holds the specs, audits and build history, indexed in [docs/README.md](docs/README.md).
